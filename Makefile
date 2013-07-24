@@ -1,75 +1,120 @@
-NAME = LibraryBox
+NAME = librarybox
 VERSION = 2.0.0_alpha1
 ARCH = all
 
-#Source data
-WGET = wget -c
-PIRATEBOX_IMG = source_piratebox_ws_img.tar.gz
-PIRATEBOX_IMG_URL= "http://piratebox.aod-rpg.de/piratebox_ws_1.0_img.tar.gz"
-# This is vor mkPirateBox 0.6 ; not release yet
 #PIRATEBOX_IMG_URL = "http://piratebox.aod-rpg.de/piratebox_ws_0.6_img.gz"
 
-# Data Folder from 
-MOD_SRC_FOLDER=mod_data
-MOD_VERSION_TAG=$(MOD_SRC_FOLDER)/version_tag_mod
+# Data Folder from
+SRC_FOLDER=piratebox_origin
+SRC_SCRIPT_LOCATION=$(SRC_FOLDER)/piratebox/piratebox
+SRC_VERSION_TAG=$(SRC_SCRIPT_LOCATION)/version
 
-#Vars for appling config
-MOD_FOLDER=mod_image
-MOUNT_POINT=$(MOD_FOLDER)/image
-MOD_IMAGE=$(MOD_FOLDER)/image_file
+
+BUILD_FOLDER=build_dir
+BUILD_SCRIPT_LOCATION=$(BUILD_FOLDER)/piratebox
+
+IMAGE_BUILD=tmp_img
+IMAGE_BUILD_SRC=$(IMAGE_BUILD)/src
+IMAGE_BUILD_TGT=$(IMAGE_BUILD)/tgt
+
+MOD_SRC_FOLDER=customization
+MOD_VERSION_TAG=$(BUILD_SCRIPT_LOCATION)/version_tag_mod
 
 # Filename requested by 
-MOD_IMAGE_TGZ=librarybox_2.0_img.tar.gz
+MOD_IMAGE=$(IMAGE_BUILD)/OpenWRT_image
+MOD_IMAGE_TGZ=$(NAME)_2.0_img.tar.gz
 
-.DEFAULT_GOAL = all
-.PHONY: all clean cleanall
+MOD_PACKAGE_TGZ=$(NAME)_$(VERSION).tar.gz
+
+#.DEFAULT_GOAL:
+#.PHONY: 
 
 #--------------------------------------------
-# Fetching DATA
-$(PIRATEBOX_IMG): 
-	$(WGET)  $(PIRATEBOX_IMG_URL) -O $@ 
-
-$(MOD_IMAGE): $(PIRATEBOX_IMG)
-	tar xzO -f $(PIRATEBOX_IMG) > $@
-
-$(MOD_FOLDER): 
+$(MOD_FOLDER) $(BUILD_FOLDER) $(MOUNT_POINT) $(IMAGE_BUILD_SRC) $(IMAGE_BUILD_TGT): 
 	mkdir -p $@
 
-$(MOUNT_POINT):
-	mkdir -p $@
 
+#-------------------------------------------
+# Build 
+
+$(MOD_VERSION_TAG): 
+	echo  "$(NAME) - $(VERSION)"   > $@
+
+$(SRC_VERSION_TAG):
+	cd $(SRC_FOLDER) && make
+
+# Create version tags
+# copy over stuff
+prepare_build:  $(BUILD_FOLDER) $(SRC_VERSION_TAG) $(BUILD_SCRIPT_LOCATION)
+	cp -vr $(SRC_SCRIPT_LOCATION) $(BUILD_SCRIPT_LOCATION)  
+
+
+$(BUILD_SCRIPT_LOCATION):
+	mkdir -p $@
+	cp -vr $(SRC_SCRIPT_LOCATION)/*  $(BUILD_SCRIPT_LOCATION)
+	cp -vr $(MOD_SRC_FOLDER)/*  $(BUILD_SCRIPT_LOCATION)
+
+# Changing of configuration files only via differences
+$(BUILD_SCRIPT_LOCATION)/conf/piratebox.conf $(IMAGE_BUILD_SRC)/conf/piratebox.conf:
+	sed 's:HOST="piratebox.lan":HOST="librarybox.lan":'  -i  $@
+	sed 's:DROOPY_ENABLED="yes":DROOPY_ENABLED="no":'  -i  $@
+
+
+building: $(BUILD_SCRIPT_LOCATION) $(BUILD_SCRIPT_LOCATION)/conf/piratebox.conf 
 
 #--------------------------------------------
 # Preparing image
 
-$(MOD_VERSION_TAG): 
-	echo  "$(NAME) - $(VERSION)"   > $@ 
+#Some additional preparations for OpenWRT images.
+#  - run prepar
 
-$(MOD_IMAGE_TGZ): $(MOD_FOLDER) $(MOUNT_POINT) $(MOD_IMAGE) $(MOD_VERSION_TAG)
+
+prepare_image_config: $(IMAGE_BUILD_SRC)  $(IMAGE_BUILD_TGT)
+	cd  $(SRC_FOLDER) && make image_stuff/openwrt/conf
+	cp -rv  $(SRC_FOLDER)/image_stuff/openwrt/* $(IMAGE_BUILD_SRC)
+	
+# We need to apply our custom configuration again, because we are copy them over from the origin again
+#   I'm doin it this way, because the origin image knows what to change.
+apply_custom_config:  $(IMAGE_BUILD_SRC)/conf/piratebox.conf
+
+$(MOD_IMAGE):
+	gunzip -dc  $(SRC_FOLDER)/image_stuff/OpenWRT.img.gz > $@
+
+
+$(MOD_IMAGE_TGZ): $(IMAGE_BUILD_TGT) $(MOD_IMAGE) $(MOD_VERSION_TAG) 
 	echo "#### Mounting image-file"
-	sudo  mount -o loop,rw,sync   $(MOD_IMAGE)   $(MOUNT_POINT)
+	sudo  mount -o loop,rw,sync   $(MOD_IMAGE)   $(IMAGE_BUILD_TGT)
+	echo "#### Copy over normal content"
+	sudo   cp -vr $(BUILD_SCRIPT_LOCATION) $(IMAGE_BUILD_TGT)
 	echo "#### Copy Modifications to image file"
-	sudo   cp -vr $(MOD_SRC_FOLDER)/*   $(MOUNT_POINT)
-# Example Exchanging stock lines
-	sudo sed 's:HOST="piratebox.lan":HOST="librarybox.lan":'  -i  $(MOUNT_POINT)/conf/piratebox.conf
-	sudo sed 's:DROOPY_ENABLED="yes":DROOPY_ENABLED="no":'  -i  $(MOUNT_POINT)/conf/piratebox.conf
-	sudo mv $(MOUNT_POINT)/www  $(MOUNT_POINT)/www_old
-	sudo mv $(MOUNT_POINT)/www_librarybox  $(MOUNT_POINT)/www
-	sudo umount  $(MOUNT_POINT)
+	sudo   cp -vr $(MOD_SRC_FOLDER)/*   $(IMAGE_BUILD_TGT)
+	sudo umount  $(IMAGE_BUILD_TGT)
 	tar czf  $(MOD_IMAGE_TGZ)  $(MOD_IMAGE)
 
+image: clean_image building prepare_image_config apply_custom_config $(MOD_IMAGE_TGZ) 
 
 #---------------------------------------------
 # Clean stuff
+
+clean_image:
+	- rm  $(MOD_IMAGE)
+
+cleanall: clean 
+	- rm -v $(MOD_IMAGE_TGZ)
+	- rm -v $(MOD_PACKAGE_TGZ)
+
 clean: 
-	-rm -f  $(MOD_IMAGE_GZ)
-	-rm -f  $(MOD_IMAGE_TGZ)
-	-rm -f  $(MOD_VERSION_TAG)
+	- rm -rvf $(BUILD_FOLDER)
+	- rm -rvf $(IMAGE_BUILD)
 
-cleanall: clean
-	-rm -fr $(MOUNT_POINT) 
-	-rm -fr $(MOD_IMAGE)
-	-rm -fr $(PIRATEBOX_IMG) 
-	-rm -fr $(MOD_FOLDER) 
+#-------------------------------------------
+# Bundle targets
 
-all:    $(MOD_IMAGE_TGZ)
+all: image $(MOD_PACKAGE_TGZ)
+
+#comp....
+shortimage: image
+
+package: $(MOD_PACKAGE_TGZ)
+
+
