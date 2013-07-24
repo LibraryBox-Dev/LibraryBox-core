@@ -1,0 +1,45 @@
+LibraryBox 2.0 Core script files.
+
+Matthias Strubel 2013-07-24  matthias.strubel@aod-rpg.de
+This sourcecode is licenced under GPL-3
+
+
+Preparation of the core scripts for LibraryBox on RapsberryPI and OpenWRT.
+The Scripts are designed for reusing and modificate only the base Piratebox Scripts instead of being a HARD fork from PBx.
+
+To achieve this, LibraryBox uses the hook implementation (preprepared empty scripts for you own code) and exchanges a few files, if needed.
+
+
+The workflow for creating the final source package is:
+
+  - clone this project
+  - do your modification in the "customization" folder
+  - run the following command, which results the final "compilation" of all scripts into the directory "build" (changes made during build, see below)
+    make build
+  - To create an script package
+     # OpenWRT imagefile:  make image
+     # Script package   :  make targz
+     # all together     :  make all
+
+  - To cleanup your build environment:
+     make clean
+
+
+Folders
+-------
+
+  customization    =  All stuff which should be copied over
+  piratebox_origin =  git subtree of PirateBoxScripts_Webserver branch "librarybox_dev"  (see git subtree"
+                      Normally you would choose some stable release, but because of LibraryBox is leapfrogging PirateBox I need to base on special branch to able to push changes back and other way around. This can be later changed to "stable" branch
+  tmp_img	   =  Customization for images and mount points
+  build_dir	   =  Folder for including piratebox + LibraryBox stuff to a complete cake
+
+Changes during build
+--------------------
+
+* Place normal configuration and script hooks, which are used
+* Copy a template for the librarybox.us/  stuff (internet detection and so on)
+* Copy a template for the content-folder librarybox.us/content 
+* Changing SSD in hostapd
+
+
