@@ -55,12 +55,15 @@ $(BUILD_SCRIPT_LOCATION):
 	cp -vr $(MOD_SRC_FOLDER)/*  $(BUILD_SCRIPT_LOCATION)
 
 # Changing of configuration files only via differences
-$(BUILD_SCRIPT_LOCATION)/conf/piratebox.conf $(IMAGE_BUILD_SRC)/conf/piratebox.conf:
-	sed 's:HOST="piratebox.lan":HOST="librarybox.lan":'  -i  $@
-	sed 's:DROOPY_ENABLED="yes":DROOPY_ENABLED="no":'  -i  $@
+define ReconfigureConfig
+	sed 's:HOST="piratebox.lan":HOST="librarybox.lan":'  -i  $(1)/piratebox.conf
+	sed 's:DROOPY_ENABLED="yes":DROOPY_ENABLED="no":'  -i  $(1)/piratebox.conf
+	sed 's:ssid=PirateBox - Share Freely:ssid=LibraryBox - Free Content!:' -i $(1)/hostapd.conf
+endef
 
+building: $(BUILD_SCRIPT_LOCATION) 
+	 $(call ReconfigureConfig,$(BUILD_SCRIPT_LOCATION)/conf)	
 
-building: $(BUILD_SCRIPT_LOCATION) $(BUILD_SCRIPT_LOCATION)/conf/piratebox.conf 
 
 #--------------------------------------------
 # Preparing image
@@ -75,7 +78,9 @@ prepare_image_config: $(IMAGE_BUILD_SRC)  $(IMAGE_BUILD_TGT)
 	
 # We need to apply our custom configuration again, because we are copy them over from the origin again
 #   I'm doin it this way, because the origin image knows what to change.
-apply_custom_config:  $(IMAGE_BUILD_SRC)/conf/piratebox.conf
+apply_custom_config:
+	cp -v $(BUILD_SCRIPT_LOCATION)/conf/hook_custom.conf $(IMAGE_BUILD_SRC)/conf
+	$(call ReconfigureConfig,$(IMAGE_BUILD_SRC)/conf)
 
 $(MOD_IMAGE):
 	gunzip -dc  $(SRC_FOLDER)/image_stuff/OpenWRT.img.gz > $@
@@ -85,9 +90,10 @@ $(MOD_IMAGE_TGZ): $(IMAGE_BUILD_TGT) $(MOD_IMAGE) $(MOD_VERSION_TAG)
 	echo "#### Mounting image-file"
 	sudo  mount -o loop,rw,sync   $(MOD_IMAGE)   $(IMAGE_BUILD_TGT)
 	echo "#### Copy over normal content"
-	sudo   cp -vr $(BUILD_SCRIPT_LOCATION) $(IMAGE_BUILD_TGT)
+	sudo   cp -vr $(BUILD_SCRIPT_LOCATION)/* $(IMAGE_BUILD_TGT)
 	echo "#### Copy Modifications to image file"
 	sudo   cp -vr $(MOD_SRC_FOLDER)/*   $(IMAGE_BUILD_TGT)
+	sudo   cp -vr $(IMAGE_BUILD_SRC)/*   $(IMAGE_BUILD_TGT)
 	sudo umount  $(IMAGE_BUILD_TGT)
 	tar czf  $(MOD_IMAGE_TGZ)  $(MOD_IMAGE)
 
