@@ -23,13 +23,13 @@ fi
 
 ## Exchange WWWW
 echo "Doing www folder exchange..."
-mv -v   $WWW_FOLDER $PIRATEBOX_FOLDER/www_old
-cp -rv  $PIRATEBOX_FOLDER/www_old/cgi-bin $WWW_FOLDER
-mv -v   $PIRATEBOX_FOLDER/www_librarybox $WWW_FOLDER
+mv    $WWW_FOLDER $PIRATEBOX_FOLDER/www_old
+cp -rv  $PIRATEBOX_FOLDER/www_old/cgi-bin $WWW_FOLDER/cgi-bin
+mv    $PIRATEBOX_FOLDER/www_librarybox $WWW_FOLDER
 
 # Prepare content folder
 echo "Creating 'content' folder on USB stick and move over stuff"
 mkdir -p $WWW_CONTENT
-mv -v    $PIRATEBOX_FOLDER/www_content/*   $WWW_CONTENT
+mv     $PIRATEBOX_FOLDER/www_content/*   $WWW_CONTENT
 
 
