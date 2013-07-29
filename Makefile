@@ -60,6 +60,7 @@ define ReconfigureConfig
 	sed 's:DROOPY_ENABLED="yes":DROOPY_ENABLED="no":'  -i  $(1)/piratebox.conf
 	sed 's:ssid=PirateBox - Share Freely:ssid=LibraryBox - Free Content!:' -i $(1)/hostapd.conf
 	echo 'include "/opt/piratebox/conf/lighttpd/fastcgi.conf"' >> $(1)/lighttpd/lighttpd.conf
+	echo 'include "/opt/piratebox/conf/lighttpd/custom_index.conf"' >> $(1)/lighttpd/lighttpd.conf
 endef
 
 building: $(BUILD_SCRIPT_LOCATION) 
