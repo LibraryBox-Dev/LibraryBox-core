@@ -247,7 +247,7 @@ if($handle = @opendir($path)) {
 			);
 		}
 	}
-	fclose($handle);
+	closedir($handle);
 }
 
 
@@ -325,7 +325,7 @@ print "<tr><td colspan='4' style='height:7px;'></td></tr>";
 
 // Print file information
 foreach($filelist as $file) {
-	print "<tr><td class='n'><a href='" . addslashes($file['name']). "'>" .htmlentities($file['name']). "</a></td>";
+	print "<tr><td class='n'><a href='/dl_statistics_counter.php?DL_URL=" . addslashes($file['name']). "'>" .htmlentities($file['name']). "</a></td>";
 	print "<td class='m'>" . date('Y-M-d H:i:s', $file['modtime'])   . "</td>";
 	print "<td class='s'>" . format_bytes($file['size'],2)           . " </td>";
 	print "<td class='t'>" . $file['file_type']                      . "</td></tr>";
