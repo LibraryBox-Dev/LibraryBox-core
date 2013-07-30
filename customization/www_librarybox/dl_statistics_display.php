@@ -2,8 +2,10 @@
 
 /******* Display download - statistics *****/
 
-include "dl_statistics.conf.php";
+require_once  "dl_statistics.conf.php";
+include "dl_statistics.func.php";
 
+$config=dl_get_config();
 
 $sort=$config["sortOrder"];
 $sortBy=$config["sortBy"];
@@ -48,39 +50,8 @@ if ( isset ( $_GET['list_type'] )) {
 #----------------------------------
 #  Detect which statement 
 
-$sth= false ;
 
-$result= false;
-
-if ( !  $db = new PDO (  $config['SQLITE_FILE'] ) ) {
-	die ( "Error, couldn't open database ". $err );
-}
-
-
-if ( $list_type == "all" ) { 
- 	$sth = $db->prepare ( "SELECT url, counter FROM dl_statistics ORDER by $sortBy $sort ");
-} elseif ( $list_type == "top" ) {
-	$sth = $db->prepare ( "SELECT url, counter FROM dl_statistics ORDER by $sortBy $sort LIMIT 1 , :max ");
-	$sth->bindParam (':max' , $top_max, PDO::PARAM_INT  );
-}
-
-if ( $sth ) {
-
-	if ( !  $sth->execute() ) {
-		die ( "Error executing statement: ". $sth->errorInfo());
-	}
-
-	$result = $sth->fetchAll();
-	# Tidy array up, I only want named keys
-	foreach (  $result as &$line ) {
-		unset ( $line[0] );
-		unset ( $line[1] );
-	}
-
-} else {
-  print_r ($db->errorInfo());
-  die ("\n no valid statement could be found");
-}
+$result= dl_read_stat_per_path ( '%' , $sortBy , $sort , $list_type ,  $top_max );
 
 #------------------------------------------------
 # Output

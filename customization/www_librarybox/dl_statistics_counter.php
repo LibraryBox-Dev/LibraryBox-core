@@ -12,18 +12,15 @@
 **********************************/  
 
 
-include "dl_statistics.conf.php"; 
+include "dl_statistics.func.php"; 
 #$SQLITE_FILE = "sqlite:/opt/piratebox/share/dl_statistics.sqlite";
 
 
 $redirect_url = $_GET['DL_URL'] ;
 
 
-if ( $db = new PDO (  $config['SQLITE_FILE'] ) ) {
-	$sth = $db->prepare ( 'CREATE TABLE IF NOT EXISTS dl_statistics ( url text  PRIMARY KEY ASC, counter int )');
-	if ( ! $sth->execute () )
-		die ( "Error creating table: ". $sth->errorInfo ());
-	
+	$db=__do_db_connect();
+
 	$sel_sth = $db->prepare ("SELECT url, counter FROM dl_statistics WHERE url = :url ");
 	
 	if  ( ! $sel_sth->execute( array ( ':url' => $redirect_url ) )) {
@@ -46,9 +43,6 @@ if ( $db = new PDO (  $config['SQLITE_FILE'] ) ) {
 		die ( "Error updateing table with counter $cnt ". $up_sth->errorInfo ());
 	}
 
-} else {
-  die ($err);
-}
 
 
 header( 'Cache-Control: no-store, no-cache, must-revalidate' ); 

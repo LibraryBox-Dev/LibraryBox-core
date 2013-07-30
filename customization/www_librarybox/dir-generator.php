@@ -1,12 +1,14 @@
 <?php
 
-$VERSION = '0.4';
+$VERSION = '1.0';
 
 /*  Lighttpd Enhanced Directory Listing Script
  *  ------------------------------------------
  *  Author: Evan Fosmark
  *  Version: 2008.08.07
  *
+ *  Since 1.0 ; Matthias Strubel
+ *          Modifications for including a download-count.
  *
  *  GNU License Agreement
  *  ---------------------
@@ -45,6 +47,12 @@ $display_header = true;
 $display_readme = true;
 $hide_header = true;
 $hide_readme = true;
+
+$display_dl_count = true;
+$dl_stat_func_file = "dl_statistics.func.php";
+
+
+$folder_statistics = array();
 
 // Various file type associations
 $movie_types = array('mpg','mpeg','avi','asf','mp3','wav','mp4','wma','aif','aiff','ram', 'midi','mid','asf','au','flac');
@@ -148,6 +156,32 @@ function get_file_type($file) {
 	return(strtoupper($ext) . " " . $type);
 }
 
+function get_download_count ($filename  ) {
+	global $path;
+	global $folder_statistics;
+
+	$full_filename = "/$path".$filename ;
+
+	if ( isset ( $folder_statistics[ $full_filename ] ) ) {
+		return  $folder_statistics[ $full_filename ][ 'counter'] ;
+	} else { 
+		return 0;
+	}
+}
+
+function get_folder_statistics ($my_path, &$folder_statistics) {
+	global $dl_stat_func_file;
+	include $dl_stat_func_file ;
+
+	$result = dl_read_stat_per_path_only ( "$my_path"  );
+
+	foreach ( $result as $line ) {
+		$folder_statistics [ $line [ 'url' ] ] = array  (
+			'url' 		=>  $line [ 'url' ] ,
+			'counter' 	=>  $line [ 'counter' ] ,
+			);
+	}
+}
 
 
 // Print the heading stuff
@@ -175,6 +209,10 @@ print '<!DOCTYPE html>
 	</head>
 	<body>
 ';
+
+if ( $display_dl_count ) {
+	get_folder_statistics ( "/".$vpath , $folder_statistics );	
+}	
 
 if ($display_header)
 {
@@ -243,7 +281,8 @@ if($handle = @opendir($path)) {
 				'name'=> $item,
 				'size'=> filesize($path.'/'.$item),
 				'modtime'=> filemtime($path.'/'.$item),
-				'file_type' => get_file_type($path.'/'.$item)
+				'file_type' => get_file_type($path.'/'.$item),
+				'counter'   => get_download_count ($item)
 			);
 		}
 	}
@@ -287,6 +326,10 @@ $sort_methods['modtime'] = "Last Modified";
 $sort_methods['size'] = "Size";
 $sort_methods['file_type'] = "Type";
 
+if ( $display_dl_count ) {
+	$sort_methods['counter'] = "Downloads";
+}
+
 foreach($sort_methods as $key=>$item) {
 	if($_GET['sort'] == $key) {
 		print "<th class='n'><a href='?sort=$key$order'>$item</a></th>";
@@ -328,7 +371,11 @@ foreach($filelist as $file) {
 	print "<tr><td class='n'><a href='/dl_statistics_counter.php?DL_URL=/$path" . addslashes($file['name']). "'>" .htmlentities($file['name']). "</a></td>";
 	print "<td class='m'>" . date('Y-M-d H:i:s', $file['modtime'])   . "</td>";
 	print "<td class='s'>" . format_bytes($file['size'],2)           . " </td>";
-	print "<td class='t'>" . $file['file_type']                      . "</td></tr>";
+	print "<td class='t'>" . $file['file_type']                      . "</td>";
+	if ( $display_dl_count ) {
+		print "<td class='c'>" . $file['counter'] . "</td>";
+	}
+	print "</tr>";
 }
 
 
