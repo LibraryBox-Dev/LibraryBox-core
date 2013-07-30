@@ -11,13 +11,15 @@
 
 **********************************/  
 
+
+include "dl_statistics.conf.php"; 
 $SQLITE_FILE = "sqlite:/opt/piratebox/share/dl_statistics.sqlite";
 
 
 $redirect_url = $_GET['DL_URL'] ;
 
 
-if ( $db = new PDO (  $SQLITE_FILE ) ) {
+if ( $db = new PDO (  $config['SQLITE_FILE'] ) ) {
 	$sth = $db->prepare ( 'CREATE TABLE IF NOT EXISTS dl_statistics ( url text  PRIMARY KEY ASC, counter int )');
 	if ( ! $sth->execute () )
 		die ( "Error creating table: ". $sth->errorInfo ());
