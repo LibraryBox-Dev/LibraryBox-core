@@ -48,6 +48,10 @@ $display_readme = true;
 $hide_header = true;
 $hide_readme = true;
 
+
+# Enable a specific dl-file prefix which directs to the counter script
+$collect_dl_count = true;
+# Display the countend downloads to the overview (reads out of an SQLitedb)
 $display_dl_count = true;
 $dl_stat_func_file = "dl_statistics.func.php";
 
@@ -282,7 +286,7 @@ if($handle = @opendir($path)) {
 				'size'=> filesize($path.'/'.$item),
 				'modtime'=> filemtime($path.'/'.$item),
 				'file_type' => get_file_type($path.'/'.$item),
-				'counter'   => get_download_count ($item)
+				'counter'   => get_download_count ($item) ## addslashes needed??
 			);
 		}
 	}
@@ -368,7 +372,16 @@ print "<tr><td colspan='4' style='height:7px;'></td></tr>";
 
 // Print file information
 foreach($filelist as $file) {
-	print "<tr><td class='n'><a href='/dl_statistics_counter.php?DL_URL=/$path" . addslashes($file['name']). "'>" .htmlentities($file['name']). "</a></td>";
+
+	global $collect_dl_count;
+
+	$file_link_prefix="";
+
+	if ( $collect_dl_count ) {
+		$file_link_prefix="/dl_statistics_counter.php?DL_URL=/$path";
+	}
+
+	print "<tr><td class='n'><a href='$file_link_prefix" . addslashes($file['name']). "'>" .htmlentities($file['name']). "</a></td>";
 	print "<td class='m'>" . date('Y-M-d H:i:s', $file['modtime'])   . "</td>";
 	print "<td class='s'>" . format_bytes($file['size'],2)           . " </td>";
 	print "<td class='t'>" . $file['file_type']                      . "</td>";

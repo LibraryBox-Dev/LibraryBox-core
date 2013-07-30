@@ -1,6 +1,34 @@
 <?php
 
-/******* Display download - statistics *****/
+/******* Display download - statistics *****
+
+VERSION 0.1 	- 	Matthias Strubel  (c) 2013 - GPL3
+
+Very simple script to get access to the statistic data.
+
+	Following GET-Options are possible:
+
+	sortOrder	= ASC / DESC  - Ascendening or decsending sort order
+	sortBy		= url/counter Sort by complete "url" to file, or based on download "counter"
+	list_type	= "all"  display all data ; "top" - limit display with top n entries
+	top_max		= Limit entry list in "top" mode by that value
+	output_type	= none or html resulsts in a simple html output
+			  "json" results in a json structure
+
+	The HTML output is based on a file pointed in  "dl_statistics.conf.php" to.
+	That file lays on librarybox in the content folder 
+		http://librarybox.us/content/.... 
+	which is in reality on the USB stick. That file can simply exchanged without the need
+	of touching the logic behind.
+
+	Currently I don't have the path filter programmed in that. script
+
+
+
+CHANGELOG:
+	0.1 RELEASE 
+
+********************************************/
 
 require_once  "dl_statistics.conf.php";
 include "dl_statistics.func.php";
@@ -60,7 +88,13 @@ if ( is_array ( $result ) ) {
 	if ( $output_type == "html" ) {
 		# Template file for HTML output
 		include $config["HTML_TEMPLATE_FILE"];
-		output_html ( $result );
+		output_html ( $result, array (
+			'list_type' => $list_type,
+			'top_max'   => $top_max ,
+			"sortBy"    =>  $sortBy ,
+			"sortOrder" => $sort,
+			"filter_path" => false ,
+		));
 	} elseif ( $output_type == "json" ) {
 		header('Content-Type: application/json');
 		print json_encode ( $result );
