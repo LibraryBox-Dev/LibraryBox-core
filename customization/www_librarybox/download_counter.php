@@ -13,7 +13,7 @@
 
 
 include "dl_statistics.conf.php"; 
-$SQLITE_FILE = "sqlite:/opt/piratebox/share/dl_statistics.sqlite";
+#$SQLITE_FILE = "sqlite:/opt/piratebox/share/dl_statistics.sqlite";
 
 
 $redirect_url = $_GET['DL_URL'] ;
