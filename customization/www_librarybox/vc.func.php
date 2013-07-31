@@ -76,9 +76,9 @@ function vc_read_stat_sum_per_day ($path="%"  , $sortBy , $sort, $type="all" , $
 	$db = vc_do_db_connect();
 
 	if (  $type == "all" ) {
-		$sth = $db->prepare ( " SELECT day, count( visitor)  FROM vc_statistics WHERE day LIKE :day ORDER by  $sortBy $sort GROUP BY day ");
+		$sth = $db->prepare ( " SELECT day, count( visitor) as counter  FROM vc_statistics WHERE day LIKE :day GROUP BY day  ORDER by  $sortBy $sort ");
 	} elseif ( $type == "top" ) {
-		$sth = $db->prepare ( " SELECT day, count(visitor)   FROM vc_statistics WHERE day LIKE :day ORDER by $sortBy $sort  GROUP BY day LIMIT 1 , :max ");
+		$sth = $db->prepare ( " SELECT day, count(visitor) as counter  FROM vc_statistics WHERE day LIKE :day GROUP BY day ORDER by $sortBy $sort LIMIT 0 , :max ");
 		$sth->bindParam (':max' , $limit, PDO::PARAM_INT  );
 	}
 

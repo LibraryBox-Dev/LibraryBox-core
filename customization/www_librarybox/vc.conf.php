@@ -12,7 +12,7 @@ function vc_get_config () {
 	   "SQLITE_FILE" => "sqlite:/opt/piratebox/share/vc_statistics.sqlite",
 	   "HTML_TEMPLATE_FILE" => "content/vc_statistics.html.php" ,
 	   "sortBy" => "day" ,
-	   "sortOrder" => 'DESV' , # ASC, DESC
+	   "sortOrder" => 'DESC' , # ASC, DESC
 	   "top_max" => "5",  #Display top n on option "top"
 	   "output_type" => "html" , # Display HTML per default or only JSON
 	   "list_type" => "top" , #Display "all" or only "top" on default
