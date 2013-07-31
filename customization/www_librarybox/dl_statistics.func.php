@@ -42,7 +42,7 @@ function dl_read_stat_per_path ($path="%"  , $sortBy , $sort, $type="all" , $lim
 	if (  $type == "all" ) {
 		$sth = $db->prepare ( " SELECT url, counter FROM dl_statistics WHERE url LIKE :path ORDER by  $sortBy $sort ");
 	} elseif ( $type == "top" ) {
-		$sth = $db->prepare ( "SELECT url, counter FROM dl_statistics WHERE url LIKE :path ORDER by $sortBy $sort LIMIT 1 , :max ");
+		$sth = $db->prepare ( "SELECT url, counter FROM dl_statistics WHERE url LIKE :path ORDER by $sortBy $sort LIMIT 0 , :max ");
 		$sth->bindParam (':max' , $limit, PDO::PARAM_INT  );
 	}
 
