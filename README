@@ -29,6 +29,16 @@ Folders
 -------
 
   customization    =  All stuff which should be copied over
+
+  customization/www_librarybox  ==> Replaces the normal www folder of piratebox
+  					Contains internet detection
+					Shoutbox Scripts
+					(...) see below
+  customization/www_content     ==> is moved to opt/piratebox/share/Content
+  					Located on USB Stick
+					Contains all the presentational stuff
+					Contains presentation Templates for Statistic-Views
+
   piratebox_origin =  git subtree of PirateBoxScripts_Webserver branch "librarybox_dev"  (see git subtree"
                       Normally you would choose some stable release, but because of LibraryBox is leapfrogging PirateBox I need to base on special branch to able to push changes back and other way around. This can be later changed to "stable" branch
   tmp_img	   =  Customization for images and mount points
@@ -41,5 +51,41 @@ Changes during build
 * Copy a template for the librarybox.us/  stuff (internet detection and so on)
 * Copy a template for the content-folder librarybox.us/content 
 * Changing SSD in hostapd
+* Change hostname in piratebox.conf
+* Enable custom directory-listing file
+* Enable PHP in lighttpd with FastCGI
 
 
+New Features in www folder
+--------------------------
+
+dir-generator.php	=> 	KittyKat dir Listing with customization for counting downloads
+				Download-Statistics can be turned off here
+
+  Download-Statistics
+  -------------------
+    dl_statistics.conf.php	=>	Configuration file for download Statistics
+    dl_statistics.func.php	=>	Function pool for getting acces to dl-stats
+    dl_statistics_counter.php	=>	Called by dir-generator.php if somebody downloads something
+    					Redirects after counting to direct file-url
+    dl_statistics_display.php	=>	Simple view into statistics (shows deleted files too)
+    						http://librarybox.us/dl_statistics_display.php
+
+    Located in content: dl_statistics.html.php
+    				=>	Templates for display
+
+    Creates a SQLite file in /opt/piratebox/share called dl_statistics.sqlite
+
+  Visitor-Counter
+  ---------------
+    vc.conf.php			=>	Configuration file for Visitor counter
+    vc.func.php			=>	Function Pool for visitor counter
+    vc_counter.php		=>	Displays a transparent 1x1 gif and counts visitor
+    vc_display.php		=>	Simple view into statistics
+    						http://librarybox.us/vc_display.php
+
+    Located in content: vc_statistics.html.php
+    				=>	Templates for display
+
+
+    Creates a SQLite file in /opt/piratebox/share called /opt/piratebox/share/vc_statistics.sqlite
