@@ -29,6 +29,7 @@ SCHEMA_ANON_CONF=$FTP_CONF_FOLDER/anon_access.conf.schema
 . $PIRATEBOX_CONF  #This includes the hook-file too
 # Used Vars
 #   FTP_ENABLED
+#   PROFTPD_PID  
 #   PROFTPD_CONFIG_FILE   < - OUPUT_PROFTPD_CONFIG for 
 #   SHARE_FOLDER          < - ??
 #   LIGHTTPD_USER
@@ -110,11 +111,6 @@ generate() {
 	local l_allow_anon = ""
 	local l_allow_sync = ""
 
-	if [ "$ADMIN_ACCESS" = "yes" ] ; then
-		 l_allow_admin = "on"
-	else
-		 l_allow_admin = "off"
-	fi
 
 	#Save the scoreboard in memory on OpenWRT
 	if [ $IS_OPENWRT ] ; then
@@ -123,13 +119,9 @@ generate() {
 		l_scoreboard = $PIRATEBOX_FOLDER"/tmp/proftpd.scoreboard"
 	fi
 
-	if [ "$ENABLE_SYNC" == "yes" ] ; then
-		 l_allow_sync="Include $OUTPUT_SYNC_CONF \n"
-	fi
-
-	if [ "$ENABLE_ANON" == "yes" ] ; then
-		 l_allow_anon="Include $OUTPUT_ANON_CONF \n"
-	fi
+	l_allow_sync="Include $OUTPUT_SYNC_CONF \n"
+	l_allow_anon="Include $OUTPUT_ANON_CONF \n"
+ 	l_allow_admin = "AllowUser  $BOX_USER"
 
 	sed  "s|#####HOSTNAME#####|$HOST|"  $SCHEMA_DEAMON_CONF > $OUTPUT_DAEMON_CONF
 
@@ -139,21 +131,18 @@ generate() {
 	sed  "s|#####SCOREBOARD_PATH#####|$l_scoreboard|" -i $OUTPUT_DAEMON_CONF
 	sed  "s|#####INCLUDE_ANON_ACCESS#####|$l_allow_anon|" -i $OUTPUT_DAEMON_CONF
 	sed  "s|#####INCLUDE_SYNC_ACCESS#####|$l_allow_sync|" -i $OUTPUT_DAEMON_CONF
+	sed  "s|#####PID#####|$PROFTPD_PID|" -i $OUTPUT_DAEMON_CONF
 
 
-	if [ "$ENABLE_SYNC" == "yes" ] ; then
-		sed  "s|#####HOSTNAME#####|$HOST|" $SCHEMA_SYNC_CONF  > $OUTPUT_SYNC_CONF
-		sed  "s|#####SYNC-PORT#####|$SYNC_PORT|" -i $OUTPUT_SYNC_CONF
-		sed  "s|#####SYNC-FOLDER#####|$SYNC_FOLDER|" -i $OUTPUT_SYNC_CONF
-	else
-		echo "" > $OUTPUT_SYNC_CONF
-	fi
+	#SYNC Stuff
+	sed  "s|#####HOSTNAME#####|$HOST|" $SCHEMA_SYNC_CONF  > $OUTPUT_SYNC_CONF
+	sed  "s|#####SYNC-PORT#####|$SYNC_PORT|" -i $OUTPUT_SYNC_CONF
+	sed  "s|#####SYNC-FOLDER#####|$SYNC_FOLDER|" -i $OUTPUT_SYNC_CONF
 
-	if [ "$ENABLE_ANON" == "yes" ] ; then
-		sed "s|#####ANON-FOLDER#####|$ANON_FOLDER|"  $SCHEMA_ANON_CONF > $OUTPUT_ANON_CONF
-	else
-		echo "" > $OUTPUT_ANON_CONF
-	fi
+	#ANON Stuff
+	sed "s|#####ANON-FOLDER#####|$ANON_FOLDER|"  $SCHEMA_ANON_CONF > $OUTPUT_ANON_CONF
+
+
 	echo "..done"
 }
 
@@ -168,7 +157,7 @@ _toggle_() {
 	#on default always no
 	local new="no"
 
-	if [ "$$func" == "no" ] ; then
+	if [ "$$func" = "no" ] ; then
 		new="yes"
 	fi
 
@@ -219,7 +208,7 @@ mainmenu() {
 }
 
 
-if [ "$1" == "generate" ] ; then
+if [ "$1" = "generate" ] ; then
 	generate
 else
 	mainmenu

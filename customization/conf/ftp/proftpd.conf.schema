@@ -3,6 +3,8 @@ ServerType                      standalone
 DefaultServer                   on
 RequireValidShell               off
 Port                            21
+PidFile 			#####PID#####
+
 
 UseIPv6                         #####IPV6#####
 Umask                           022
@@ -14,10 +16,19 @@ Group                           nogroup
 AuthUserFile                    /etc/passwd
 
 
-<Limit LOGIN>
-  DenyAll
-  #####ADMIN_ACCESS#####
-</Limit>
+<IfDefine AdminAccess>
+	<Limit LOGIN>
+	 DenyAll
+	 #####ADMIN_ACCESS#####
+	</Limit>
+</IfDefine>
+
+<IfDefine !AdminAccess>
+        <Limit LOGIN>
+	       DenyAll
+	</Limit>
+</IfDefine
+
 
 
 #Disable user identification and logging
@@ -47,7 +58,10 @@ MaxClientsPerHost 	2
 #Limit all actions (up&download per file) after 10MB to 2MB/s
 TransferRate 2048:10240
 
-
+<IfDefine AnonAccess>
 #####INCLUDE_ANON_ACCESS#####
+</IfDefine>
 
+<IfDefine SyncAccess>
 #####INCLUDE_SYNC_ACCESS#####
+</IfDefine>
