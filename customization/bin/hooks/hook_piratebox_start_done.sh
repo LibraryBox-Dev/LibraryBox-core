@@ -26,16 +26,17 @@ if [ "$FTP_ENABLED" = "yes" ] ; then
 #######  AnonAccess	<-> $ENABLE_ANON
 #######  SyncAccess	<-> $ENABLE_SYNC
 
-	local proftpd_opt_admin = ""
-	local proftpd_opt_anon  = ""
-	local proftpd_opt_sync  = ""
+	local proftpd_opt_admin=""
+	local proftpd_opt_anon=""
+	local proftpd_opt_sync=""
 
-	[ "$ADMIN_ACCESS" = "yes" ] proftpd_opt_admin = "-D AdminAccess"
-	[ "$ENABLE_ANON"  = "yes" ] proftpd_opt_anon  = "-D AnonAccess"
-	[ "$ENABLE_SYNC"  = "yes" ] proftpd_opt_sync  = "-D SyncAccess"
+	[ "$ADMIN_ACCESS" = "yes" ] && proftpd_opt_admin="-D AdminAccess"
+	[ "$ENABLE_ANON"  = "yes" ] && proftpd_opt_anon="-D AnonAccess"
+	[ "$ENABLE_SYNC"  = "yes" ] && proftpd_opt_sync="-D SyncAccess"
 
 	#Proftpd writes the pidfile for its own
 	proftpd  -c $PROFTPD_CONFIG_FILE $proftpd_opt_admin $proftpd_opt_admin $proftpd_opt_sync 
+	echo $?
 
 fi
 

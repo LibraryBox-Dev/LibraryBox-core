@@ -110,11 +110,15 @@ generate() {
 	local l_scoreboard=""
 	local l_allow_anon=""
 	local l_allow_sync=""
+	local l_ipv6="no"
+
+	[ "$IPV6_ENABLE" = "yes" ] &&  l_ipv6="on"
 
 
 	#Save the scoreboard in memory on OpenWRT
+
 	if [ $IS_OPENWRT ] ; then
-		l_scoreboard="/tmp/proftpd.scoreboard"
+		l_scoreboard="/tmp/log/proftpd.scoreboard"
 	else
 		l_scoreboard=$PIRATEBOX_FOLDER"/tmp/proftpd.scoreboard"
 	fi

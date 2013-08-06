@@ -17,7 +17,9 @@ fi
  echo "------------------ Running $0 ------------------"
 
 
-if [ -n "$PROFTPD_PID" ]; then
+if [ -e  "$PROFTPD_PID" ]; then
 	echo "Stopping proftpd..."
 	kill $(cat $PROFTPD_PID)
+	echo $?
+	rm $PROFTPD_PID
 fi	
