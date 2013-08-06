@@ -1,0 +1,53 @@
+ServerName                      "#####HOSTNAME#####"
+ServerType                      standalone
+DefaultServer                   on
+RequireValidShell               off
+Port                            21
+
+UseIPv6                         #####IPV6#####
+Umask                           022
+
+# Here maybe exchange with config & what the lighttpd user is
+User                            nobody 
+Group                           nogroup 
+
+AuthUserFile                    /etc/passwd
+
+
+<Limit LOGIN>
+  DenyAll
+  #####ADMIN_ACCESS#####
+</Limit>
+
+
+#Disable user identification and logging
+UseReverseDNS off
+IdentLookups off
+#
+WtmpLog off
+# Discard the normal logging
+SystemLog none
+# Disable xferlog(5) logging
+TransferLog none
+
+#We need this file, to get a working user limit.  (openwrt /tmp ; normal piratebox/tmp )
+### /tmp/proftpd.scoreboard
+ScoreboardPath                        #####SCOREBOARD_PATH#####
+
+#--- Performance Settings
+MaxInstances		6
+MaxClients		5   "Sorry, max %m users -- try again later"
+MaxClientsPerHost 	2
+
+# Refering to http://www.proftpd.org/docs/howto/BCP.html should reduce /IO alot - we should consider disabling overwrite
+# AllowOverride off
+#   And this if a partial uploaded file wasn't finished uploaded
+#DeleteAbortedStores           on  
+
+#Limit all actions (up&download per file) after 10MB to 2MB/s
+TransferRate 2048:10240
+
+
+#####INCLUDE_ANON_ACCESS#####
+
+#####INCLUDE_SYNC_ACCESS#####

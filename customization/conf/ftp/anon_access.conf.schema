@@ -1,0 +1,19 @@
+
+DefaultRoot  #####ANON-FOLDER#####	ftp
+
+<Anonymous #####ANON-FOLDER#####   >
+	User    ftp
+	Group   ftp
+
+	UserAlias		anonymous ftp 
+	MaxClients		2   "Sorry, max %m users -- try again later"
+	MaxClientsPerHost 	1   
+
+	<Limit LOGIN>
+	      AllowAll
+	</Limit>
+ 	# Limit WRITE everywhere in the anonymous chroot
+  	<Limit WRITE>
+	    DenyAll
+	</Limit>
+</Anonymous>

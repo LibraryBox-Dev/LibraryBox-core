@@ -1,0 +1,23 @@
+<VirtualHost  #####HOSTNAME##### >
+	MaxClients 1
+	MaxClientsPerUser 1
+	Port   #####SYNC-PORT#####
+	DefaultRoot  #####SYNC-FOLDER#####
+	<Anonymous #####SYNC-FOLDER#####   >
+		User   sync
+		Group   ftp
+		AnonRequirePassword                on
+
+		UserAlias     sync 
+		MaxClients 1  "Sorry, max %m sync-clients -- try again later"
+
+		<Limit LOGIN>
+      			AllowAll
+		</Limit>
+
+		# Limit WRITE everywhere in the anonymous chroot
+		<Limit WRITE>
+		    DenyAll
+		</Limit>
+	</Anonymous>
+</VirtualHost>
