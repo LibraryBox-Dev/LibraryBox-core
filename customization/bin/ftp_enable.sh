@@ -65,9 +65,9 @@ print_current_config() {
 	print_line
 	echo "   FTP enabled             : $FTP_ENABLED "
 	echo "   Admin access            : $ADMIN_ACCESS "
-	echo "	 Anonymous login possible: $ENABLE_ANON "
 	echo "   Special SYNC access     : $ENABLE_SYNC "
 	echo "   SYNC Port               : $SYNC_PORT "
+	echo "   Anonymous login possible: $ENABLE_ANON "
 	echo " "
 	print_line
 }
@@ -104,30 +104,30 @@ print_help_admin(){
 
 # Generates all config files based upon the configuration
 generate() {
-	echo "Generating FTP Configuration"
+	echo -n "Generating FTP Configuration"
 
-	local l_allow_admin = ""
-	local l_scoreboard = ""
-	local l_allow_anon = ""
-	local l_allow_sync = ""
+	local l_allow_admin=""
+	local l_scoreboard=""
+	local l_allow_anon=""
+	local l_allow_sync=""
 
 
 	#Save the scoreboard in memory on OpenWRT
 	if [ $IS_OPENWRT ] ; then
-		l_scoreboard = "/tmp/proftpd.scoreboard"
+		l_scoreboard="/tmp/proftpd.scoreboard"
 	else
-		l_scoreboard = $PIRATEBOX_FOLDER"/tmp/proftpd.scoreboard"
+		l_scoreboard=$PIRATEBOX_FOLDER"/tmp/proftpd.scoreboard"
 	fi
 
 	l_allow_sync="Include $OUTPUT_SYNC_CONF \n"
 	l_allow_anon="Include $OUTPUT_ANON_CONF \n"
- 	l_allow_admin = "AllowUser  $BOX_USER"
+ 	l_allow_admin="AllowUser  $BOX_USER"
 
 	sed  "s|#####HOSTNAME#####|$HOST|"  $SCHEMA_DEAMON_CONF > $OUTPUT_DAEMON_CONF
 
 	sed  "s|#####IPV6#####|$l_ipv6|" 	-i  $OUTPUT_DAEMON_CONF
-	sed  "s|#####BOX_USER#####|$BOX_USER" 	-i $OUTPUT_DAEMON_CONF
-	sed  "s|#####ADMIN_ACCESS#####|$l_allow_admin" -i $OUTPUT_DAEMON_CONF
+	sed  "s|#####BOX_USER#####|$BOX_USER|" 	-i $OUTPUT_DAEMON_CONF
+	sed  "s|#####ADMIN_ACCESS#####|$l_allow_admin|" -i $OUTPUT_DAEMON_CONF
 	sed  "s|#####SCOREBOARD_PATH#####|$l_scoreboard|" -i $OUTPUT_DAEMON_CONF
 	sed  "s|#####INCLUDE_ANON_ACCESS#####|$l_allow_anon|" -i $OUTPUT_DAEMON_CONF
 	sed  "s|#####INCLUDE_SYNC_ACCESS#####|$l_allow_sync|" -i $OUTPUT_DAEMON_CONF
@@ -152,24 +152,26 @@ _exit_menu_() {
 }
 
 _toggle_() {
-	local func = $1
+	local func=$1
 
 	#on default always no
 	local new="no"
+	local func_content=$(eval "echo \$${func}")
 
-	if [ "$$func" = "no" ] ; then
+	if [ "$func_content" = "no" ] ; then
 		new="yes"
 	fi
 
-	local config_file = ""
+	local config_file=""
 
 	case $func in
 		("FTP_ENABLED") 	config_file=$PIRATEBOX_HOOK_CONF ;;
 		(*)			config_file=$BASIC_FTP_CONFIG ;;
 	esac
 
-	sed "s|$func=\"$$func\"|$func=\"$new\|" -i $config_file
-
+	sed "s|$func=\"$func_content\"|$func=\"$new\"|" -i $config_file  
+	
+	. $config_file
 
 }
 
