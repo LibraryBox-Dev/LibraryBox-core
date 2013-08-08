@@ -24,13 +24,16 @@ MOD_VERSION_TAG=$(BUILD_SCRIPT_LOCATION)/version_tag_mod
 MOD_IMAGE=$(IMAGE_BUILD)/OpenWRT_image
 MOD_IMAGE_TGZ=$(NAME)_2.0_img.tar.gz
 
+
+#------------
+PACKAGE_FOLDER=$(NAME)
 MOD_PACKAGE_TGZ=$(NAME)_$(VERSION).tar.gz
 
 #.DEFAULT_GOAL:
 #.PHONY: 
 
 #--------------------------------------------
-$(MOD_FOLDER) $(BUILD_FOLDER) $(MOUNT_POINT) $(IMAGE_BUILD_SRC) $(IMAGE_BUILD_TGT): 
+$(MOD_FOLDER) $(BUILD_FOLDER) $(MOUNT_POINT) $(IMAGE_BUILD_SRC) $(IMAGE_BUILD_TGT) $(PACKAGE_FOLDER): 
 	mkdir -p $@
 
 
@@ -102,6 +105,16 @@ $(MOD_IMAGE_TGZ): $(IMAGE_BUILD_TGT) $(MOD_IMAGE) $(MOD_VERSION_TAG)
 image: clean_image building prepare_image_config apply_custom_config $(MOD_IMAGE_TGZ) 
 
 #---------------------------------------------
+# Package creation
+
+$(MOD_PACKAGE_TGZ): prepare_build building $(PACKAGE_FOLDER)
+	cp -r  $(BUILD_FOLDER)/* 	$(PACKAGE_FOLDER)
+	# Here for example tiny howtos or additional scripts
+	tar czf $@  $(PACKAGE_FOLDER)
+	
+
+
+#---------------------------------------------
 # Clean stuff
 
 clean_image:
@@ -112,13 +125,14 @@ cleanall: clean
 	- rm -v $(MOD_PACKAGE_TGZ)
 
 clean: 
+	- rm -rvf $(PACKAGE_FOLDER)
 	- rm -rvf $(BUILD_FOLDER)
 	- rm -rvf $(IMAGE_BUILD)
 
 #-------------------------------------------
 # Bundle targets
 
-all: image $(MOD_PACKAGE_TGZ)
+all: image package
 
 #comp....
 shortimage: image
