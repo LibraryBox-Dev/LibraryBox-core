@@ -4,11 +4,11 @@
 	Port   #####SYNC-PORT#####
 	DefaultRoot  #####SYNC-FOLDER#####
 	<Anonymous #####SYNC-FOLDER#####   >
-		User   sync
+		User    ftp
 		Group   ftp
 		AnonRequirePassword                on
 
-		UserAlias     sync 
+		UserAlias     sync 	#####SYNC_SYSTEM_USER#####
 		MaxClients 1  "Sorry, max %m sync-clients -- try again later"
 
 		<Limit LOGIN>

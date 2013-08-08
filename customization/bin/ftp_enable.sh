@@ -97,7 +97,7 @@ print_help_sync(){
 
 print_help_admin(){
 	print_line
-	echo " Admin access enables a full-control access to your Box for uploadind, downloading and deleting files"
+	echo " Admin access enables a full-control access to your Box' USB Stick for uploadind, downloading and deleting files"
 	echo ""
 	print_line
 }
@@ -136,12 +136,14 @@ generate() {
 	sed  "s|#####INCLUDE_ANON_ACCESS#####|$l_allow_anon|" -i $OUTPUT_DAEMON_CONF
 	sed  "s|#####INCLUDE_SYNC_ACCESS#####|$l_allow_sync|" -i $OUTPUT_DAEMON_CONF
 	sed  "s|#####PID#####|$PROFTPD_PID|" -i $OUTPUT_DAEMON_CONF
-
+	sed  "s|#####ADMIN_FOLDER#####|$ADMIN_FOLDER|" -i  $OUTPUT_DAEMON_CONF
+	sed  "s|#####BOX_SYSTEM_USER#####|$BOX_SYSTEM_USER|" -i $OUTPUT_DAEMON_CONF
 
 	#SYNC Stuff
 	sed  "s|#####HOSTNAME#####|$HOST|" $SCHEMA_SYNC_CONF  > $OUTPUT_SYNC_CONF
 	sed  "s|#####SYNC-PORT#####|$SYNC_PORT|" -i $OUTPUT_SYNC_CONF
 	sed  "s|#####SYNC-FOLDER#####|$SYNC_FOLDER|" -i $OUTPUT_SYNC_CONF
+	sed  "s|#####SYNC_SYSTEM_USER#####|$SYNC_SYSTEM_USER|" -i $OUTPUT_SYNC_CONF
 
 	#ANON Stuff
 	sed "s|#####ANON-FOLDER#####|$ANON_FOLDER|"  $SCHEMA_ANON_CONF > $OUTPUT_ANON_CONF
@@ -189,8 +191,8 @@ mainmenu() {
 		echo "  2 -  Enable / Disable Admin access "
 		echo "  3 -  Enable / Disable sync-setup"
 		echo "  4 -  Enable / Disable Anonymous access "
-#----		echo "  5 -  Set password for Sync-Access "
-#----		echo "  6 -  Set password for admin-access "
+		echo "  5 -  Set password for Sync-Access "
+		echo "  6 -  Set password for admin-access "
 		echo " "
 		echo " With choosing hn like h1 , you get some help about the topic"
 		echo " Every other button is a clean exit. "
@@ -202,6 +204,8 @@ mainmenu() {
 			("2")   _toggle_ "ADMIN_ACCESS" ;;
 			("3")   _toggle_ "ENABLE_SYNC"  ;;
 			("4")   _toggle_ "ENABLE_ANON"  ;;
+			("5")	passwd $SYNC_SYSTEM_USER ;;
+			("6")   passwd $BOX_SYSTEM_USER ;;
 			("h1")  print_help_ftp ;;
 			("h2")  print_help_admin ;;
 			("h3")  print_help_sync ;;

@@ -19,8 +19,8 @@ DefaultChdir                     /mnt/
 
 <IfDefine AdminAccess>
 	AllowOverwrite  on
-        RootLogin on
-	UserAlias boxadmin root
+	UserAlias #####BOX_USER#####  #####BOX_SYSTEM_USER#####
+	DefaultRoot  #####ADMIN-FOLDER#####      #####BOX_SYSTEM_USER#####
 	<Limit LOGIN>
 	 DenyAll
 	 #####ADMIN_ACCESS#####
@@ -62,10 +62,10 @@ MaxClientsPerHost 	2
 #Limit all actions (up&download per file) after 10MB to 2MB/s
 #    kbit/s : transferey _Bytes_
 TransferRate  APPE,RETR,STOR,STOU  2048:10485760 user ftp
-TransferRate  APPE,RETR,STOR,STOU  2048:10485760 user nogroup
+TransferRate  APPE,RETR,STOR,STOU  2048:10485760 user nobody
 
-# Upload-Throttle for flow USB Stick for >oot user
-#TransferRate  STOR 250:300:10485760 user root
+# Upload-Throttle for flow USB Stick for > admin user
+#TransferRate  STOR 250:300:10485760 user #####BOX_SYSTEM_USER#####
 
 
 <IfDefine AnonAccess>
