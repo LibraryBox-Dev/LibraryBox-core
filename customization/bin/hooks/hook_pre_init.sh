@@ -34,4 +34,5 @@ mv     $PIRATEBOX_FOLDER/www_content/*   $WWW_CONTENT
 # Link to the USB-Stick
 ln -s $WWW_CONTENT  $WWW_FOLDER/content
 
+$PIRATEBOX_FOLDER/bin/ftp_enable.sh generate
 
