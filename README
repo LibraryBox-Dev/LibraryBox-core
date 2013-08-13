@@ -39,6 +39,9 @@ Folders
 					Contains all the presentational stuff
 					Contains presentation Templates for Statistic-Views
 
+  customization/www_content/dir-images ==> Icons displayed on directory listing; file-Types
+  						icons by famfamfam
+
   piratebox_origin =  git subtree of PirateBoxScripts_Webserver branch "librarybox_dev"  (see git subtree"
                       Normally you would choose some stable release, but because of LibraryBox is leapfrogging PirateBox I need to base on special branch to able to push changes back and other way around. This can be later changed to "stable" branch
   tmp_img	   =  Customization for images and mount points

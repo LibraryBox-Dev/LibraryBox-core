@@ -59,11 +59,12 @@ $dl_stat_func_file = "dl_statistics.func.php";
 $folder_statistics = array();
 
 // Various file type associations
-$movie_types = array('mpg','mpeg','avi','asf','mp3','wav','mp4','wma','aif','aiff','ram', 'midi','mid','asf','au','flac');
-$image_types = array('jpg','jpeg','gif','png','tif','tiff','bmp','ico');
+$movie_types = array('mpg','mpeg','avi','asf','mp4','aif','aiff','ram', 'asf','au');
+$image_types = array('jpg','jpeg','gif','png','tif','tiff','bmp','ico','svg');
 $archive_types = array('zip','cab','7z','gz','tar.bz2','tar.gz','tar','rar',);
-$document_types = array('txt','text','doc','docx','abw','odt','pdf','rtf','tex','texinfo',);
+$document_types = array('txt','text','doc','docx','abw','odt','pdf','rtf','tex','texinfo','ppt','pptx','pps','ppsx','xls','xlsx');
 $font_types = array('ttf','otf','abf','afm','bdf','bmf','fnt','fon','mgf','pcf','ttc','tfm','snf','sfd');
+$audio_types = array('mp3','ogg','aac','wma','wav','midi','mid','flac');
 
 
 // Get the path (cut out the query string from the request_uri)
@@ -130,7 +131,7 @@ function format_bytes($size, $precision=0) {
 // This function returns the mime type of $file.
 //
 function get_file_type($file) {
-	global $image_types, $movie_types, $archive_types, $document_types, $font_types;
+	global $image_types, $movie_types, $archive_types, $document_types, $font_types , $audio_types;
 
 	$pos = strrpos($file, ".");
 	if ($pos === false) {
@@ -153,12 +154,45 @@ function get_file_type($file) {
 	} elseif(in_array($ext, $font_types)) {
 		$type = "Type Font";
 
+	} elseif(in_array($ext, $audio_types)) {
+		$type = "Audio File";
+
 	} else {
 		$type = "File";
 	}
 
 	return(strtoupper($ext) . " " . $type);
 }
+
+# returns a small ID which can be used on CSS for pictures
+function get_file_type_id($file) {
+	global $image_types, $movie_types, $archive_types, $document_types, $font_types, $audio_types;
+
+	$pos = strrpos($file, ".");
+	if ($pos === false) {
+                return "file";
+        }
+
+	$ext = rtrim(substr($file, $pos+1), "~");
+        if(in_array($ext, $image_types)) {
+	        $type = "img";
+        } elseif(in_array($ext, $movie_types)) {
+                $type = "video";
+        } elseif(in_array($ext, $audio_types)) {
+                $type = "audio";
+        } elseif(in_array($ext, $archive_types)) {
+                $type = "archive";
+	} elseif(in_array($ext, $document_types)) {
+	        $type = "doc";
+        } elseif(in_array($ext, $font_types)) {
+	         $type = "font";
+        } else {
+                 $type = "file";
+        }
+
+        return($type);
+}
+
 
 function get_download_count ($filename  ) {
 	global $path;
@@ -203,6 +237,17 @@ print '<!DOCTYPE html>
 		h2 {margin-bottom: 12px;}
 		table {margin-left: 12px; padding:0px; border-collapse:collapse;}
 		th, td { font-family: "Courier New", Courier, monospace; font-size: 10pt; text-align: left;}
+		td.n a { background: url( /content/dir-images/file.png) no-repeat 10px 50%;
+			 padding-left: 35px;
+			}
+		td.n a#img   { background-image: url(/content/dir-images/image.png); }
+		td.n a#video { background-image: url(/content/dir-images/video.png); }
+		td.n a#audio { background-image: url(/content/dir-images/sound.png); }
+		td.n a#archive { background-image: url(/content/dir-images/zip.png); }
+		td.n a#doc { background-image: url(/content/dir-images/office.png); }
+		td.n a#font { background-image: url(/content/dir-images/file.png); }
+		td.n a#file { background-image: url(/content/dir-images/file.png); }
+		td.n a#folder { background-image: url(/content/dir-images/folder.png); }
 		th { font-weight: bold; padding-right: 14px; padding-bottom: 3px;}
 		td {padding-right: 14px;}
 		td.s, th.s {text-align: right;}
@@ -286,7 +331,8 @@ if($handle = @opendir($path)) {
 				'size'=> filesize($path.'/'.$item),
 				'modtime'=> filemtime($path.'/'.$item),
 				'file_type' => get_file_type($path.'/'.$item),
-				'counter'   => get_download_count ($item) ## addslashes needed??
+				'counter'   => get_download_count ($item), ## addslashes needed??
+				'img_id'    => get_file_type_id($path.'/'.$item)
 			);
 		}
 	}
@@ -347,7 +393,7 @@ print "</tr></thead><tbody>";
 
 // Parent directory link
 if($path != "./") {
-	print "<tr><td class='n'><a href='..'>Parent Directory</a>/</td>";
+	print "<tr><td class='n'><a id='folder' href='..'>Parent Directory</a>/</td>";
 	print "<td class='m'> </td>";
 	print "<td class='s'> </td>";
 	print "<td class='t'>Directory</td></tr>";
@@ -357,7 +403,7 @@ if($path != "./") {
 
 // Print folder information
 foreach($folderlist as $folder) {
-	print "<tr><td class='n'><a href='" . addslashes($folder['name']). "'>" .htmlentities($folder['name']). "</a>/</td>";
+	print "<tr><td class='n'><a id='folder' href='" . addslashes($folder['name']). "'>" .htmlentities($folder['name']). "</a>/</td>";
 	print "<td class='m'>" . date('Y-M-d H:i:s', $folder['modtime']) . "</td>";
 	print "<td class='s'>" . (($calculate_folder_size)?format_bytes($folder['size'], 2):'--') . " </td>";
 	print "<td class='t'>" . $folder['file_type']                    . "</td></tr>";
@@ -381,7 +427,7 @@ foreach($filelist as $file) {
 		$file_link_prefix="/dl_statistics_counter.php?DL_URL=/$path";
 	}
 
-	print "<tr><td class='n'><a href='$file_link_prefix" . addslashes($file['name']). "'>" .htmlentities($file['name']). "</a></td>";
+	print "<tr><td class='n'><a id='".$file['img_id']."' href='$file_link_prefix" . addslashes($file['name']). "'>" .htmlentities($file['name']). "</a></td>";
 	print "<td class='m'>" . date('Y-M-d H:i:s', $file['modtime'])   . "</td>";
 	print "<td class='s'>" . format_bytes($file['size'],2)           . " </td>";
 	print "<td class='t'>" . $file['file_type']                      . "</td>";
