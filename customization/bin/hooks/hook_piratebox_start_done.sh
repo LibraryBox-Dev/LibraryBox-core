@@ -18,6 +18,10 @@ fi
 
 if [ "$FTP_ENABLED" = "yes" ] ; then
 	echo "starting PROFTPD.."
+
+	# Load PirateBox config
+	. $PIRATEBOX_FOLDER/conf/ftp/ftp.conf
+
 	# $PROFTPD_CONFIG_FILE
 	# $PROFTPD_PID  #####PID#####
 

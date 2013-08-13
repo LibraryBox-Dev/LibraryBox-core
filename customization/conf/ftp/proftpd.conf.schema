@@ -15,12 +15,13 @@ Group                           nogroup
 
 AuthUserFile                    /etc/shadow
 
-DefaultChdir                     /mnt/
+# Only changes directory
+#DefaultChdir                     /mnt/
 
 <IfDefine AdminAccess>
 	AllowOverwrite  on
 	UserAlias #####BOX_USER#####  #####BOX_SYSTEM_USER#####
-	DefaultRoot  #####ADMIN-FOLDER#####      #####BOX_SYSTEM_USER#####
+	DefaultRoot  #####ADMIN_FOLDER#####      #####BOX_SYSTEM_GROUP#####
 	<Limit LOGIN>
 	 DenyAll
 	 #####ADMIN_ACCESS#####
@@ -65,7 +66,7 @@ TransferRate  APPE,RETR,STOR,STOU  2048:10485760 user ftp
 TransferRate  APPE,RETR,STOR,STOU  2048:10485760 user nobody
 
 # Upload-Throttle for flow USB Stick for > admin user
-#TransferRate  STOR 250:300:10485760 user #####BOX_SYSTEM_USER#####
+TransferRate  STOR 250:10485760 user #####BOX_SYSTEM_USER#####
 
 
 <IfDefine AnonAccess>

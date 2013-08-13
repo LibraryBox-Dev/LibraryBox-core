@@ -125,7 +125,7 @@ generate() {
 
 	l_allow_sync="Include $OUTPUT_SYNC_CONF \n"
 	l_allow_anon="Include $OUTPUT_ANON_CONF \n"
- 	l_allow_admin="AllowUser  $BOX_USER"
+ 	l_allow_admin="AllowUser  $BOX_SYSTEM_USER"
 
 	sed  "s|#####HOSTNAME#####|$HOST|"  $SCHEMA_DEAMON_CONF > $OUTPUT_DAEMON_CONF
 
@@ -138,6 +138,7 @@ generate() {
 	sed  "s|#####PID#####|$PROFTPD_PID|" -i $OUTPUT_DAEMON_CONF
 	sed  "s|#####ADMIN_FOLDER#####|$ADMIN_FOLDER|" -i  $OUTPUT_DAEMON_CONF
 	sed  "s|#####BOX_SYSTEM_USER#####|$BOX_SYSTEM_USER|" -i $OUTPUT_DAEMON_CONF
+	sed  "s|#####BOX_SYSTEM_GROUP#####|$BOX_SYSTEM_GROUP|" -i $OUTPUT_DAEMON_CONF
 
 	#SYNC Stuff
 	sed  "s|#####HOSTNAME#####|$HOST|" $SCHEMA_SYNC_CONF  > $OUTPUT_SYNC_CONF
@@ -212,7 +213,7 @@ mainmenu() {
 			("h4")  print_help_anon ;;
 			(*)	_exit_menu_ ;;
 		esac
-		option = ""
+		option=""
 	done
 
 }
