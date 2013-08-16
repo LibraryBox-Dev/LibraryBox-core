@@ -22,6 +22,8 @@
 
 json_droopy_enabled=`convert_yn_to_tf $DROOPY_ENABLED`
 
+echo "Generating json configuration file: $JSON_FILE"
+
 echo "" > $JSON_FILE
 echo "{ \"librarybox\" : { \"module\" : { " >> $JSON_FILE
 #------------ upload configuration
@@ -30,10 +32,10 @@ echo -n "   \"upload\" : { \"status\" : $json_droopy_enabled , \"file\" : \"$UPL
 if [ "$DROOPY_ENABLED" == "yes" ] ; then
 	echo -n ", " >> $JSON_FILE
 	echo -n "  \"upload_style\" : \"droopy\" , " >> $JSON_FILE
-	echo -n "  \"droopy_port\" : \"$DROOPY_PORT\", \"droopy_host\" : \"$HOST\"  >> $JSON_FILE
+	echo -n "  \"droopy_port\" : \"$DROOPY_PORT\", \"droopy_host\" : \"$HOST\" "  >> $JSON_FILE
 fi
 echo " } " >> $JSON_FILE
 
 
 #---------------
-echo " }  } " >> $ $JSON_FILE
+echo " }  } " >>  $JSON_FILE

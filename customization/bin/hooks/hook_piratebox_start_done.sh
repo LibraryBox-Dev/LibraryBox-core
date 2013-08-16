@@ -51,3 +51,4 @@ if [ "$SHOUTBOX_ENABLED" == "no" ] ; then
 	echo "done"
 fi
 
+ $PIRATEBOX_FOLDER/bin/json_generation.sh  $1
