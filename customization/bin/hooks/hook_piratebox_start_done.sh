@@ -44,3 +44,10 @@ if [ "$FTP_ENABLED" = "yes" ] ; then
 
 fi
 
+if [ "$SHOUTBOX_ENABLED" == "no" ] ; then
+	# If the shoutbox is disabled, we remove the writable flag
+	echo -n "Making shoutbox readonly..."
+	chmod a-w $CHATFILE
+	echo "done"
+fi
+
