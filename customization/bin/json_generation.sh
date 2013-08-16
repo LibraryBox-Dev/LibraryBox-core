@@ -21,6 +21,7 @@
 # HOST		  => droopy_host 
 
 json_droopy_enabled=`convert_yn_to_tf $DROOPY_ENABLED`
+json_shoutbox_enabled=`convert_yn_to_tf  $SHOUTBOX_ENABLED` 
 
 echo "Generating json configuration file: $JSON_FILE"
 
@@ -36,6 +37,8 @@ if [ "$DROOPY_ENABLED" == "yes" ] ; then
 fi
 echo " } " >> $JSON_FILE
 
+#--------------- Shoutbox config file
+echo ",  \"shoutbox\" : { \"status\" : $json_shoutbox_enabled , \"file\" : \"$CHAT_MODULE_FILE\" } " >> $JSON_FILE
 
 #---------------
 echo " }  } " >>  $JSON_FILE
