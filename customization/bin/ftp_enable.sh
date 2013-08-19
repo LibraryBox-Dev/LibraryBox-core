@@ -198,15 +198,15 @@ mainmenu() {
 		echo " With choosing hn like h1 , you get some help about the topic"
 		echo " Every other button is a clean exit. "
 		echo " "
-		read -p " Coose an option: " option
+		read -p " Choose an option: " option
 
 		case $option in 
 			("1")	_toggle_ "FTP_ENABLED"   ;;
 			("2")   _toggle_ "ADMIN_ACCESS" ;;
 			("3")   _toggle_ "ENABLE_SYNC"  ;;
 			("4")   _toggle_ "ENABLE_ANON"  ;;
-			("5")	passwd $SYNC_SYSTEM_USER ;;
-			("6")   passwd $BOX_SYSTEM_USER ;;
+			("5")	echo "System-User for Sync Access is $SYNC_SYSTEM_USER"  && passwd $SYNC_SYSTEM_USER ;;
+			("6")   echo "System-User for Admin access is $BOX_SYSTEM_USER" &&  passwd $BOX_SYSTEM_USER ;;
 			("h1")  print_help_ftp ;;
 			("h2")  print_help_admin ;;
 			("h3")  print_help_sync ;;
