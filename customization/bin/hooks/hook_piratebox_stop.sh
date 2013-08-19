@@ -22,4 +22,5 @@ if [ -e  "$PROFTPD_PID" ]; then
 	kill $(cat $PROFTPD_PID)
 	echo $?
 	rm $PROFTPD_PID
-fi	
+fi
+

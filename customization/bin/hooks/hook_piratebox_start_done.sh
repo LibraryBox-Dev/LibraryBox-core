@@ -30,9 +30,9 @@ if [ "$FTP_ENABLED" = "yes" ] ; then
 #######  AnonAccess	<-> $ENABLE_ANON
 #######  SyncAccess	<-> $ENABLE_SYNC
 
-	local proftpd_opt_admin=""
-	local proftpd_opt_anon=""
-	local proftpd_opt_sync=""
+	proftpd_opt_admin=""
+	proftpd_opt_anon=""
+	proftpd_opt_sync=""
 
 	[ "$ADMIN_ACCESS" = "yes" ] && proftpd_opt_admin="-D AdminAccess"
 	[ "$ENABLE_ANON"  = "yes" ] && proftpd_opt_anon="-D AnonAccess"
@@ -44,3 +44,11 @@ if [ "$FTP_ENABLED" = "yes" ] ; then
 
 fi
 
+if [ "$SHOUTBOX_ENABLED" == "no" ] ; then
+	# If the shoutbox is disabled, we remove the writable flag
+	echo -n "Making shoutbox readonly..."
+	chmod a-w $CHATFILE
+	echo "done"
+fi
+
+ $PIRATEBOX_FOLDER/bin/json_generation.sh  $1

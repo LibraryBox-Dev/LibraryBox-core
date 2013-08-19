@@ -1,5 +1,5 @@
 NAME = librarybox
-VERSION = 2.0.0_alpha5
+VERSION = 2.0.0_alpha7
 ARCH = all
 
 #PIRATEBOX_IMG_URL = "http://piratebox.aod-rpg.de/piratebox_ws_0.6_img.gz"
@@ -49,7 +49,7 @@ $(SRC_VERSION_TAG):
 # Create version tags
 # copy over stuff
 prepare_build:  $(BUILD_FOLDER) $(SRC_VERSION_TAG) $(BUILD_SCRIPT_LOCATION)
-	cp -vr $(SRC_SCRIPT_LOCATION) $(BUILD_SCRIPT_LOCATION)  
+#	cp -vr $(SRC_SCRIPT_LOCATION) $(BUILD_SCRIPT_LOCATION)  
 
 
 $(BUILD_SCRIPT_LOCATION):
@@ -123,6 +123,7 @@ clean_image:
 cleanall: clean 
 	- rm -v $(MOD_IMAGE_TGZ)
 	- rm -v $(MOD_PACKAGE_TGZ)
+	- cd piratebox_origin && make clean
 
 clean: 
 	- rm -rvf $(PACKAGE_FOLDER)

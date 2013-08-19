@@ -22,6 +22,7 @@ AuthUserFile                    /etc/shadow
 	AllowOverwrite  on
 	UserAlias #####BOX_USER#####  #####BOX_SYSTEM_USER#####
 	DefaultRoot  #####ADMIN_FOLDER#####      #####BOX_SYSTEM_GROUP#####
+	DefaultChdir                     /
 	<Limit LOGIN>
 	 DenyAll
 	 #####ADMIN_ACCESS#####
