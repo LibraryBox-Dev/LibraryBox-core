@@ -41,4 +41,4 @@ echo " } " >> $JSON_FILE
 echo ",  \"shoutbox\" : { \"status\" : $json_shoutbox_enabled , \"file\" : \"$CHAT_MODULE_FILE\" } " >> $JSON_FILE
 
 #---------------
-echo " }  } " >>  $JSON_FILE
+echo " }  } }" >>  $JSON_FILE
