@@ -24,3 +24,10 @@ if [ -e  "$PROFTPD_PID" ]; then
 	rm $PROFTPD_PID
 fi
 
+if [ -e "$FTP_SYNC_CLIENT_PID" ] ; then
+	echo "Killing FTP Sync client..."
+	kill $(cat $FTP_SYNC_CLIENT_PID)
+	echo $?
+	rm $FTP_SYNC_CLIENT_PID
+fi
+

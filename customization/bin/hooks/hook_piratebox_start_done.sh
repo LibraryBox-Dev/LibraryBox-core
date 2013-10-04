@@ -52,3 +52,8 @@ if [ "$SHOUTBOX_ENABLED" == "no" ] ; then
 fi
 
  $PIRATEBOX_FOLDER/bin/json_generation.sh  $1
+
+if [ "$FTP_SYNC_CLIENT_ENABLED" == "yes" ] ; then
+	$PIRATEBOX_FOLDER/bin/ftp_sync_tool.sh
+	echo $! > $FTP_SYNC_CLIENT_PID
+fi

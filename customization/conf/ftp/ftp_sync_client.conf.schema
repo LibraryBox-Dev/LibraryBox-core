@@ -1,0 +1,24 @@
+#### Some LBx custom parameters
+source ###SYNC_LFTP_CONFIG###
+
+##------------------------------------------
+#  The folloing part is the instruction lftp need to run the mirror
+#  -- # surrounded values will be exchanged via generation
+open -p ###SYNC_PORT###  ###SYNC_IP###
+
+user ###SYNC_USER### ###SYNC_PASSWORD###
+
+# --ignore-time don't recongnize time differences. Maybe we can turn this off, when the
+##  local file gets the date from the remote file
+# --delete-first Removes a file instead of overwriting.
+##
+# --continue try to resume an aborted process
+##
+# --delete   Delete local files, if remote vanished
+##
+# --loop   Loop until nothing changes anymore 
+##       Maybe useful, if something happens during think, that it retries
+mirror --loop --ignore-time --delete-first --continue --delete  --verbose ###SYNC_REMOTE_FOLDER### ###SYNC_LOCAL_FOLDER###
+
+##exit
+bye
