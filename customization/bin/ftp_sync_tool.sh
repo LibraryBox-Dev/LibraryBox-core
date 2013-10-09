@@ -53,8 +53,11 @@ if [ "$?" == "0" ] ; then
 	if [  "$SYNC_CLIENT_REPEAT" == "yes" ]; then 
 		until [ "$SYNC_CLIENT_REPEAT" != "yes" ] 
 		do 	
-			[[ $DEBUG ]] && echo "Launching client" 
+			date=$(date +"%b %d %T")
+			echo "$date Launching client" 
 			ftp_lftp_run_lftp  "$SYNC_CLIENT_LFTP_FILE"
+			date=$(date +"%b %d %T") 
+			echo "$date Mirror process waiting $SYNC_CLIENT_REPEAT_TIME for restart"
 			sleep $SYNC_CLIENT_REPEAT_TIME
 		done
 	else
