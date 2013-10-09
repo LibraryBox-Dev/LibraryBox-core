@@ -57,7 +57,6 @@ generate_hosts() {
    cat  $DEFAULT_HOSTS                 >  $HOSTS_CONFIG
    echo "$set_ipv4     $set_hostname " >> $HOSTS_CONFIG
    echo "$set_ipv6     $set_hostname " >> $HOSTS_CONFIG
-
 }
 
 generate_dnsmasq() {
@@ -98,7 +97,6 @@ generate_radvd(){
   mask=$2
   interface=$3
 
-  echo "Generating config for radvd.." 
   echo "#---- generated file ---"               > $RADVD_CONFIG  
   echo "
     interface $interface {
@@ -161,9 +159,6 @@ fi
 
 . $1
 
-. $NODE_CONFIG
-
-
 IPV6="#"
 
 set_pathnames  $PIRATEBOX_FOLDER
@@ -171,15 +166,12 @@ set_pathnames  $PIRATEBOX_FOLDER
 ipv6_call=''
 if [ "$IPV6_ENABLE" = "yes" ] ; then
    ipv6_call=$IPV6_PREFIX
-   IPV6=$IPV6_IP
+   IPV6=$IPV6_PREFIX:$IPV6_IP
    [[ "$IPV6_ADVERT" = "radvd" ]] && generate_radvd $IPV6_PREFIX  $IPV6_MASK $DNSMASQ_INTERFACE
 fi
 generate_hosts $HOST  $IP  $IPV6
 generate_dnsmasq  $NET $IP_SHORT  $START_LEASE  $END_LEASE $LEASE_DURATION $DNSMASQ_INTERFACE
 generate_lighttpd_env $GLOBAL_CHAT "$GLOBAL_DEST" $PIRATEBOX_PYTHONPATH $GEN_CHATFILE $PIRATEBOX_FOLDER  $CHATFILE
 
-if [ "$NODE_CONFIG_ACTIVE" == "yes" ] ; then
-     echo "Appending local node-name hosts entry"
-     echo $NODE_NAME"."$HOST   $NODE_IPV6_IP" >> "$HOSTS_CONFIG	
-fi
+
 
