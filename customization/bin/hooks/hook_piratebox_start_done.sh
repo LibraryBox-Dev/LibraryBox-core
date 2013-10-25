@@ -28,21 +28,32 @@ if [ "$FTP_ENABLED" = "yes" ] ; then
 #  Define Options
 #######  AdminAccess	<-> $ADMIN_ACCESS
 #######  AnonAccess	<-> $ENABLE_ANON
-#######  SyncAccess	<-> $ENABLE_SYNC
 
 	proftpd_opt_admin=""
 	proftpd_opt_anon=""
-	proftpd_opt_sync=""
 
 	[ "$ADMIN_ACCESS" = "yes" ] && proftpd_opt_admin="-D AdminAccess"
 	[ "$ENABLE_ANON"  = "yes" ] && proftpd_opt_anon="-D AnonAccess"
-	[ "$ENABLE_SYNC"  = "yes" ] && proftpd_opt_sync="-D SyncAccess"
 
-	#Proftpd writes the pidfile for its own
-	proftpd  -c $PROFTPD_CONFIG_FILE $proftpd_opt_admin $proftpd_opt_admin $proftpd_opt_sync 
-	echo $?
+	if [ "$ADMIN_ACCESS" = "no" ] &&  [ "$ENABLE_ANON"  = "no" ] ; then
+		echo "skip ftp, because admin and anon disabled"
+	else 
+		#Proftpd writes the pidfile for its own
+		proftpd  -c $PROFTPD_CONFIG_FILE $proftpd_opt_admin $proftpd_opt_admin $proftpd_opt_sync 
+		echo $?
+	fi
 
 fi
+
+
+if [ "$FTP_SYNC_ENABLED" = "yes" ] ; then
+	echo "start PROFTPD with Sync config ..." 
+	#Proftpd writes the pidfile for its own
+	proftpd  -c $PROFTPD_SYNC_CONFIG_FILE 
+	echo $?
+fi
+
+
 
 if [ "$SHOUTBOX_ENABLED" == "no" ] ; then
 	# If the shoutbox is disabled, we remove the writable flag
