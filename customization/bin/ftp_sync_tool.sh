@@ -10,15 +10,26 @@ PIRATEBOX_FOLDER=${PIRATEBOX_FOLDER:=/opt/piratebox}
 
 LFTP_HELPER_FUNCTIONS="$PIRATEBOX_FOLDER/lib/lftp_helper.sh"
 
+# First implementation of dedicated avahi cli hostname lookup
+NODE_NAME_HELPER="$PIRATEBOX_FOLDER/lib/node_name_resolution.sh" 
+
 SYNC_CLIENT_LFTP_FILE="$PIRATEBOX_FOLDER/tmp/lftp_sync.command"
 SYNC_CLIENT_CONFIG_FILE="$PIRATEBOX_FOLDER/conf/ftp/ftp_sync_client.conf"
 
 if [ -e $LFTP_HELPER_FUNCTIONS ] ; then
 	. $LFTP_HELPER_FUNCTIONS
 else
-	echo "Can't load hhelper functions at $ LFTP_HELPER_FUNCTIONS"
+	echo "Can't load helper functions at $LFTP_HELPER_FUNCTIONS"
 	exit 255
 fi
+
+if [ -e $NODE_NAME_HELPER ] ; then
+	. $NODE_NAME_HELPER
+else 
+	echo "Can't load node name helper stuff at $NODE_NAME_HELPER "
+	exit 255
+fi
+
 
 if [ ! -e $SYNC_CLIENT_CONFIG_FILE ] ; then
 	echo "Config file  $SYNC_CLIENT_CONFIG_FILE does not exist"
