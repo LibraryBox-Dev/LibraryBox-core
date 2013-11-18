@@ -1,0 +1,270 @@
+*,
+*:after,
+*:before {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  margin: 0;
+  overflow: auto;
+  padding: 0;
+}
+
+ul {
+  list-style: none;
+}
+
+@font-face {
+  font-family: 'GearedSlab';
+  src: url("../fonts/gearedslab-webfont.eot");
+  src: url("../fonts/gearedslab-webfont.svg");
+  src: url("../fonts/gearedslab-webfont.ttf");
+  src: url("../fonts/gearedslab-webfont.woff");
+}
+
+@font-face {
+  font-family: 'Open Sans';
+  src: url("../fonts/OpenSans-Regular.ttf");
+}
+
+body {
+  color: #474747;
+  font-family: "Open Sans", sans-serif;
+  font-size: 100%;
+  font-weight: 400;
+  line-height: 1.4;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: 'GearedSlab', serif;
+}
+
+#welcome h1 {
+  font-size: 3em;
+}
+
+p {
+  margin: 1em 0 0;
+}
+p:first-child {
+  margin-top: 0;
+}
+
+#header {
+  color: #f8f8f8;
+}
+#header a {
+  color: #f8f8f8;
+  text-decoration: none;
+  font-size: 1em;
+  display: block;
+  padding: .5em;
+}
+#header #top-nav .brand {
+  font-family: 'GearedSlab', serif;
+  padding: .5em 0;
+}
+#header #top-nav ul li a {
+  -webkit-transition: background, 0.5s, ease-in-out;
+  -moz-transition: background, 0.5s, ease-in-out;
+  -o-transition: background, 0.5s, ease-in-out;
+  transition: background, 0.5s, ease-in-out;
+}
+#header #top-nav ul li a:hover {
+  background: #922e0f;
+}
+
+#content #welcome p {
+  font-size: 1.2em;
+  margin: 0;
+  padding: 0;
+}
+#content #shoutbox .post .info {
+  font-size: .75em;
+}
+#content #shoutbox .post .info .name {
+  font-weight: 700;
+}
+
+#footer {
+  color: #f8f8f8;
+}
+
+.card h2 {
+  border-bottom: 1px solid #e0e0e0;
+}
+
+input[type=text],
+textarea {
+  border: 1px solid #e0e0e0;
+  border-radius: 3px;
+  height: 3em;
+  margin: .5em 0;
+  padding: 0 .5em;
+  width: 100%;
+}
+input[type=text]:first-child,
+textarea:first-child {
+  margin-top: 0;
+}
+
+button {
+  background: #c03d14;
+  border: 0;
+  border-radius: 3px;
+  color: #f8f8f8;
+  height: 3em;
+  -webkit-transition: background, 0.5s, ease-in-out;
+  -moz-transition: background, 0.5s, ease-in-out;
+  -o-transition: background, 0.5s, ease-in-out;
+  transition: background, 0.5s, ease-in-out;
+  width: 100%;
+}
+button:hover, button:active {
+  background: #922e0f;
+}
+
+#header {
+  background: #c03d14;
+  border-bottom: 1px solid #922e0f;
+}
+#header #menu-icon {
+  position: absolute;
+  top: .25em;
+  right: .25em;
+}
+#header #menu-icon img {
+  width: 2em;
+}
+#header #top-nav .brand {
+  margin-left: 0;
+}
+#header #top-nav ul {
+  display: none;
+}
+#header #top-nav ul li:last-child {
+  margin: 0 0 .5em 0;
+}
+
+#content #welcome {
+  background: #e0e0e0;
+  margin: 0 0 1em;
+  padding: 2em 0;
+}
+#content #welcome img {
+  margin: 0 .25em 0 0;
+}
+#content #chat #shoutbox {
+  height: 300px;
+}
+#content #chat #shoutbox-options {
+  display: none;
+}
+
+#footer {
+  background: #c03d14;
+  border-top: 1px solid #922e0f;
+  margin: 2em 0 0 0;
+  padding: 0 0 1em;
+}
+#footer .to-top {
+  float: right;
+}
+
+.container {
+  height: 100%;
+  padding: 0 .5em;
+  width: 100%;
+}
+
+@media screen and (min-width: 600px) {
+  #header #menu-icon {
+    display: none;
+  }
+  #header #top-nav .brand {
+    float: left;
+    margin: 0 1em 0 0;
+  }
+  #header #top-nav ul {
+    display: block;
+  }
+  #header #top-nav ul li {
+    float: left;
+  }
+  #header #top-nav ul li:last-child {
+    margin: 0;
+  }
+
+  #content #chat #shoutbox-input input,
+  #content #chat #shoutbox-input button {
+    float: left;
+  }
+  #content #chat #shoutbox-input .nickname {
+    margin: 0 5px 0 0;
+    width: 15%;
+  }
+  #content #chat #shoutbox-input .message {
+    margin: 0 5px 0 0;
+    width: 70%;
+  }
+  #content #chat #shoutbox-input .button {
+    width: 10%;
+  }
+  #content #chat #shoutbox-options {
+    display: none;
+  }
+
+  #footer .to-top {
+    display: none;
+  }
+
+  .fourth {
+    float: left;
+    margin: 0 0 1em;
+    width: 50%;
+  }
+
+  .half {
+    clear: both;
+  }
+
+  .card {
+    padding: 0 2em 0 0;
+  }
+
+  .last {
+    padding: 0;
+  }
+}
+@media screen and (min-width: 801px) {
+  .container {
+    margin: 0 auto;
+    max-width: 1280px;
+    width: 90%;
+  }
+
+  .fourth {
+    float: left;
+    width: 25%;
+  }
+
+  .half {
+    clear: none;
+    float: left;
+    width: 50%;
+  }
+
+  .third {
+    float: left;
+    width: 33.33333%;
+  }
+
+  .two-thirds {
+    float: left;
+    width: 66.66667%;
+  }
+}
