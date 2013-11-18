@@ -20,8 +20,9 @@ BASIC_FTP_CONFIG=$FTP_CONF_FOLDER/ftp.conf
 
 ## Schema-files
 SCHEMA_DEAMON_CONF=$FTP_CONF_FOLDER/proftpd.conf.schema
-SCHEMA_SYNC_CONF=$FTP_CONF_FOLDER/sync_access.conf.schema
+SCHEMA_SYNC_CONF=$FTP_CONF_FOLDER/proftpd_sync.conf.schema
 SCHEMA_ANON_CONF=$FTP_CONF_FOLDER/anon_access.conf.schema
+
 
 ##----------------
 # Load known configuration files
@@ -31,6 +32,9 @@ SCHEMA_ANON_CONF=$FTP_CONF_FOLDER/anon_access.conf.schema
 #   FTP_ENABLED
 #   PROFTPD_PID  
 #   PROFTPD_CONFIG_FILE   < - OUPUT_PROFTPD_CONFIG for 
+#   FTP_SYNC_ENABLED
+#   PROFTPD_SYNC_PID  
+#   PROFTPD_SYNC_CONFIG_FILE   
 #   SHARE_FOLDER          < - ??
 #   LIGHTTPD_USER
 #   LIGHTTPD_GROUP
@@ -41,7 +45,6 @@ SCHEMA_ANON_CONF=$FTP_CONF_FOLDER/anon_access.conf.schema
 #  uses
 #	ADMIN_ACCESS
 #	BOX_USER
-#	ENABLE_SYNC
 #	SYNC_PORT
 #	SYNC_FOLDER
 #	ENABLE_ANON
@@ -51,8 +54,10 @@ SCHEMA_ANON_CONF=$FTP_CONF_FOLDER/anon_access.conf.schema
 ## Final configuration files
 #
 OUTPUT_DAEMON_CONF=$FTP_CONF_FOLDER/proftpd.conf
-OUTPUT_SYNC_CONF=$FTP_CONF_FOLDER/sync_access.conf
+OUTPUT_SYNC_CONF=$FTP_CONF_FOLDER/proftpd_sync.conf
 OUTPUT_ANON_CONF=$FTP_CONF_FOLDER/anon_access.conf
+#
+PERFORMANCE_CONFIG=$FTP_CONF_FOLDER/proftpd_limits.conf
 
 
 print_line() {
@@ -65,7 +70,7 @@ print_current_config() {
 	print_line
 	echo "   FTP enabled             : $FTP_ENABLED "
 	echo "   Admin access            : $ADMIN_ACCESS "
-	echo "   Special SYNC access     : $ENABLE_SYNC "
+	echo "   Special SYNC access     : $FTP_SYNC_ENABLED "
 	echo "   SYNC Port               : $SYNC_PORT "
 	echo "   Anonymous login possible: $ENABLE_ANON "
 	echo " "
@@ -106,14 +111,7 @@ print_help_admin(){
 generate() {
 	echo -n "Generating FTP Configuration"
 
-	local l_allow_admin=""
 	local l_scoreboard=""
-	local l_allow_anon=""
-	local l_allow_sync=""
-	local l_ipv6="no"
-
-	[ "$IPV6_ENABLE" = "yes" ] &&  l_ipv6="on"
-
 
 	#Save the scoreboard in memory on OpenWRT
 
@@ -122,29 +120,13 @@ generate() {
 	else
 		l_scoreboard=$PIRATEBOX_FOLDER"/tmp/proftpd.scoreboard"
 	fi
+	
+	#normal server for admin and anon
+	_generate_proftpd_config_ "$SCHEMA_DEAMON_CONF" "$OUTPUT_DAEMON_CONF" "$PROFTPD_PID" "$l_scoreboard"
 
-	l_allow_sync="Include $OUTPUT_SYNC_CONF \n"
-	l_allow_anon="Include $OUTPUT_ANON_CONF \n"
- 	l_allow_admin="AllowUser  $BOX_SYSTEM_USER"
-
-	sed  "s|#####HOSTNAME#####|$HOST|"  $SCHEMA_DEAMON_CONF > $OUTPUT_DAEMON_CONF
-
-	sed  "s|#####IPV6#####|$l_ipv6|" 	-i  $OUTPUT_DAEMON_CONF
-	sed  "s|#####BOX_USER#####|$BOX_USER|" 	-i $OUTPUT_DAEMON_CONF
-	sed  "s|#####ADMIN_ACCESS#####|$l_allow_admin|" -i $OUTPUT_DAEMON_CONF
-	sed  "s|#####SCOREBOARD_PATH#####|$l_scoreboard|" -i $OUTPUT_DAEMON_CONF
-	sed  "s|#####INCLUDE_ANON_ACCESS#####|$l_allow_anon|" -i $OUTPUT_DAEMON_CONF
-	sed  "s|#####INCLUDE_SYNC_ACCESS#####|$l_allow_sync|" -i $OUTPUT_DAEMON_CONF
-	sed  "s|#####PID#####|$PROFTPD_PID|" -i $OUTPUT_DAEMON_CONF
-	sed  "s|#####ADMIN_FOLDER#####|$ADMIN_FOLDER|" -i  $OUTPUT_DAEMON_CONF
-	sed  "s|#####BOX_SYSTEM_USER#####|$BOX_SYSTEM_USER|" -i $OUTPUT_DAEMON_CONF
-	sed  "s|#####BOX_SYSTEM_GROUP#####|$BOX_SYSTEM_GROUP|" -i $OUTPUT_DAEMON_CONF
-
-	#SYNC Stuff
-	sed  "s|#####HOSTNAME#####|$HOST|" $SCHEMA_SYNC_CONF  > $OUTPUT_SYNC_CONF
-	sed  "s|#####SYNC-PORT#####|$SYNC_PORT|" -i $OUTPUT_SYNC_CONF
-	sed  "s|#####SYNC-FOLDER#####|$SYNC_FOLDER|" -i $OUTPUT_SYNC_CONF
-	sed  "s|#####SYNC_SYSTEM_USER#####|$SYNC_SYSTEM_USER|" -i $OUTPUT_SYNC_CONF
+	#Sync Server with one slot only
+	l_scoreboard=$l_scoreboard".sync"
+	_generate_proftpd_config_ "$SCHEMA_SYNC_CONF" "$OUTPUT_SYNC_CONF" "$PROFTPD_SYNC_PID" "$l_scoreboard"	
 
 	#ANON Stuff
 	sed "s|#####ANON-FOLDER#####|$ANON_FOLDER|"  $SCHEMA_ANON_CONF > $OUTPUT_ANON_CONF
@@ -152,6 +134,45 @@ generate() {
 
 	echo "..done"
 }
+
+# Because we have to run two daemons, because one gets confused about
+#  configuration, we have to generate 2 config files , which looks nearly the same
+_generate_proftpd_config_(){
+	local schema_file=$1 ; shift 
+	local config_file=$1 ; shift
+	local l_pid=$1 ; shift 
+	local l_scoreboard=$1 ; shift
+
+
+	local l_ipv6="no"
+	local l_allow_admin=""
+	local l_allow_anon=""
+	local l_perf=""
+
+ 	l_allow_admin="AllowUser  $BOX_SYSTEM_USER"
+	l_allow_anon="Include $OUTPUT_ANON_CONF \n"
+	[ "$IPV6_ENABLE" = "yes" ] &&  l_ipv6="on"
+	l_perf="Include $PERFORMANCE_CONFIG \n"
+
+	sed  "s|#####HOSTNAME#####|$HOST|"  $schema_file > $config_file
+
+	sed  "s|#####IPV6#####|$l_ipv6|" 	-i  $config_file
+	sed  "s|#####BOX_USER#####|$BOX_USER|" 	-i $config_file
+	sed  "s|#####ADMIN_ACCESS#####|$l_allow_admin|" -i $config_file
+	sed  "s|#####SCOREBOARD_PATH#####|$l_scoreboard|" -i $config_file
+	sed  "s|#####INCLUDE_PERFORMANCE#####|$l_perf|" -i $config_file
+	sed  "s|#####INCLUDE_ANON_ACCESS#####|$l_allow_anon|" -i $config_file
+	sed  "s|#####PID#####|$l_pid|" -i $config_file
+	sed  "s|#####ADMIN_FOLDER#####|$ADMIN_FOLDER|" -i  $config_file
+	sed  "s|#####BOX_SYSTEM_USER#####|$BOX_SYSTEM_USER|" -i $config_file
+	sed  "s|#####BOX_SYSTEM_GROUP#####|$BOX_SYSTEM_GROUP|" -i $config_file
+
+	sed  "s|#####SYNC-PORT#####|$SYNC_PORT|" -i $config_file
+	sed  "s|#####SYNC-FOLDER#####|$SYNC_FOLDER|" -i $config_file
+	sed  "s|#####SYNC_SYSTEM_USER#####|$SYNC_SYSTEM_USER|" -i $config_file
+
+}
+
 
 _exit_menu_() {
 	generate
@@ -173,6 +194,7 @@ _toggle_() {
 
 	case $func in
 		("FTP_ENABLED") 	config_file=$PIRATEBOX_HOOK_CONF ;;
+		("FTP_SYNC_ENABLED") 	config_file=$PIRATEBOX_HOOK_CONF ;;
 		(*)			config_file=$BASIC_FTP_CONFIG ;;
 	esac
 
@@ -203,7 +225,7 @@ mainmenu() {
 		case $option in 
 			("1")	_toggle_ "FTP_ENABLED"   ;;
 			("2")   _toggle_ "ADMIN_ACCESS" ;;
-			("3")   _toggle_ "ENABLE_SYNC"  ;;
+			("3")   _toggle_ "FTP_SYNC_ENABLED"  ;;
 			("4")   _toggle_ "ENABLE_ANON"  ;;
 			("5")	echo "System-User for Sync Access is $SYNC_SYSTEM_USER"  && passwd $SYNC_SYSTEM_USER ;;
 			("6")   echo "System-User for Admin access is $BOX_SYSTEM_USER" &&  passwd $BOX_SYSTEM_USER ;;
