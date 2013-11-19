@@ -2,7 +2,7 @@ ServerName                      "#####HOSTNAME#####"
 ServerType                      standalone
 DefaultServer                   on
 RequireValidShell               off
-Port                            21
+Port                            #####SYNC-PORT#####
 PidFile 			#####PID#####
 
 
@@ -14,28 +14,6 @@ User                            nobody
 Group                           nogroup 
 
 AuthUserFile                    /etc/shadow
-
-# Only changes directory
-#DefaultChdir                     /mnt/
-
-<IfDefine AdminAccess>
-	AllowOverwrite  on
-	UserAlias #####BOX_USER#####  #####BOX_SYSTEM_USER#####
-	DefaultRoot  #####ADMIN_FOLDER#####      #####BOX_SYSTEM_GROUP#####
-	DefaultChdir                     /
-	<Limit LOGIN>
-	 DenyAll
-	 #####ADMIN_ACCESS#####
-	</Limit>
-</IfDefine>
-
-<IfDefine !AdminAccess>
-        <Limit LOGIN>
-	       DenyAll
-	</Limit>
-</IfDefine>
-
-
 
 #Disable user identification and logging
 UseReverseDNS off
@@ -52,13 +30,20 @@ TransferLog none
 ScoreboardFile                        #####SCOREBOARD_PATH#####
 
 #--- Performance Settings
-MaxInstances		6
-MaxClients		5   "Sorry, max %m users -- try again later"
-MaxClientsPerHost 	2
+MaxInstances		2
+MaxClients		1   "Sorry, max %m users -- try again later"
+MaxClientsPerHost 	1
 
 #####INCLUDE_PERFORMANCE#####
 
-<IfDefine AnonAccess>
-#####INCLUDE_ANON_ACCESS#####
-</IfDefine>
+DefaultRoot  #####SYNC-FOLDER#####
+UserAlias     sync 	#####SYNC_SYSTEM_USER#####
 
+	<Limit LOGIN>
+      		AllowAll
+	</Limit>
+
+	# Limit WRITE everywhere in the anonymous chroot
+	<Limit WRITE>
+	    DenyAll
+	</Limit>
