@@ -9,6 +9,8 @@ SRC_FOLDER=piratebox_origin
 SRC_SCRIPT_LOCATION=$(SRC_FOLDER)/piratebox/piratebox
 SRC_VERSION_TAG=$(SRC_SCRIPT_LOCATION)/version
 
+#UI
+UI_SRC_FOLDER=LibraryBox-landingpage
 
 BUILD_FOLDER=build_dir
 BUILD_SCRIPT_LOCATION=$(BUILD_FOLDER)/piratebox
@@ -56,6 +58,9 @@ $(BUILD_SCRIPT_LOCATION):
 	mkdir -p $@
 	cp -vr $(SRC_SCRIPT_LOCATION)/*  $(BUILD_SCRIPT_LOCATION)
 	cp -vr $(MOD_SRC_FOLDER)/*  $(BUILD_SCRIPT_LOCATION)
+	cp -vr $(UI_SRC_FOLDER)/conf/*   $(BUILD_SCRIPT_LOCATION)/conf/
+	cp -vr $(UI_SRC_FOLDER)/python_lib $(BUILD_SCRIPT_LOCATION)
+	cp -vr $(UI_SRC_FOLDER)/www_content $(BUILD_SCRIPT_LOCATION)
 
 # Changing of configuration files only via differences
 define ReconfigureConfig
