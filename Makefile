@@ -48,7 +48,7 @@ $(SRC_VERSION_TAG):
 
 # Create version tags
 # copy over stuff
-prepare_build:  $(BUILD_FOLDER) $(SRC_VERSION_TAG) $(BUILD_SCRIPT_LOCATION)
+prepare_build: cleanbuild  $(BUILD_FOLDER) $(SRC_VERSION_TAG) $(BUILD_SCRIPT_LOCATION)
 #	cp -vr $(SRC_SCRIPT_LOCATION) $(BUILD_SCRIPT_LOCATION)  
 
 
@@ -120,6 +120,9 @@ $(MOD_PACKAGE_TGZ): prepare_build building $(PACKAGE_FOLDER)
 
 clean_image:
 	- rm  $(MOD_IMAGE)
+
+cleanbuild:
+	- rm -rvf  $(BUILD_FOLDER)
 
 cleanall: clean 
 	- rm -v $(MOD_IMAGE_TGZ)
