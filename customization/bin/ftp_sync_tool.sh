@@ -43,7 +43,7 @@ if [ "$SYNC_CLIENT_ENABLED" == "no" ]; then
 	exit 0
 fi
 
-if  [ [ "$SYNC_CLIENT_STATIC_IP" == "empty" ] | [ "$SYNC_CLIENT_HOST" == "empty" ] ] ; then
+if   [ "$SYNC_CLIENT_STATIC_IP" == "empty" ] && [ "$SYNC_CLIENT_HOST" == "empty" ] ; then
 	echo "IP or host  is not set, exiting."
 	exit 255
 fi
@@ -60,13 +60,13 @@ fi
 
 
 
-if [ [ "$SYNC_CLIENT_HOST" != "empty" ] && [ ! -z "$SYNC_CLIENT_HOST"] ] ; then
+if  [ "$SYNC_CLIENT_HOST" != "empty" ] && [ ! -z "$SYNC_CLIENT_HOST" ]  ; then
 ######## Well....
 ### if the host is set, we are going to run avahi-browse in a loop and see
 ###   when we get an resolution from the avahi mdns request
 ###   then we map it into SYNC_CLIENT_STATIC_IP and create the config
 	date=$(date +"%b %d %T")
-	echo $date "Doing avahi hostname lookup"
+	echo $date "Doing avahi hostname lookup for $SYNC_CLIENT_HOST"
 	SYNC_CLIENT_STATIC_IP=""
 	until [ ! -z $SYNC_CLIENT_STATIC_IP ] 
 	do
