@@ -1,0 +1,50 @@
+// Compass
+@import "compass";
+@import "compass/css3";
+
+// Modules
+@import "colors";
+
+// Font weights
+$light: 100;
+$regular: 400;
+$bold: 700;
+
+// Base font
+$base-font-family: 'Open Sans', sans-serif;
+$base-font-size: 100%; 
+$base-font-weight: $regular;
+$base-line-height: 1.4;
+
+// Variables
+$border: 1px solid $gray;
+$radius: 3px;
+
+// Mixins
+@mixin marpad($margin, $padding) {
+	margin: $margin;
+	padding: $padding;
+}
+
+@mixin font($size, $weight, $line, $margin) {
+	font-size: $size;
+	font-weight: $weight;
+	line-height: $line;
+	margin: $margin;
+}
+
+@mixin transparent($color, $alpha) {
+  $rgba: rgba($color, $alpha);
+  $ie-hex-str: ie-hex-str($rgba);
+  background-color: transparent;
+  background-color: $rgba;
+  filter:progid:DXImageTransform.Microsoft.gradient(startColorstr=#{$ie-hex-str},endColorstr=#{$ie-hex-str});
+  zoom: 1;
+}
+
+@mixin transitions($what, $time, $tween) {
+	-webkit-transition: $what $time $tween;
+	-moz-transition: $what $time $tween;
+	-o-transition: $what $time $tween;
+	transition: $what $time $tween;
+}
