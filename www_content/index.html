@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no, width=device-width">
+	<title>LibraryBox 2.0</title>
+	<link rel="icon" href="favicon.ico">
+	<link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+	<header id="header">
+		<div class="container">
+			<div id="menu-icon">
+				<img src="img/menu-icon.png">
+			</div>
+			
+			<nav id="top-nav">
+				<a href="/" class="brand">LibraryBox</a>
+				<ul>
+					<li><a href="/" class="current">Home</a></li>
+					<li><a href="#">Text</a></li>
+					<li><a href="#">Audio</a></li>
+					<li><a href="#">Video</a></li>
+					<li><a href="#">All Content</a></li>
+					<li><a href="#">About</a></li>
+				</ul>
+			</nav>
+		</div>
+	</header>
+
+	<section id="content">
+		<div id="welcome">
+			<div class="container">
+				<h1><img src="img/lbx-logo-small.png">Welcome to LibraryBox</h1>
+				<p>Browse and download any of the available files, or chat with other users below.</p><p>LibraryBox is private, no logs or other identifying information is retained.</p>
+			</div>
+		</div>
+		<div class="container">
+			<div class="one-third">
+				<div id="files-top" class="card">
+					<h2>Top Downloads</h2>
+					<ul>
+						<li>Lorem</li>
+						<li>Lorem</li>
+						<li>Lorem</li>
+						<li>Lorem</li>
+						<li>Lorem</li>
+						<li>Lorem</li>
+						<li>Lorem</li>
+						<li>Lorem</li>
+						<li>Lorem</li>
+						<li>Lorem</li>
+					</ul>
+				</div>
+			</div>
+
+			<div class="two-thirds">
+				<div id="chat" class="card last">
+					<h2>Chat</h2>
+					<div id="shoutbox" class="shoutbox_content"></div>
+					<form method="POST" name="psowrte" id="sb_form" >
+						<div id="shoutbox-input">
+							<input class="nickname" type="text" 	name="name" 	placeholder="Alias" value="Anonymous">
+							<input class="message" 	type="text" 	name="data" 	placeholder="Message...">
+							<button class="button" type="submit" 	name="submit">Send</button>
+						</div>
+						<div id="shoutbox-options">
+							<h3>Text Color:</h3>
+							<label for="def" 	class="bg-black">	<input name="color" type="radio" value="def" 	id="def" checked>Default</label>
+							<label for="blue" 	class="bg-blue">	<input name="color" type="radio" value="blue" 	id="blue"		>Blue</label>
+							<label for="green" 	class="bg-green">	<input name="color" type="radio" value="green" 	id="green"		>Green</label>
+							<label for="orange" class="bg-orange">	<input name="color" type="radio" value="orange" id="orange"		>Orange</label>
+							<label for="red" 	class="bg-red">		<input name="color" type="radio" value="red" 	id="red"		>Red</label>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<footer id="footer">
+		<div class="container">
+			<p class="to-top"><a href="#header">Back to top</a></p>
+			<p>Here is some footer text! Maybe the 'about' section?</p>
+			<small>LibraryBox 2013</small>
+		</div>
+	</footer>
+
+	<script src="js/jquery.min.js"></script>
+	<script src="js/main.js"></script>
+</body>
+</html>
