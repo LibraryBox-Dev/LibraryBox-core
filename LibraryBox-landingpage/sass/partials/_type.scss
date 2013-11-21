@@ -1,0 +1,100 @@
+@font-face {
+	font-family: 'GearedSlab';
+	src: url('../fonts/gearedslab-webfont.eot');
+	src: url('../fonts/gearedslab-webfont.svg');
+	src: url('../fonts/gearedslab-webfont.ttf');
+	src: url('../fonts/gearedslab-webfont.woff');
+}
+
+@font-face {
+	font-family: 'Open Sans';
+	src: url('../fonts/OpenSans-Regular.ttf');
+} 
+
+body {
+	color: $black;
+	font-family: $base-font-family;
+	font-size: $base-font-size;
+	font-weight: $base-font-weight;
+	line-height: $base-line-height;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	font-family: 'GearedSlab', serif;
+}
+
+#welcome {
+	h1 {
+		font-size: 3em;
+	}
+}
+
+p {
+	margin: 1em 0 0;
+	&:first-child {
+		margin-top: 0;
+	}
+}
+
+#header {
+	color: $white;
+	a {
+		color: $white;
+		text-decoration: none;
+		font-size: 1em;
+		display: block;
+		padding: .5em;
+	}
+	#top-nav {
+		.brand {
+			font-family: 'GearedSlab', serif;
+			padding: .5em 0;
+		}
+
+		ul{
+			li {
+				a {
+					@include transition(background, 0.5s, ease-in-out);
+					&:hover {
+						background: darken($orange, 10%);
+					}
+				}
+			}
+		}	
+	}
+}
+
+
+#content {
+	#welcome {
+		p {
+			font-size: 1.2em;
+			margin: 0;
+			padding: 0;
+		}
+	}
+	#shoutbox {
+		.message {
+			font-size: .8em;
+			date {
+				color: darken($gray, 30%);
+			} 
+			name {
+				font-weight: $bold;
+			}
+		}
+	}
+}
+
+#footer {
+	color: $white;
+}
+
+.card h2 {
+	border-bottom: 1px solid $gray;
+}

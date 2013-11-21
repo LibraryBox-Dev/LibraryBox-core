@@ -9,6 +9,8 @@ SRC_FOLDER=piratebox_origin
 SRC_SCRIPT_LOCATION=$(SRC_FOLDER)/piratebox/piratebox
 SRC_VERSION_TAG=$(SRC_SCRIPT_LOCATION)/version
 
+#UI
+UI_SRC_FOLDER=LibraryBox-landingpage
 
 BUILD_FOLDER=build_dir
 BUILD_SCRIPT_LOCATION=$(BUILD_FOLDER)/piratebox
@@ -48,7 +50,7 @@ $(SRC_VERSION_TAG):
 
 # Create version tags
 # copy over stuff
-prepare_build:  $(BUILD_FOLDER) $(SRC_VERSION_TAG) $(BUILD_SCRIPT_LOCATION)
+prepare_build: cleanbuild  $(BUILD_FOLDER) $(SRC_VERSION_TAG) $(BUILD_SCRIPT_LOCATION)
 #	cp -vr $(SRC_SCRIPT_LOCATION) $(BUILD_SCRIPT_LOCATION)  
 
 
@@ -56,6 +58,9 @@ $(BUILD_SCRIPT_LOCATION):
 	mkdir -p $@
 	cp -vr $(SRC_SCRIPT_LOCATION)/*  $(BUILD_SCRIPT_LOCATION)
 	cp -vr $(MOD_SRC_FOLDER)/*  $(BUILD_SCRIPT_LOCATION)
+	cp -vr $(UI_SRC_FOLDER)/conf/*   $(BUILD_SCRIPT_LOCATION)/conf/
+	cp -vr $(UI_SRC_FOLDER)/python_lib $(BUILD_SCRIPT_LOCATION)
+	cp -vr $(UI_SRC_FOLDER)/www_content $(BUILD_SCRIPT_LOCATION)
 
 # Changing of configuration files only via differences
 define ReconfigureConfig
@@ -120,6 +125,9 @@ $(MOD_PACKAGE_TGZ): prepare_build building $(PACKAGE_FOLDER)
 
 clean_image:
 	- rm  $(MOD_IMAGE)
+
+cleanbuild:
+	- rm -rvf  $(BUILD_FOLDER)
 
 cleanall: clean 
 	- rm -v $(MOD_IMAGE_TGZ)

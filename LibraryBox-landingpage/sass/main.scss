@@ -1,0 +1,214 @@
+// Get the base
+@import "modules/base";
+
+// Partials
+@import "partials/reset";
+@import "partials/type";
+@import "partials/forms";
+
+//----------------[ Mobile ]
+#header {
+	background: $orange;
+	border-bottom: 1px solid darken($orange, 10%);
+	#menu-icon {
+		position: absolute;
+		top: .25em;
+		right: .25em;
+		img {
+			width: 2em;
+		}
+	}
+	#top-nav {
+		.brand {
+			margin-left: 0;
+		}
+	
+		ul {
+			display: none;
+			li {
+				&:last-child {
+					margin: 0 0 .5em 0;
+				}
+			}
+		}
+	}
+}
+
+#content {
+	#welcome {
+		background: $gray;
+		margin: 0 0 1em;
+		padding: 2em 0;
+		img {
+			margin: 0 .25em 0 0;
+		}
+	}
+	
+	#files-top {}
+	
+	#files-latest {}
+
+	#chat {
+		#shoutbox {
+			height: 300px;
+			margin: 0 0 .5em;
+			.message {
+				margin: 0 0 .10em;
+			}
+		}
+
+		#shoutbox-input {
+			.nickname {}
+			.message {}
+		}
+
+		#shoutbox-options {
+			display: none;
+		}
+	}
+}
+
+#footer {
+	background: $orange;
+	border-top: 1px solid darken($orange, 10%);
+	margin: 2em 0 0 0;
+	padding: 0 0 1em;
+	.to-top {
+		float: right;
+	}
+}
+
+.container {
+	height: 100%;
+	padding: 0 .5em;
+	width: 100%;
+}
+
+.one-third, 
+.two-thrids {
+	margin: 0 0 1em;
+}
+
+@media screen and (min-width: 600px) {
+	#header {
+		#menu-icon {
+			display: none;
+		}
+		#top-nav {
+			.brand {
+				float: left;
+				margin: 0 1em 0 0;
+			}
+			
+			ul {
+				display: block;
+				li {
+				   float: left;
+				   &:last-child {
+						margin: 0;
+					}
+				}
+			}
+		}
+	}
+
+	#content {
+		#welcome {}
+		
+		#files-top {}
+		
+		#files-latest {}
+
+		#chat {
+			#shoutbox {}
+
+			#shoutbox-input {
+				input,
+				button {
+					float: left;
+				}
+				.nickname {
+					margin: 0 5px 0 0;
+					width: 15%;
+				}
+				.message {
+					margin: 0 5px 0 0;
+					width: 70%;
+				}
+				.button {
+					width: 10%;
+				}
+			}
+
+			#shoutbox-options {
+				display: none;
+			}
+		}
+	}
+
+	#footer {
+		.to-top {
+			display: none;
+		}
+	}
+
+	.card {
+		padding: 0 2em 0 0;
+	}
+		.last {
+			padding: 0;
+		}
+
+}
+
+//----------------[ Desktop ]
+@media screen and (min-width: 801px) {
+	#header {
+		#menu-icon {}
+		#top-nav {
+			.brand {}
+			
+			ul {
+				li {}
+			}
+		}
+	}
+
+	#content {
+		#welcome {}
+		
+		#files-top {}
+		
+		#files-latest {}
+
+		#chat {
+			#shoutbox {}
+
+			#shoutbox-input {
+				.nickname {}
+				.message {}
+			}
+
+			#shoutbox-options {}
+		}
+	}
+
+	#footer {}
+
+	.container {
+		margin: 0 auto;
+		max-width: 1280px;
+		width: 90%;
+	}
+
+	.one-third {
+		float: left;
+		width: 1 / 3 * 100%;
+	}
+
+	.two-thirds {
+		float: left;
+		width: 2 / 3 * 100%;
+	}
+
+}
