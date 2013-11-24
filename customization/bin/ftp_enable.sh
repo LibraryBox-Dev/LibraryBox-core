@@ -16,7 +16,7 @@ IS_OPENWRT=' -e /etc/openwrt_version '
 
 FTP_CONF_FOLDER=$PIRATEBOX_CONF_FOLDER/ftp
 BASIC_FTP_CONFIG=$FTP_CONF_FOLDER/ftp.conf
-
+FTP_SYNC_CLIENT_CONFIG=$FTP_CONF_FOLDER/ftp_sync_client.conf
 
 ## Schema-files
 SCHEMA_DEAMON_CONF=$FTP_CONF_FOLDER/proftpd.conf.schema
@@ -50,6 +50,9 @@ SCHEMA_ANON_CONF=$FTP_CONF_FOLDER/anon_access.conf.schema
 #	ENABLE_ANON
 #	ANON_FOLDER
 
+
+. $FTP_SYNC_CLIENT_CONFIG
+
 ##---------------
 ## Final configuration files
 #
@@ -68,11 +71,15 @@ print_line() {
 
 print_current_config() {
 	print_line
-	echo "   FTP enabled             : $FTP_ENABLED "
-	echo "   Admin access            : $ADMIN_ACCESS "
-	echo "   Special SYNC access     : $FTP_SYNC_ENABLED "
-	echo "   SYNC Port               : $SYNC_PORT "
-	echo "   Anonymous login possible: $ENABLE_ANON "
+	echo "   FTP enabled                : $FTP_ENABLED "
+	echo "   Admin access               : $ADMIN_ACCESS "
+	echo "   Special SYNC access        : $FTP_SYNC_ENABLED "
+	echo "   SYNC Port                  : $SYNC_PORT "
+	echo "   Anonymous login possible   : $ENABLE_ANON "
+	echo " -- "
+	echo "   FTP Synchronisation active : $FTP_SYNC_CLIENT_ENABLED "
+	echo "   FTP Sync hostname          : $SYNC_CLIENT_HOST "
+	echo "   FTP Sync password          : $SYNC_CLIENT_STATIC_PASSWORD "
 	echo " "
 	print_line
 }
@@ -195,6 +202,7 @@ _toggle_() {
 	case $func in
 		("FTP_ENABLED") 	config_file=$PIRATEBOX_HOOK_CONF ;;
 		("FTP_SYNC_ENABLED") 	config_file=$PIRATEBOX_HOOK_CONF ;;
+		("FTP_SYNC_CLIENT_ENABLED") 	config_file=$PIRATEBOX_HOOK_CONF ;;
 		(*)			config_file=$BASIC_FTP_CONFIG ;;
 	esac
 
@@ -203,6 +211,27 @@ _toggle_() {
 	. $config_file
 
 }
+
+
+_change_value_(){
+	local varname=$1
+
+	local new=$(eval "echo \$${varname}")
+	local old=$new
+
+        read -p " New value for $varname : " new
+
+        case $varname in
+		("SYNC_CLIENT_HOST")	        config_file=$FTP_SYNC_CLIENT_CONFIG ;;
+		("SYNC_CLIENT_STATIC_PASSWORD")	config_file=$FTP_SYNC_CLIENT_CONFIG ;;
+		(*)	config_file=$BASIC_FTP_CONFIG ;;
+	esac
+
+	sed "s|$varname=\"$old\"|$varname=\"$new\"|" -i $config_file
+
+	. $config_file
+}
+
 
 mainmenu() {
 	while true
@@ -217,6 +246,10 @@ mainmenu() {
 		echo "  5 -  Set password for Sync-Access "
 		echo "  6 -  Set password for admin-access "
 		echo " "
+		echo "  7 -  Enable Synchronization client "
+		echo "  8 -     Client host  "
+		echo "  9 -     Client password  "
+		echo " "
 		echo " With choosing hn like h1 , you get some help about the topic"
 		echo " Every other button is a clean exit. "
 		echo " "
@@ -229,6 +262,9 @@ mainmenu() {
 			("4")   _toggle_ "ENABLE_ANON"  ;;
 			("5")	echo "System-User for Sync Access is $SYNC_SYSTEM_USER"  && passwd $SYNC_SYSTEM_USER ;;
 			("6")   echo "System-User for Admin access is $BOX_SYSTEM_USER" &&  passwd $BOX_SYSTEM_USER ;;
+			("7")   _toggle_ "FTP_SYNC_CLIENT_ENABLED"  ;;
+		   	("8")   _change_value_ "SYNC_CLIENT_HOST"  ;;
+		   	("9")   _change_value_ "SYNC_CLIENT_STATIC_PASSWORD" ;;
 			("h1")  print_help_ftp ;;
 			("h2")  print_help_admin ;;
 			("h3")  print_help_sync ;;
@@ -239,6 +275,8 @@ mainmenu() {
 	done
 
 }
+
+
 
 
 if [ "$1" = "generate" ] ; then

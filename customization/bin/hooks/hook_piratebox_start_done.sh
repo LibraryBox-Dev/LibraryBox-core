@@ -65,6 +65,7 @@ fi
  $PIRATEBOX_FOLDER/bin/json_generation.sh  $1
 
 if [ "$FTP_SYNC_CLIENT_ENABLED" == "yes" ] ; then
-	$PIRATEBOX_FOLDER/bin/ftp_sync_tool.sh
+	echo "Starting sync client"
+	$PIRATEBOX_FOLDER/bin/ftp_sync_tool.sh & >  $PIRATEBOX_FOLDER/share/sync.log
 	echo $! > $FTP_SYNC_CLIENT_PID
 fi
