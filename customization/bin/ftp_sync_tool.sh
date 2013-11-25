@@ -43,10 +43,11 @@ if [ "$SYNC_CLIENT_ENABLED" == "no" ]; then
 	exit 0
 fi
 
-if [ "$SYNC_CLIENT_STATIC_IP" == "empty" ] ; then
-	echo "IP is not set, exiting."
+if   [ "$SYNC_CLIENT_STATIC_IP" == "empty" ] && [ "$SYNC_CLIENT_HOST" == "empty" ] ; then
+	echo "IP or host  is not set, exiting."
 	exit 255
 fi
+
 if [ "$SYNC_CLIENT_STATIC_PORT" == "empty" ] ; then
 	echo "Port is not set, exiting."
 	exit 255
@@ -57,6 +58,31 @@ if [ "$SYNC_CLIENT_STATIC_USER" == "empty" ]; then
 	exit 255
 fi
 
+
+
+if  [ "$SYNC_CLIENT_HOST" != "empty" ] && [ ! -z "$SYNC_CLIENT_HOST" ]  ; then
+######## Well....
+### if the host is set, we are going to run avahi-browse in a loop and see
+###   when we get an resolution from the avahi mdns request
+###   then we map it into SYNC_CLIENT_STATIC_IP and create the config
+	date=$(date +"%b %d %T")
+	echo $date "Doing avahi hostname lookup for $SYNC_CLIENT_HOST"
+	SYNC_CLIENT_STATIC_IP=""
+	until [ ! -z $SYNC_CLIENT_STATIC_IP ] 
+	do
+		date=$(date +"%b %d %T")
+		resolve_node_hostname "$SYNC_CLIENT_HOST"
+		SYNC_CLIENT_STATIC_IP=$NODE_IP
+		if [  -z $SYNC_CLIENT_STATIC_IP ]  ; then
+			date=$(date +"%b %d %T")
+			echo $date "hostname not found; wait  $SYNC_CLIENT_REPEAT_TIME"
+			sleep  $SYNC_CLIENT_REPEAT_TIME
+		fi
+	done
+
+
+
+fi 
 
 ftp_lftp_generate_command_member "$SYNC_CLIENT_SCHEMA_FILE"  "$SYNC_CLIENT_LFTP_FILE"
 

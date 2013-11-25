@@ -1,0 +1,26 @@
+input[type=text],
+textarea {
+	border: $border;
+	border-radius: $radius;
+	height: 3em;
+	margin: .5em 0;
+	padding: 0 .5em;
+	width: 100%;
+	&:first-child {
+		margin-top: 0;
+	}
+}
+
+button {
+	background: $orange;
+	border: 0;
+	border-radius: $radius;
+	color: $white;
+	height: 3em;
+	@include transition(background, 0.5s, ease-in-out);
+	width: 100%;
+	&:hover,
+	&:active {
+		background: darken($orange, 10%);
+	}
+}
