@@ -20,11 +20,11 @@ function __do_db_connect() {
 
 function dl_read_stat_per_path_only ( $path="%" ) {
 	$config = dl_get_config();
-	return dl_read_stat_per_path  ($path , $config["sortBy"]  , $config["sortOrder"] , "all" , $config["top_max"] );
+	return dl_read_stat_per_path  ($path , $config["sortBy"]  , $config["sortOrder"] , $config["list_type"] , $config["top_max"] );
 
 }
 
-function dl_read_stat_per_path ($path="%"  , $sortBy , $sort, $type="all" , $limit  ) {
+function dl_read_stat_per_path ($path="%"  , $sortBy , $sort, $listType , $limit  ) {
 
 	$config = dl_get_config();
 	if ( ! isset (  $sortBy ) )
@@ -39,9 +39,9 @@ function dl_read_stat_per_path ($path="%"  , $sortBy , $sort, $type="all" , $lim
 
 	$db = __do_db_connect();
 
-	if (  $type == "all" ) {
+	if (  $listType == "all" ) {
 		$sth = $db->prepare ( " SELECT url, counter FROM dl_statistics WHERE url LIKE :path ORDER by  $sortBy $sort ");
-	} elseif ( $type == "top" ) {
+	} elseif ( $listType == "top" ) {
 		$sth = $db->prepare ( "SELECT url, counter FROM dl_statistics WHERE url LIKE :path ORDER by $sortBy $sort LIMIT 0 , :max ");
 		$sth->bindParam (':max' , $limit, PDO::PARAM_INT  );
 	}
