@@ -8,7 +8,7 @@
     will be called by vc_display.php with an 
 
 	
-$resutlt = array  (
+$result = array  (
 		array ( 'url' => "/Shared/......" , "counter" => 4 ),
 		array ( 'url' => "/Shared/......" , "counter" => 5 ),
 		)
