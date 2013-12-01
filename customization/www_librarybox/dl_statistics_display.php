@@ -81,7 +81,7 @@ if ( isset ( $_GET['list_type'] )) {
 #  Detect which statement 
 
 
-$result= dl_read_stat_per_path ( '%' , $sortBy , $sort , $list_type ,  $top_max );
+$result = dl_read_stat_per_path ( '%' , $sortBy , $sort , $list_type ,  $top_max );
 
 #------------------------------------------------
 # Output

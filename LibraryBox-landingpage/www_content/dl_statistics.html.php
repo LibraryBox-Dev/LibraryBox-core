@@ -8,7 +8,7 @@
     will be called by display_dl_count.php with an 
 
 	
-$resutlt = array  (
+$result = array  (
 		array ( 'url' => "/Shared/......" , "counter" => 4 ),
 		array ( 'url' => "/Shared/......" , "counter" => 5 ),
 		)
