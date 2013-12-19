@@ -11,9 +11,11 @@ Very simple script to get access to the statistic data.
 	sortOrder	= ASC / DESC  - Ascendening or decsending sort order
 	sortBy		= url/counter Sort by complete "url" to file, or based on download "counter"
 	list_type	= "all"  display all data ; "top" - limit display with top n entries
-	top_max		= Limit entry list in "top" mode by that value
-	output_type	= none or html resulsts in a simple html output
+	top_max		= The maximum number of values to return in "top" mode.
+	output_type	= none or html results in a simple html output
 			  "json" results in a json structure
+			  
+	Default values are provided by dl_statistics.conf.php.
 
 	The HTML output is based on a file pointed in  "dl_statistics.conf.php" to.
 	That file lays on librarybox in the content folder 
@@ -21,7 +23,7 @@ Very simple script to get access to the statistic data.
 	which is in reality on the USB stick. That file can simply exchanged without the need
 	of touching the logic behind.
 
-	Currently I don't have the path filter programmed in that. script
+	Currently I don't have the path filter programmed in that script.
 
 
 
@@ -79,7 +81,7 @@ if ( isset ( $_GET['list_type'] )) {
 #  Detect which statement 
 
 
-$result= dl_read_stat_per_path ( '%' , $sortBy , $sort , $list_type ,  $top_max );
+$result = dl_read_stat_per_path ( '%' , $sortBy , $sort , $list_type ,  $top_max );
 
 #------------------------------------------------
 # Output
