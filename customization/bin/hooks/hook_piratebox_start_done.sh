@@ -66,6 +66,6 @@ fi
 
 if [ "$FTP_SYNC_CLIENT_ENABLED" == "yes" ] ; then
 	echo "Starting sync client"
-	$PIRATEBOX_FOLDER/bin/ftp_sync_tool.sh & >  $PIRATEBOX_FOLDER/share/sync.log
+	$PIRATEBOX_FOLDER/bin/ftp_sync_tool.sh >>  $PIRATEBOX_FOLDER/share/sync.log & 
 	echo $! > $FTP_SYNC_CLIENT_PID
 fi
