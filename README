@@ -46,6 +46,7 @@ Folders
                       Normally you would choose some stable release, but because of LibraryBox is leapfrogging PirateBox I need to base on special branch to able to push changes back and other way around. This can be later changed to "stable" branch
   tmp_img	   =  Customization for images and mount points
   build_dir	   =  Folder for including piratebox + LibraryBox stuff to a complete cake
+  LibraryBox-landingpage = git subtree of LibraryBox-landingpage branch master , contains the content of www_customization and others
 
 Changes during build
 --------------------
