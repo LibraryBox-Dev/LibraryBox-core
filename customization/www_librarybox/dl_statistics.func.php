@@ -63,7 +63,9 @@ function dl_read_stat_per_path ($path="%"  , $sortBy , $sort, $listType , $limit
 	        foreach (  $result as &$line ) {
 	                unset ( $line[0] );
 	                unset ( $line[1] );
-	        }
+	                $url_expl = explode('/', $line['url']);
+	                $line['filename'] = end($url_expl);
+	        }   
 		return $result;
 
 	} else {
