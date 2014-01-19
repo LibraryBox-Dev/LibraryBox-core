@@ -1,0 +1,12 @@
+@font-face {
+  font-family: 'GearedSlab';
+  src: url("../fonts/gearedslab-webfont.eot");
+  src: url("../fonts/gearedslab-webfont.svg");
+  src: url("../fonts/gearedslab-webfont.ttf");
+  src: url("../fonts/gearedslab-webfont.woff");
+}
+
+@font-face {
+  font-family: 'Open Sans';
+  src: url("../fonts/OpenSans-Regular.ttf");
+}
