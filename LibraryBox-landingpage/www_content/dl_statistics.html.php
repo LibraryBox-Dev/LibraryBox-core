@@ -1,11 +1,10 @@
-
 <?php
 
 /********************************
 
     HTML Generation function for PHP-Download-Counter Statistics
 
-    will be called by display_dl_count.php with an 
+    will be called by dl_statistics_display.php with an 
 
 	
 $result = array  (
@@ -75,4 +74,4 @@ function  output_html   ( $result = array () , $arguments = array ()  ) {
 
 	print_footer();
 }
-?>
+
