@@ -86,7 +86,7 @@ textarea:first-child {
 #content #welcome {
   background: #e0e0e0;
   margin: 0 0 1em;
-  padding: 2em 0;
+  padding-bottom: 1em;
 }
 #content #welcome img {
   margin: 0 .25em 0 0;
@@ -110,6 +110,18 @@ textarea:first-child {
 }
 #footer .to-top {
   float: right;
+}
+
+.fp-tops-ul ul {
+  list-style: none;
+}
+
+.fp-tops-title {
+  font-size: 10pt;
+}
+
+.fp-tops-count {
+  font-size: 8pt;
 }
 
 @media screen and (min-width: 600px) {
