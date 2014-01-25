@@ -1,6 +1,6 @@
 var $j = jQuery.noConflict();
 
-$j.getJSON("/dl_statistics_display.php?sortBy=counter&sortOrder=DESC&list_type=top&output_type=json" , function(data) {
+$j.getJSON("/dl_statistics_display.php?sortBy=counter&sortOrder=DESC&list_type=top&top-max=10&output_type=json" , function(data) {
     var files_top = $j('p#files-top-default');
     var tbl_body = '<ul style="list-style: none; -webkit-padding-start:0px;">';
     $j.each(data, function() {

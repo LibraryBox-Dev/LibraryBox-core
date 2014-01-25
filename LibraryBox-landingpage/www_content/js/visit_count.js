@@ -1,12 +1,9 @@
-// $.get(
-//     "/dl_statistics_display.php?sortOrder=DESC&sortBy=counter&list_type=top&top-max=50",
-
-// );
-
 var $j = jQuery.noConflict();
 
-$j.getJSON("/dl_statistics_display.php?sortBy=counter&sortOrder=DESC&list_type=top&top-max=50&output_type=json" , function(data) {
-    var files_top = $j('p#files-top-statspage');
+// Totally unfinished until vc_display.php works
+
+$j.getJSON("/vc_display.php?sortBy=day&output_type=json" , function(data) {
+    var files_top = $j('p#visitors-top-statspage');
     var tbl_body = '<ul style="list-style: none; -webkit-padding-start:0px;">';
     $j.each(data, function() {
         var tbl_row = "";
