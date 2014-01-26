@@ -12,7 +12,7 @@
 </head>
 <body>
 
-		<img src="/vc_counter.php" />
+		<span id="vc_count"></span>
     <div id="top-nav" class="navbar navbar-inverse navbar-fixed-top" role="navigation">
       <div class="container">
         <div class="navbar-header">
@@ -53,16 +53,14 @@
 		</div>
 		<div class="container">
 				
-				<div id="files-top" class="card last">
+				<div id="files-top" class="card">
 				<h2>User Counts</h2>
-
+					<p id="visitors-top-statspage">No visitors yet. This probably means you haven't set the time/date on LibraryBox.</p>
 				</div>
-				
 		
 				<div id="files-top" class="card">
 					<h2>Content Downloads</h2>
-					<p id="files-top-statspage">Nothing's been downloaded yet.  Why don't
-						you download something and get this party started?</p>
+					<p id="files-top-statspage">Nothing's been downloaded yet.  Why don't you download something and get this party started?</p>
 				</div>
 			</div>
 		</div>
@@ -80,6 +78,8 @@
 	<script src="js/jquery.min.js"></script>
 	<script src="js/main.js"></script>
 	<script src="js/downloads.js"></script>
+	<script src="js/visit_count.js"></script>
+	<script src="js/vc_tally.js"></script>
 	<script src="js/bootstrap.min.js"></script>
 </body>
 </html>
