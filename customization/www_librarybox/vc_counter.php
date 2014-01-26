@@ -3,7 +3,7 @@
 if (!isset($_GET['client_date'])) {
 	exit(0);
 } else {
-	$date = date("F j, Y", $_GET['client_date']);
+	$date = date("Y-m-d", $_GET['client_date']);
 }
 
 #Encrypt combination of IP + Date + Useragend. So one user only have a specific string per day

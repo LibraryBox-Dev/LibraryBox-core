@@ -19,6 +19,10 @@ function vc_do_db_connect() {
 	if ( ! $sth->execute () )
 	          die ( "Error creating table: ". $sth->errorInfo ());
 
+// $sth = $db->prepare ( 'DELETE FROM vc_statistics');
+// 	if ( ! $sth->execute () )
+// 	          die ( "Error Deleting: ". $sth->errorInfo ());
+
 	return $db;
 }
 
@@ -91,11 +95,13 @@ function vc_read_stat_sum_per_day ($path="%"  , $sortBy , $sort, $type="all" , $
 			die ( "Error executing statement ");
 		}
 		$result =  $sth->fetchAll();
-	        # Tidy array up, I only want named keys
-	        foreach (  $result as &$line ) {
-	                unset ( $line[0] );
-	                unset ( $line[1] );
-	        }
+    # Tidy array up, I only want named keys
+    foreach (  $result as &$line ) {
+      unset ( $line[0] );
+      unset ( $line[1] );
+      $date_arr = date_parse($line['day'] . " 00:00:00");
+      $line['day'] = date("F j, Y", mktime(0, 0, 0, $date_arr['month'], $date_arr['day'], $date_arr['year']));
+    }
 		return $result;
 
 	} else {

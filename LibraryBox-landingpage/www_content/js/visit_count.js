@@ -22,7 +22,7 @@ $j_v.getJSON("/vc_display.php?sortBy=day&output_type=json&top_max=10" , function
     var tbl_body = '<ul style="list-style: none; -webkit-padding-start:0px;">';
     $j_v.each(data, function() {
         var tbl_row = "";
-        tbl_row += '<span class="sp-visitors-date">' + this.day + ' :: </span>' + '<span class="sp-visitors-count">' + this.counter + '</span>'
+        tbl_row += '<span class="sp-visitors-date">' + this.day + ' → </span>' + '<span class="sp-visitors-count">' + this.counter + '</span>'
         tbl_body += "<li>" + tbl_row + "</li>";                 
     })
     tbl_body += "</ul>"
