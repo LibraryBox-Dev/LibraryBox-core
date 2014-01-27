@@ -39,17 +39,12 @@ function dl_read_stat_per_path ($path="%"  , $sortBy , $sort, $listType , $limit
 
 	$db = __do_db_connect();
 
-	if (  $listType == "all" ) {
-		$sth = $db->prepare ( " SELECT url, counter FROM dl_statistics WHERE url LIKE :path ORDER by  $sortBy $sort ");
-	} elseif ( $listType == "top" ) {
-		$sth = $db->prepare ( "SELECT url, counter FROM dl_statistics WHERE url LIKE :path ORDER by $sortBy $sort LIMIT 0 , :max ");
-		$sth->bindParam (':max' , $limit, PDO::PARAM_INT  );
-	}
+	$sth = $db->prepare ( "SELECT url, counter FROM dl_statistics WHERE url LIKE :path ORDER by  $sortBy $sort" );
 
 	if ( $sth ) {
 		$generic_path = "";
 		if ( $path == "%" ) {
-			 $generic_path = "%" ;
+			$generic_path = "%" ;
 		} else {
 			$generic_path =  $path.'%' ;
 		}
@@ -59,14 +54,22 @@ function dl_read_stat_per_path ($path="%"  , $sortBy , $sort, $listType , $limit
 			die ( "Error executing statement ");
 		}
 		$result =  $sth->fetchAll();
-	        # Tidy array up, I only want named keys
-	        foreach (  $result as &$line ) {
-	                unset ( $line[0] );
-	                unset ( $line[1] );
-	                $url_expl = explode('/', $line['url']);
-	                $line['filename'] = end($url_expl);
-	        }   
-		return $result;
+
+    # Tidy array up, I only want named keys
+    $full_result = array();
+    foreach ( $result as $elem => &$line ) {
+    	if (file_exists('/mnt/usb/LibraryBox' . $line['url'])) {
+    		unset ( $line[0] );
+        unset ( $line[1] );
+        $url_expl = explode('/', $line['url']);
+        $line['filename'] = end($url_expl);
+        $full_result[] = $line;
+    	}
+    }
+    if ($listType == "top") {
+    	return array_slice($full_result, 0, $limit);
+    }
+		return $full_result;
 
 	} else {
 		print_r ($db->errorInfo());

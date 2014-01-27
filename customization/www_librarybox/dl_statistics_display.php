@@ -98,6 +98,7 @@ if ( is_array ( $result ) ) {
 			"sortBy"    =>  $sortBy ,
 			"sortOrder" => $sort,
 			"filter_path" => false ,
+			"script_url" => $_ENV['REQUEST_URI'],
 		));
 	} elseif ( $output_type == "json" ) {
 		header('Content-Type: application/json');
