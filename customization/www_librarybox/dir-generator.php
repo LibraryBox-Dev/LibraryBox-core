@@ -229,6 +229,7 @@ print '<!DOCTYPE html>
 	<head>
 		<meta charset="utf-8">
 		<title>Index of /'.$vpath.'</title>
+		<link rel="stylesheet" href="css/bootstrap.css">
 		<style type="text/css">
 		a, a:active {text-decoration: none; color: blue;}
 		a:visited {color: #48468F;}

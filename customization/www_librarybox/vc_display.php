@@ -66,6 +66,8 @@ if ( isset ($_GET['output_type'] )) {
 	 	$output_type= "json";
 	 } elseif ( $_GET["output_type"] == "html" ) {
 	 	$output_type="html";
+	 } elseif ( $_GET["output_type"] == "debug" ) {
+	 	$output_type="debug";
 	 }
 }
 
@@ -98,6 +100,8 @@ if ( is_array ( $result ) ) {
 	} elseif ( $output_type == "json" ) {
 		header('Content-Type: application/json');
 		print json_encode ( $result );
+	} elseif ( $output_type == "debug" ) {
+		print_r($result);
 	}
 
 }

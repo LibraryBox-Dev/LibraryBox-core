@@ -1,4 +1,3 @@
-
 <?php
 
 /********************************
@@ -75,4 +74,3 @@ function  output_html   ( $result = array () , $arguments = array ()  ) {
 
 	print_footer();
 }
-?>

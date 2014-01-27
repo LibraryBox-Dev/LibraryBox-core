@@ -19,19 +19,19 @@ function vc_do_db_connect() {
 	if ( ! $sth->execute () )
 	          die ( "Error creating table: ". $sth->errorInfo ());
 
+// $sth = $db->prepare ( 'DELETE FROM vc_statistics');
+// 	if ( ! $sth->execute () )
+// 	          die ( "Error Deleting: ". $sth->errorInfo ());
+
 	return $db;
 }
 
 
-function vc_save_visitor ( $visitor_key , $debug = false ) {
+function vc_save_visitor ( $visitor_key , $visitor_date, $debug = false ) {
 	if ( !$debug ) {
 		error_reporting(0);
 	}
 
-	if ( date ( 'Y') < 2013 ) {
-		 if ( $debug ) 	print "not saving because system-year less then 2013";
-		 return false;
-	}
 	$db= vc_do_db_connect();
 
 	$sth = $db->prepare ( 'INSERT OR IGNORE INTO vc_statistics ( day , visitor ) VALUES ( :day , :visitor )');
@@ -42,7 +42,7 @@ function vc_save_visitor ( $visitor_key , $debug = false ) {
 	}
 
 
-	$sth->bindParam ( ':day' ,  date ( 'Y-m-d' )  );
+	$sth->bindParam ( ':day' ,  $visitor_date  );
 	$sth->bindParam ( ':visitor',  $visitor_key  );
 
 	if ( ! $sth->execute () ) {
@@ -95,11 +95,13 @@ function vc_read_stat_sum_per_day ($path="%"  , $sortBy , $sort, $type="all" , $
 			die ( "Error executing statement ");
 		}
 		$result =  $sth->fetchAll();
-	        # Tidy array up, I only want named keys
-	        foreach (  $result as &$line ) {
-	                unset ( $line[0] );
-	                unset ( $line[1] );
-	        }
+    # Tidy array up, I only want named keys
+    foreach (  $result as &$line ) {
+      unset ( $line[0] );
+      unset ( $line[1] );
+      $date_arr = date_parse($line['day'] . " 00:00:00");
+      $line['day'] = date("F j, Y", mktime(0, 0, 0, $date_arr['month'], $date_arr['day'], $date_arr['year']));
+    }
 		return $result;
 
 	} else {
@@ -108,5 +110,3 @@ function vc_read_stat_sum_per_day ($path="%"  , $sortBy , $sort, $type="all" , $
 	}
 
 }
-
-?>
