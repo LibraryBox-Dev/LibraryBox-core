@@ -5,7 +5,7 @@ $j.getJSON("/dl_statistics_display.php?sortBy=counter&sortOrder=DESC&list_type=t
     var tbl_body = '<ul style="list-style: none; -webkit-padding-start:0px;">';
     $j.each(data, function() {
         var tbl_row = "";
-        tbl_row += '<span class="fp-tops-title"><a href="' + this.url + '">' + this.filename + '</a></span><br /><span class="fp-tops-count">&nbsp;&nbsp;' + this.counter + ' download(s)</span>';
+        tbl_row += '<span class="fp-tops-title"><a href="/dl_statistics_counter.php?DL_URL=' + this.url + '">' + this.filename + '</a></span><br /><span class="fp-tops-count">&nbsp;&nbsp;' + this.counter + ' download(s)</span>';
         tbl_body += "<li>"+tbl_row+"</li>";                 
     })
     tbl_body += "</ul>"
