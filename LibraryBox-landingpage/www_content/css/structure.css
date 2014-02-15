@@ -32,11 +32,11 @@
 
 /* title */
 .navbar-inverse .navbar-brand {
-  color: #E7E709;
+  color: #ffffff;
 }
 .navbar-inverse .navbar-brand:hover,
 .navbar-inverse .navbar-brand:focus {
-  color: #428bca;
+  color: #CC3300;
 }
 
 #header #top-nav ul li a {
