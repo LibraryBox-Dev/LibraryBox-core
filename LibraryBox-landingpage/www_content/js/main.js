@@ -40,9 +40,6 @@ $j(document).ready(function() {
 	
 });
 
-var $sb = jQuery.noConflict();
-
-
 function refresh_shoutbox () {
 	$j.get('/chat_content.html', function(data) {
 		$j('div#shoutbox').html(data);
