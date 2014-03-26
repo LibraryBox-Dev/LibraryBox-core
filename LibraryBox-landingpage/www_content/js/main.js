@@ -35,7 +35,6 @@ $j(document).ready(function() {
 		} else {
 			document.getElementById("chatcontainer").style.display="none";
 		}
-		
 	});
 	
 });
