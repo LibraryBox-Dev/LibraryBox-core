@@ -85,7 +85,9 @@ building: $(BUILD_SCRIPT_LOCATION)
 
 prepare_image_config: $(IMAGE_BUILD_SRC)  $(IMAGE_BUILD_TGT)
 	cd  $(SRC_FOLDER) && make image_stuff/openwrt/conf
+	cd  $(SRC_FOLDER) && make image_stuff/openwrt/bin
 	cp -rv  $(SRC_FOLDER)/image_stuff/openwrt/* $(IMAGE_BUILD_SRC)
+
 	
 # We need to apply our custom configuration again, because we are copy them over from the origin again
 #   I'm doin it this way, because the origin image knows what to change.
