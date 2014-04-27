@@ -397,7 +397,7 @@ if($path != "./") {
 	print "<tr><td class='n'><a id='folder' href='..'>Parent Directory</a>/</td>";
 	print "<td class='m'> </td>";
 	print "<td class='s'> </td>";
-	print "<td class='t'>Directory</td></tr>";
+	print "<td class='t'>Directory</td></tr>\n";
 }
 
 
@@ -407,13 +407,13 @@ foreach($folderlist as $folder) {
 	print "<tr><td class='n'><a id='folder' href='" . addslashes($folder['name']). "'>" .htmlentities($folder['name']). "</a>/</td>";
 	print "<td class='m'>" . date('Y-M-d H:i:s', $folder['modtime']) . "</td>";
 	print "<td class='s'>" . (($calculate_folder_size)?format_bytes($folder['size'], 2):'--') . " </td>";
-	print "<td class='t'>" . $folder['file_type']                    . "</td></tr>";
+	print "<td class='t'>" . $folder['file_type']                    . "</td></tr>\n";
 }
 
 
 
 // This simply creates an extra line for file/folder seperation
-print "<tr><td colspan='4' style='height:7px;'></td></tr>";
+print "<tr><td colspan='4' style='height:7px;'></td></tr>\n";
 
 
 
@@ -435,7 +435,7 @@ foreach($filelist as $file) {
 	if ( $display_dl_count ) {
 		print "<td class='c'>" . $file['counter'] . "</td>";
 	}
-	print "</tr>";
+	print "</tr>\n";
 }
 
 
