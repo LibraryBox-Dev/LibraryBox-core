@@ -16,6 +16,17 @@ fi
 # You can uncommend this line to see when hook is starting:
  echo "------------------ Running $0 ------------------"
 
+# Recreate the content folder, if it was deleted
+#  only if it is not already existing.
+if [ ! -d  $WWW_CONTENT ] ; then
+	# Prepare content folder
+	echo "Creating 'content' folder on USB stick and move over stuff"
+	mkdir -p $WWW_CONTENT
+	cp -r     $PIRATEBOX_FOLDER/www_content/*   $WWW_CONTENT
+fi
+
+
+
 if [ "$FTP_ENABLED" = "yes" ] ; then
 	echo "starting PROFTPD.."
 
