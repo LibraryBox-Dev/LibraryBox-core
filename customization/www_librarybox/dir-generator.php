@@ -1,6 +1,6 @@
 <?php
 
-$VERSION = '1.0';
+$VERSION = '1.1';
 
 /*  Lighttpd Enhanced Directory Listing Script
  *  ------------------------------------------
@@ -9,7 +9,7 @@ $VERSION = '1.0';
  *
  *  Since 1.0 ; Matthias Strubel
  *          Modifications for including a download-count.
- *  Since 1.0 ; Jason Griffey
+ *  Since 1.1 ; Jason Griffey
  *			Modifications for responsive design
  *
  *  GNU License Agreement
@@ -443,10 +443,3 @@ print "	<div class='foot'>"LibraryBox v2.1"</div>
 	</html>";
 
 
-/* -------------------------------------------------------------------------------- *\
-	I hope you enjoyed my take on the enhanced directory listing script!
-	If you have any questions, feel free to contact me.
-
-	Regards,
-	   Evan Fosmark < me@evanfosmark.com >
-\* -------------------------------------------------------------------------------- */

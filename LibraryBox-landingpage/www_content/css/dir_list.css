@@ -1,15 +1,15 @@
 
 @font-face {
   font-family: 'GearedSlab';
-  src: url("../fonts/gearedslab-webfont.eot");
-  src: url("../fonts/gearedslab-webfont.svg");
-  src: url("../fonts/gearedslab-webfont.ttf");
-  src: url("../fonts/gearedslab-webfont.woff");
+  src: url("/content/fonts/gearedslab-webfont.eot");
+  src: url("/content/fonts/gearedslab-webfont.svg");
+  src: url("/content/fonts/gearedslab-webfont.ttf");
+  src: url("/content/fonts/gearedslab-webfont.woff");
 }
 
 @font-face {
   font-family: 'Open Sans';
-  src: url("../fonts/OpenSans-Regular.ttf");
+  src: url("/content/fonts/OpenSans-Regular.ttf");
 }
 
 
@@ -164,7 +164,7 @@ td a{
 	//display: block;
 }
 
-td.n a { background: url( /Content/dir-images/file.png) no-repeat 10px 50%;
+td.n a { background: url( /content/dir-images/file.png) no-repeat 10px 50%;
 			 padding-left: 35px;
 			}
 td.n a#img   { background-image: url(/content/dir-images/image.png); }
