@@ -9,6 +9,8 @@ $VERSION = '1.0';
  *
  *  Since 1.0 ; Matthias Strubel
  *          Modifications for including a download-count.
+ *  Since 1.0 ; Jason Griffey
+ *			Modifications for responsive design
  *
  *  GNU License Agreement
  *  ---------------------
@@ -228,34 +230,10 @@ print '<!DOCTYPE html>
 <html lang="en">
 	<head>
 		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<title>Index of /'.$vpath.'</title>
-		<link rel="stylesheet" href="css/bootstrap.css">
-		<style type="text/css">
-		a, a:active {text-decoration: none; color: blue;}
-		a:visited {color: #48468F;}
-		a:hover, a:focus {text-decoration: underline; color: red;}
-		body {background-color: #F5F5F5;}
-		h2 {margin-bottom: 12px;}
-		table {margin-left: 12px; padding:0px; border-collapse:collapse;}
-		th, td { font-family: "Courier New", Courier, monospace; font-size: 10pt; text-align: left;}
-		td.n a { background: url( /content/dir-images/file.png) no-repeat 10px 50%;
-			 padding-left: 35px;
-			}
-		td.n a#img   { background-image: url(/content/dir-images/image.png); }
-		td.n a#video { background-image: url(/content/dir-images/video.png); }
-		td.n a#audio { background-image: url(/content/dir-images/sound.png); }
-		td.n a#archive { background-image: url(/content/dir-images/zip.png); }
-		td.n a#doc { background-image: url(/content/dir-images/office.png); }
-		td.n a#font { background-image: url(/content/dir-images/file.png); }
-		td.n a#file { background-image: url(/content/dir-images/file.png); }
-		td.n a#folder { background-image: url(/content/dir-images/folder.png); }
-		th { font-weight: bold; padding-right: 14px; padding-bottom: 3px;}
-		td {padding-right: 14px;}
-		td.s, th.s {text-align: right;}
-		div.list { background-color: white; border-top: 1px solid #646464; border-bottom: 1px solid #646464; padding-top: 10px; padding-bottom: 14px;}
-		div.foot, div.script_title { font-family: "Courier New", Courier, monospace; font-size: 10pt; color: #787878; padding-top: 4px;}
-		div.script_title {float:right;text-align:right;font-size:8pt;color:#999;}
-		</style>
+		<link href="/content/css/bootstrap.css" rel="stylesheet">
+		<link rel="stylesheet" href="/content/css/dir_list.css">
 	</head>
 	<body>
 ';
@@ -373,19 +351,19 @@ print "<thead><tr>";
 
 $sort_methods = array();
 $sort_methods['name'] = "Name";
-$sort_methods['modtime'] = "Last Modified";
-$sort_methods['size'] = "Size";
-$sort_methods['file_type'] = "Type";
+//$sort_methods['modtime'] = "Last Modified";
+$sort_methods['size'] = "<div class='s hidden-sm hidden-xs'>Size</div>";
+$sort_methods['file_type'] = "<div class='t hidden-sm hidden-xs'>Type</div>";
 
 if ( $display_dl_count ) {
-	$sort_methods['counter'] = "Downloads";
+	$sort_methods['counter'] = "<div class='c hidden-sm hidden-xs'>Downloads</div>";
 }
 
 foreach($sort_methods as $key=>$item) {
 	if($_GET['sort'] == $key) {
-		print "<th class='n'><a href='?sort=$key$order'>$item</a></th>";
+		print "<th><a href='?sort=$key$order'>$item</a></th>";
 	} else {
-		print "<th class='n'><a href='?sort=$key'>$item</a></th>";
+		print "<th><a href='?sort=$key'>$item</a></th>";
 	}
 }
 print "</tr></thead><tbody>";
@@ -395,9 +373,9 @@ print "</tr></thead><tbody>";
 // Parent directory link
 if($path != "./") {
 	print "<tr><td class='n'><a id='folder' href='..'>Parent Directory</a>/</td>";
-	print "<td class='m'> </td>";
-	print "<td class='s'> </td>";
-	print "<td class='t'>Directory</td></tr>\n";
+	//print "<td class='m'> </td>";
+	print "<td class='s hidden-sm hidden-xs'> </td>";
+	print "<td class='t hidden-sm hidden-xs'>Directory</td></tr>\n";
 }
 
 
@@ -405,9 +383,9 @@ if($path != "./") {
 // Print folder information
 foreach($folderlist as $folder) {
 	print "<tr><td class='n'><a id='folder' href='" . addslashes($folder['name']). "'>" .htmlentities($folder['name']). "</a>/</td>";
-	print "<td class='m'>" . date('Y-M-d H:i:s', $folder['modtime']) . "</td>";
-	print "<td class='s'>" . (($calculate_folder_size)?format_bytes($folder['size'], 2):'--') . " </td>";
-	print "<td class='t'>" . $folder['file_type']                    . "</td></tr>\n";
+	//print "<td class='m'>" . date('Y-M-d H:i:s', $folder['modtime']) . "</td>";
+	print "<td class='s hidden-sm hidden-xs'>" . (($calculate_folder_size)?format_bytes($folder['size'], 2):'--') . " </td>";
+	print "<td class='t hidden-sm hidden-xs'>" . $folder['file_type']                    . "</td></tr>\n";
 }
 
 
@@ -429,11 +407,11 @@ foreach($filelist as $file) {
 	}
 
 	print "<tr><td class='n'><a id='".$file['img_id']."' href='$file_link_prefix" . addslashes($file['name']). "'>" .htmlentities($file['name']). "</a></td>";
-	print "<td class='m'>" . date('Y-M-d H:i:s', $file['modtime'])   . "</td>";
-	print "<td class='s'>" . format_bytes($file['size'],2)           . " </td>";
-	print "<td class='t'>" . $file['file_type']                      . "</td>";
+	// print "<td class='m'>" . date('Y-M-d H:i:s', $file['modtime'])   . "</td>";
+	print "<td class='s hidden-sm hidden-xs'>" . format_bytes($file['size'],2)           . " </td>";
+	print "<td class='t hidden-sm hidden-xs'>" . $file['file_type']                      . "</td>";
 	if ( $display_dl_count ) {
-		print "<td class='c'>" . $file['counter'] . "</td>";
+		print "<td class='c hidden-sm hidden-xs'>" . $file['counter'] . "</td>";
 	}
 	print "</tr>\n";
 }
@@ -460,8 +438,7 @@ if ($display_readme)
 	}
 }
 
-print "	<div class='script_title'>Lighttpd Enhanced Directory Listing Script</div>
-	<div class='foot'>". $_ENV['SERVER_SOFTWARE'] . "</div>
+print "	<div class='foot'>"LibraryBox v2.1"</div>
 	</body>
 	</html>";
 
