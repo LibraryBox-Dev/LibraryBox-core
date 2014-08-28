@@ -39,7 +39,7 @@ function print_table_head() {
 
 echo <<<EOD
 	<table>
-	<tr><th></th><th><a href="dl_statistics_display.php?sortBy=url">Filename:</a></th><th><a href="dl_statistics_display.php?sortBy=counter&sortOrder=DESC">Downloads:</th></tr>
+	<tr><th></th><th><a href="dl_statistics_display.php?sortBy=url">Filename:</a></th><th data-l10n-id="statsDownloads"><a href="dl_statistics_display.php?sortBy=counter&sortOrder=DESC">Downloads:</th></tr>
 EOD;
 }
 
