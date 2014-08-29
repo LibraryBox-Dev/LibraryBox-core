@@ -78,6 +78,9 @@ case "$1" in
 
     echo "Empty tmp folder"
     find   $PIRATEBOX/tmp/  -exec rm {} \;
+    echo "Copy over design files"
+    $PIRATEBOX/bin/distribute_files.sh $SHARE_FOLDER/Shared
+
 
 
     if [ "$DO_IW" = "yes" ] ; then
@@ -146,7 +149,7 @@ case "$1" in
          if [ "$DROOPY_USE_USER" = "yes" ] ; then
              DROOPY_USER=" -c $LIGHTTPD_USER:$LIGHTTPD_GROUP "
          fi
-         start-stop-daemon $DROOPY_USER  -m -S -b  -p $PIDFILE_DROOPY -x $PIRATEBOX/bin/droopy -- -H $HOST -d $UPLOADFOLDER  -m "$DROOPY_TXT" -c "" $DROOPY_USERDIR  $DROOPY_PORT 
+         start-stop-daemon $DROOPY_USER  -m -S -b  -p $PIDFILE_DROOPY -x $PIRATEBOX/bin/droopy -- -H $HOST -d "$UPLOADFOLDER"  -m "$DROOPY_TXT" -c "" $DROOPY_USERDIR  $DROOPY_PORT 
          echo  $?
        fi
 

@@ -86,6 +86,9 @@ case "$1" in
     echo "Empty tmp folder"
     find   $PIRATEBOX/tmp/  -exec rm {} \;
 
+    echo "Copy over design files"
+    $PIRATEBOX/bin/distribute_files.sh $SHARE_FOLDER/Shared
+
     if [ "$DO_IW" = "yes" ] ; then
        log_daemon_msg " Setting up Interface (iw) "
        iw $PHY_IF interface add $INTERFACE type managed
@@ -151,7 +154,7 @@ case "$1" in
             DROOPY_USER=" -c $LIGHTTPD_USER:$LIGHTTPD_GROUP "
           fi
           log_daemon_msg "Starting droopy..."
-          start-stop-daemon $DROOPY_USER -m --start --background  --pidfile $PIDFILE_DROOPY --exec $PIRATEBOX/bin/droopy -- -H $HOST -d $UPLOADFOLDER -c "" -m "$DROOPY_TXT" $DROOPY_USERDIR  $DROOPY_PORT
+          start-stop-daemon $DROOPY_USER -m --start --background  --pidfile $PIDFILE_DROOPY --exec $PIRATEBOX/bin/droopy -- -H $HOST -d "$UPLOADFOLDER" -c "" -m "$DROOPY_TXT" $DROOPY_USERDIR  $DROOPY_PORT
           log_end_msg $?
        fi
 
