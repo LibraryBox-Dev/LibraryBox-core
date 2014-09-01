@@ -96,7 +96,7 @@ apply_custom_config:
 	$(call ReconfigureConfig,$(IMAGE_BUILD_SRC)/conf)
 
 $(MOD_IMAGE):
-	gunzip -dc  $(SRC_FOLDER)/image_stuff/OpenWRT.img.gz > $@
+	gunzip -dc  $(SRC_FOLDER)/image_stuff/OpenWRT_ext4_50MB.img.gz > $@
 
 
 $(MOD_IMAGE_TGZ): $(IMAGE_BUILD_TGT) $(MOD_IMAGE) $(MOD_VERSION_TAG) 
