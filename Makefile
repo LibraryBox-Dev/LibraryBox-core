@@ -24,7 +24,7 @@ MOD_VERSION_TAG=$(BUILD_SCRIPT_LOCATION)/version_tag_mod
 
 # Filename requested by 
 MOD_IMAGE=$(IMAGE_BUILD)/OpenWRT_image
-MOD_IMAGE_TGZ=$(NAME)_2.0_img.tar.gz
+MOD_IMAGE_TGZ=$(NAME)_2.1_img.tar.gz
 
 
 #------------
