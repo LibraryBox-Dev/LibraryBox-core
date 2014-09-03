@@ -234,6 +234,9 @@ print '<!DOCTYPE html>
 		<title>Index of /'.$vpath.'</title>
 		<link href="/content/css/bootstrap.css" rel="stylesheet">
 		<link rel="stylesheet" href="/content/css/dir_list.css">
+
+		  	<link rel="prefetch" type="application/l10n" href="/content/locales/locales.ini" />
+  			<script type="text/javascript" src="/content/js/l10n.js"></script>
 	</head>
 	<body>
 ';
@@ -257,7 +260,7 @@ if ($display_header)
 	}
 }
 
-print "<h2>Index of /" . $vpath ."</h2>
+print "<h2 data-l10n-id='filedirIndex'>Index of /" . $vpath ."</h2>
 	<div class='list'>
 	<table>";
 
@@ -350,13 +353,13 @@ if($_GET['order']) {
 print "<thead><tr>";
 
 $sort_methods = array();
-$sort_methods['name'] = "Name";
+$sort_methods['name'] = "<div data-l10n-id='filedirName'>Name</div>";
 //$sort_methods['modtime'] = "Last Modified";
-$sort_methods['size'] = "<div class='s hidden-sm hidden-xs'>Size</div>";
-$sort_methods['file_type'] = "<div class='t hidden-sm hidden-xs'>Type</div>";
+$sort_methods['size'] = "<div data-l10n-id='filedirSize' class='s hidden-sm hidden-xs'>Size</div>";
+$sort_methods['file_type'] = "<div data-l10n-id='filedirType' class='t hidden-sm hidden-xs'>Type</div>";
 
 if ( $display_dl_count ) {
-	$sort_methods['counter'] = "<div class='c hidden-sm hidden-xs'>Downloads</div>";
+	$sort_methods['counter'] = "<div data-l10n-id='filedirDownloads' class='c hidden-xs'>Downloads</div>";
 }
 
 foreach($sort_methods as $key=>$item) {
@@ -372,7 +375,7 @@ print "</tr></thead><tbody>";
 
 // Parent directory link
 if($path != "./") {
-	print "<tr><td class='n'><a id='folder' href='..'>Parent Directory</a>/</td>";
+	print "<tr><td data-l10n-id='filedirParDir' class='n'><a id='folder' href='..'>Parent Directory</a>/</td>";
 	//print "<td class='m'> </td>";
 	print "<td class='s hidden-sm hidden-xs'> </td>";
 	print "<td class='t hidden-sm hidden-xs'>Directory</td></tr>\n";
@@ -438,7 +441,7 @@ if ($display_readme)
 	}
 }
 
-print "	<div class='foot'>"LibraryBox v2.1"</div>
+print "<div class='foot'>LibraryBox v2.1</div>
 	</body>
 	</html>";
 

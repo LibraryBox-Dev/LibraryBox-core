@@ -1,4 +1,3 @@
-
 @font-face {
   font-family: 'GearedSlab';
   src: url("/content/fonts/gearedslab-webfont.eot");
@@ -11,8 +10,6 @@
   font-family: 'Open Sans';
   src: url("/content/fonts/OpenSans-Regular.ttf");
 }
-
-
 
 * {
 	margin:0;
@@ -52,16 +49,16 @@ a:visited {
 	color: #48468F;
 }
 
-h1 {      
-		padding: 0px 0px 0px 10px;                                        
-        margin-bottom: 12px;                
-        font-family:'GearedSlab', sans-serif;
-                        }                            
-h2 {                                                 
-        padding: 0px 0px 0px 10px;                   
-        margin-bottom: 12px;                         
-        font-family:'GearedSlab', sans-serif;        
-        }                         
+h1 {
+	padding: 0px 0px 0px 10px;
+	margin-bottom: 12px;
+		font-family:'GearedSlab', sans-serif;
+			}
+h2 {
+	padding: 0px 0px 0px 10px;
+	margin-bottom: 12px;
+	font-family:'GearedSlab', sans-serif;
+	}
 
 /*------------------------------------*\
     Wrapper
@@ -91,7 +88,6 @@ table {
 	line-height: 1.25em;
 	margin-left: 12px; 
 	padding:0px; 
-	
 }
 
 th, td { font-family:'Open Sans', sans-serif;}
@@ -116,8 +112,6 @@ div.script_title {
 	font-size:8pt;
 	color:#999;
 	}
-
-
 tr {
 	outline:0;
 	border:0;
@@ -128,20 +122,21 @@ tr:hover td {
 th {
 	text-align:left;
 	// font-size:.75em;
-	padding-right:20px;
+	// padding-right:20px;
 	font-weight: bold; 
-	padding-bottom: 3px;
+	padding-bottom: 5px;
 }
 /* 2nd Column: Filename */
 th + th {
-	// width:65%;
+	text-align:left;
 }
 /* 3rd Column: Last Modified */
 th + th + th {
+	text-align:left;
 }
 /* 4th Column: Size */
 th + th + th + th {
-	width:5%;
+	text-align:center;
 }
 tr td:first-of-type {
 	padding-left:10px;
@@ -187,38 +182,31 @@ tr.parent a {
 \*------------------------------------*/
 .footer {
 	text-align:center;
-	font-size:.75em;
 }
-
 /*------------------------------------*\
     Column style
 \*------------------------------------*/
-.n {
-	text-align:center;
-	white-space: -moz-pre-wrap; /* Mozilla */
-white-space: -hp-pre-wrap; /* HP printers */
-white-space: -o-pre-wrap; /* Opera 7 */
-white-space: -pre-wrap; /* Opera 4-6 */
-white-space: pre-wrap; /* CSS 2.1 */
-white-space: pre-line; /* CSS 3 (and 2.1 as well, actually) */
-word-wrap: break-word; /* IE */
-word-break: break-all;
 
-}
+.n {
+	text-align:left;
+	white-space: -moz-pre-wrap; /* Mozilla */
+	white-space: -hp-pre-wrap; /* HP printers */
+	white-space: -o-pre-wrap; /* Opera 7 */
+	white-space: -pre-wrap; /* Opera 4-6 */
+	white-space: pre-wrap; /* CSS 2.1 */
+	white-space: pre-line; /* CSS 3 (and 2.1 as well, actually) */
+	word-wrap: break-word; /* IE */
+	word-break: break-all;
+	}
 
 .s {
-	text-align:center;
-	font-size:.75em;
+	text-align:center;	
 }
 
 .t {
 	text-align:center;
-	font-size:.75em;
 }
-
+		
 .c {
 	text-align:center;
-	font-size:.75em;
 }
-
-
