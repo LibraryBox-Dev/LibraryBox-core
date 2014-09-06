@@ -76,6 +76,10 @@ if [ $2 = 'part2' ] ; then
   
    [[ ! -L $PIRATEBOX_FOLDER/www/board  ]] &&   ln -s $PIRATEBOX_FOLDER/share/board $PIRATEBOX_FOLDER/www/board
    [[ ! -L $PIRATEBOX_FOLDER/www/Shared ]] &&   ln -s $UPLOADFOLDER  $PIRATEBOX_FOLDER/www/Shared
+
+
+   # Generate Redirect.html once
+    sed  "s|#####HOST#####|$HOST|g"  $PIRATEBOX_FOLDER/src/redirect.html.schema >  $WWW_FOLDER/redirect.html
 fi 
 
 #Install the image-board

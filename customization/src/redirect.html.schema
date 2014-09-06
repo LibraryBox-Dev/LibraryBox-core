@@ -3,6 +3,6 @@
 <meta http-equiv="refresh" content="0;url=http://#####HOST#####/content" />
 </head>
 <body>
-Redirect...
+<img src="/vc_counter.php" />Redirect...
 </body>
 </html>
