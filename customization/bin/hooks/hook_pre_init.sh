@@ -30,5 +30,10 @@ cp -rv  $PIRATEBOX_FOLDER/www_old/cgi-bin $WWW_FOLDER/cgi-bin
 # Link to the USB-Stick
 ln -s $WWW_CONTENT  $WWW_FOLDER/content
 
+# link index.html with redirect.html
+if [ ! -e  $WWW_CONTENT/index.html ] ; then
+	ln -s $WWW_CONTENT/redirect.html  $WWW_CONTENT/index.html
+fi
+
 $PIRATEBOX_FOLDER/bin/ftp_enable.sh generate
 
