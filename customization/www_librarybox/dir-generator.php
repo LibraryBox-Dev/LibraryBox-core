@@ -200,7 +200,7 @@ function get_download_count ($filename  ) {
 	global $path;
 	global $folder_statistics;
 
-	$full_filename = "/$path".urlencode($filename) ;
+	$full_filename = "/$path".$filename ;
 
 	if ( isset ( $folder_statistics[ $full_filename ] ) ) {
 		return  $folder_statistics[ $full_filename ][ 'counter'] ;
@@ -223,6 +223,15 @@ function get_folder_statistics ($my_path, &$folder_statistics) {
 	}
 }
 
+function get_utf8_encoded($string) {
+	$encoding = mb_detect_encoding($string, "auto" ) ;
+	if ( $encoding  == "UTF-8" ||   $encoding  == "ASCII" ) {
+		return $string ;
+	} else {
+		$return_string = mb_convert_encoding($string, "UTF-8");
+		return  $return_string;
+	}
+}
 
 // Print the heading stuff
 $vpath = ($path != "./")?$path:"";
@@ -385,7 +394,7 @@ if($path != "./") {
 
 // Print folder information
 foreach($folderlist as $folder) {
-	print "<tr><td class='n'><a id='folder' href='" . urlencode($folder['name']). "'>" .htmlentities($folder['name']). "</a>/</td>";
+	print "<tr><td class='n'><a id='folder' href='" . urlencode($folder['name']). "'>" .get_utf8_encoded($folder['name']). "</a>/</td>";
 	//print "<td class='m'>" . date('Y-M-d H:i:s', $folder['modtime']) . "</td>";
 	print "<td class='s hidden-sm hidden-xs'>" . (($calculate_folder_size)?format_bytes($folder['size'], 2):'--') . " </td>";
 	print "<td class='t hidden-sm hidden-xs'>" . $folder['file_type']                    . "</td></tr>\n";
@@ -409,7 +418,7 @@ foreach($filelist as $file) {
 		$file_link_prefix="/dl_statistics_counter.php?DL_URL=/$path";
 	}
 
-	print "<tr><td class='n'><a id='".$file['img_id']."' href='$file_link_prefix" . urlencode($file['name']). "'>" .htmlentities($file['name']). "</a></td>";
+	print "<tr><td class='n'><a id='".$file['img_id']."' href='$file_link_prefix" . urlencode($file['name']). "'>" .get_utf8_encoded($file['name']). "</a></td>";
 	// print "<td class='m'>" . date('Y-M-d H:i:s', $file['modtime'])   . "</td>";
 	print "<td class='s hidden-sm hidden-xs'>" . format_bytes($file['size'],2)           . " </td>";
 	print "<td class='t hidden-sm hidden-xs'>" . $file['file_type']                      . "</td>";
