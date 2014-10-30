@@ -18,7 +18,7 @@ $j(document).ready(function() {
 
  	// tells you there is a ShoutBox error
  	$j('div#shoutbox').ajaxError(function() {
- 		$(this).text( "Triggered ajaxError handler on shoutbox" );
+ 		$j(this).text( "Triggered ajaxError handler on shoutbox" );
  	});
 
 	// submits new text to ShoutBox
