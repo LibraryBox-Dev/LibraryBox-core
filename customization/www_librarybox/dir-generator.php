@@ -394,7 +394,7 @@ if($path != "./") {
 
 // Print folder information
 foreach($folderlist as $folder) {
-	print "<tr><td class='n'><a id='folder' href='" . urlencode($folder['name']). "'>" .get_utf8_encoded($folder['name']). "</a>/</td>";
+	print "<tr><td class='n'><a id='folder' href='" . $folder['name']. "'>" .get_utf8_encoded($folder['name']). "</a>/</td>";
 	//print "<td class='m'>" . date('Y-M-d H:i:s', $folder['modtime']) . "</td>";
 	print "<td class='s hidden-sm hidden-xs'>" . (($calculate_folder_size)?format_bytes($folder['size'], 2):'--') . " </td>";
 	print "<td class='t hidden-sm hidden-xs'>" . $folder['file_type']                    . "</td></tr>\n";
