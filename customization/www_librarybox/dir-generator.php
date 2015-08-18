@@ -384,7 +384,7 @@ print "</tr></thead><tbody>";
 
 // Parent directory link
 if($path != "./") {
-	print "<tr><td data-l10n-id='filedirParDir' class='n'><a id='folder' href='..'>Parent Directory</a>/</td>";
+	print "<tr><td data-l10n-id='filedirParDir' class='n'><a id='folder' href='..'></a>/</td>";
 	//print "<td class='m'> </td>";
 	print "<td class='s hidden-sm hidden-xs'> </td>";
 	print "<td class='t hidden-sm hidden-xs'>Directory</td></tr>\n";
