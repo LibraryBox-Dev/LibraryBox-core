@@ -1,5 +1,8 @@
 LibraryBox 2.0 Core script files.
 
+Join the chat at https://gitter.im/LibraryBox-Dev/LibraryBox-core
+
+
 Matthias Strubel 2013-07-24  matthias.strubel@aod-rpg.de
 This sourcecode is licenced under GPL-3
 
@@ -93,3 +96,4 @@ dir-generator.php	=> 	KittyKat dir Listing with customization for counting downl
 
 
     Creates a SQLite file in /opt/piratebox/share called /opt/piratebox/share/vc_statistics.sqlite
+
