@@ -93,3 +93,5 @@ dir-generator.php	=> 	KittyKat dir Listing with customization for counting downl
 
 
     Creates a SQLite file in /opt/piratebox/share called /opt/piratebox/share/vc_statistics.sqlite
+
+Join the chat at https://gitter.im/LibraryBox-Dev/LibraryBox-core
