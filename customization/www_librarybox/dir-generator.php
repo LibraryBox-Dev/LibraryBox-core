@@ -415,7 +415,7 @@ foreach($filelist as $file) {
 	$file_link_prefix="";
 
 	if ( $collect_dl_count ) {
-		$file_link_prefix="/dl_statistics_counter.php?DL_URL=/$path";
+		$file_link_prefix="/dl_statistics_counter.php?DL_URL=/" . urlencode($path);
 	}
 
 	print "<tr><td class='n'><a id='".$file['img_id']."' href='$file_link_prefix" . urlencode($file['name']). "'>" .get_utf8_encoded($file['name']). "</a></td>";
