@@ -1,5 +1,5 @@
 NAME = librarybox
-VERSION = 2.1.0_beta3
+VERSION = 2.1.0
 ARCH = all
 
 #PIRATEBOX_IMG_URL = "http://piratebox.aod-rpg.de/piratebox_ws_0.6_img.gz"
