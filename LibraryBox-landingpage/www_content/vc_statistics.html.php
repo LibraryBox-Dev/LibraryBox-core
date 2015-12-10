@@ -39,7 +39,7 @@ function print_table_head() {
 
 echo <<<EOD
 	<table>
-	<tr><th></th><th><a href="vc_display.php?sortBy=day">Day:</a></th><th><a href="vc_display.php?sortBy=counter&sortOrder=DESC">Visitors:</th></tr>
+	<tr><th></th><th><a href="vc_display.php?sortBy=day">Day:</a></th><th data-l10n-id="statsVisitors"><a href="vc_display.php?sortBy=counter&sortOrder=DESC">Visitors:</th></tr>
 EOD;
 }
 

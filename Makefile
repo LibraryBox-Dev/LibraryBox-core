@@ -1,5 +1,5 @@
 NAME = librarybox
-VERSION = 2.0.0
+VERSION = 2.1.0_beta3
 ARCH = all
 
 #PIRATEBOX_IMG_URL = "http://piratebox.aod-rpg.de/piratebox_ws_0.6_img.gz"
@@ -24,7 +24,7 @@ MOD_VERSION_TAG=$(BUILD_SCRIPT_LOCATION)/version_tag_mod
 
 # Filename requested by 
 MOD_IMAGE=$(IMAGE_BUILD)/OpenWRT_image
-MOD_IMAGE_TGZ=$(NAME)_2.0_img.tar.gz
+MOD_IMAGE_TGZ=$(NAME)_2.1_img.tar.gz
 
 
 #------------
@@ -96,7 +96,7 @@ apply_custom_config:
 	$(call ReconfigureConfig,$(IMAGE_BUILD_SRC)/conf)
 
 $(MOD_IMAGE):
-	gunzip -dc  $(SRC_FOLDER)/image_stuff/OpenWRT.img.gz > $@
+	gunzip -dc  $(SRC_FOLDER)/image_stuff/OpenWRT_ext4_50MB.img.gz > $@
 
 
 $(MOD_IMAGE_TGZ): $(IMAGE_BUILD_TGT) $(MOD_IMAGE) $(MOD_VERSION_TAG) 

@@ -60,7 +60,7 @@ if [ $2 = 'part2' ] ; then
 #Copy Forban-Link spacer
    cp $PIRATEBOX_FOLDER/src/no_link.html $PIRATEBOX_FOLDER/www/forban_link.html
 
-#Set permissions
+   #Set permissions
    chown $LIGHTTPD_USER:$LIGHTTPD_GROUP  $PIRATEBOX_FOLDER/share -R
    chmod  u+rw $PIRATEBOX_FOLDER/share
    chown $LIGHTTPD_USER:$LIGHTTPD_GROUP  $PIRATEBOX_FOLDER/www -R
@@ -73,9 +73,13 @@ if [ $2 = 'part2' ] ; then
    if  [ !  -f $PIRATEBOX_FOLDER/share/board/kareha.pl ] ; then  
       cp $PIRATEBOX_FOLDER/src/kareha.pl $PIRATEBOX_FOLDER/share/board
    fi
-   
-   ln -s $PIRATEBOX_FOLDER/share/board $PIRATEBOX_FOLDER/www/board
-   ln -s $UPLOADFOLDER  $PIRATEBOX_FOLDER/www/Shared
+  
+   [[ ! -L $PIRATEBOX_FOLDER/www/board  ]] &&   ln -s $PIRATEBOX_FOLDER/share/board $PIRATEBOX_FOLDER/www/board
+   [[ ! -L $PIRATEBOX_FOLDER/www/Shared ]] &&   ln -s $UPLOADFOLDER  $PIRATEBOX_FOLDER/www/Shared
+
+
+   # Generate Redirect.html once
+    sed  "s|#####HOST#####|$HOST|g"  $PIRATEBOX_FOLDER/src/redirect.html.schema >  $WWW_FOLDER/redirect.html
 fi 
 
 #Install the image-board
@@ -90,12 +94,15 @@ if [ $2 = 'imageboard' ] ; then
        exit 0;
     fi
 
-    echo "  Wgetting kareha-zip file "
+    
     cd $PIRATEBOX_FOLDER/tmp
     KAREHA_RELEASE=kareha_3.1.4.zip
-    wget http://wakaba.c3.cx/releases/$KAREHA_RELEASE
-    if [ "$?" != "0" ] ; then
-       echo "wget kareha failed.. you can place the current file your to  $PIRATEBOX_FOLDER/tmp "
+    if [ ! -e $PIRATEBOX_FOLDER/tmp/$KAREHA_RELEASE ] ; then
+	echo "  Wgetting kareha-zip file "
+    	wget http://wakaba.c3.cx/releases/$KAREHA_RELEASE
+	if [ "$?" != "0" ] ; then
+       		echo "wget kareha failed.. you can place the current file your to  $PIRATEBOX_FOLDER/tmp "
+	 fi
     fi
 
     if [ -e  $PIRATEBOX_FOLDER/tmp/$KAREHA_RELEASE ] ; then

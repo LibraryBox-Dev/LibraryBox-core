@@ -27,12 +27,13 @@ mv    $WWW_FOLDER $PIRATEBOX_FOLDER/www_old
 mv    $PIRATEBOX_FOLDER/www_librarybox $WWW_FOLDER
 cp -rv  $PIRATEBOX_FOLDER/www_old/cgi-bin $WWW_FOLDER/cgi-bin
 
-# Prepare content folder
-echo "Creating 'content' folder on USB stick and move over stuff"
-mkdir -p $WWW_CONTENT
-cp -r     $PIRATEBOX_FOLDER/www_content/*   $WWW_CONTENT
 # Link to the USB-Stick
 ln -s $WWW_CONTENT  $WWW_FOLDER/content
+
+# link index.html with redirect.html
+if [ ! -e  $WWW_FOLDER/index.html ] ; then
+	ln -s $WWW_FOLDER/redirect.html  $WWW_FOLDER/index.html
+fi
 
 $PIRATEBOX_FOLDER/bin/ftp_enable.sh generate
 

@@ -1,0 +1,212 @@
+@font-face {
+  font-family: 'GearedSlab';
+  src: url("/content/fonts/gearedslab-webfont.eot");
+  src: url("/content/fonts/gearedslab-webfont.svg");
+  src: url("/content/fonts/gearedslab-webfont.ttf");
+  src: url("/content/fonts/gearedslab-webfont.woff");
+}
+
+@font-face {
+  font-family: 'Open Sans';
+  src: url("/content/fonts/OpenSans-Regular.ttf");
+}
+
+* {
+	margin:0;
+	padding:0;
+	-webkit-box-sizing:border-box;
+	   -moz-box-sizing:border-box;
+	       box-sizing: border-box; 
+}
+
+html {
+	min-height:100%;
+	border-top:10px solid #c03d14;
+	border-bottom:10px solid #c03d14;
+	color:#61666c;
+	font-weight:400;
+	font-size:1em;
+	font-family:'Open Sans', sans-serif;
+	line-height:2em;
+}
+body {
+	padding:0px;
+	-webkit-backface-visibility:hidden;
+	background-color: #9099A3;
+}
+code {
+	font-family:consolas,monospace;	
+}
+a {
+	color:#c03d14;
+	text-decoration:none;
+}
+a:hover {
+	color:#009933;
+}
+
+a:visited {
+	color: #48468F;
+}
+
+h1 {
+	padding: 0px 0px 0px 10px;
+	margin-bottom: 12px;
+		font-family:'GearedSlab', sans-serif;
+			}
+h2 {
+	padding: 0px 0px 0px 10px;
+	margin-bottom: 12px;
+	font-family:'GearedSlab', sans-serif;
+	}
+
+/*------------------------------------*\
+    Wrapper
+\*------------------------------------*/
+.wrapper {
+	margin:0 auto;
+	padding-top:20px;
+	max-width:500px;
+}
+/*------------------------------------*\
+    Demo block
+\*------------------------------------*/
+.block {
+	// font-size:.875em;
+	margin:20px 0;
+	padding:20px;
+	color:#9099A3;
+}
+/*------------------------------------*\
+    Table (directory listing)
+\*------------------------------------*/
+
+table {
+	width:98%;
+	border-collapse:collapse;
+	font-size:1.25em;
+	line-height: 1.25em;
+	margin-left: 12px; 
+	padding:0px; 
+}
+
+th, td { font-family:'Open Sans', sans-serif;}
+		
+td.s, th.s {text-align: right;}
+div.list { 
+	background-color: white; 
+	border-top: 1px solid #646464; 
+	border-bottom: 1px solid #646464; 
+	padding-top: 10px; 
+	padding-bottom: 14px;
+	}
+
+div.foot, div.script_title { 
+	font-family:'Open Sans', sans-serif; 
+	font-size: 10pt; 
+	color: #787878; 
+	padding-top: 4px;}
+div.script_title {
+	float:right;
+	text-align:right;
+	font-size:8pt;
+	color:#999;
+	}
+tr {
+	outline:0;
+	border:0;
+}
+tr:hover td {
+	background:#f6f6f6;
+}
+th {
+	text-align:left;
+	// font-size:.75em;
+	// padding-right:20px;
+	font-weight: bold; 
+	padding-bottom: 5px;
+}
+/* 2nd Column: Filename */
+th + th {
+	text-align:left;
+}
+/* 3rd Column: Last Modified */
+th + th + th {
+	text-align:left;
+}
+/* 4th Column: Size */
+th + th + th + th {
+	text-align:center;
+}
+tr td:first-of-type {
+	padding-left:10px;
+	padding-right:10px;
+}
+td {
+	padding:8px 0;
+	outline:0;
+	border:0;
+	border-bottom:5px solid #edf1f5;
+	vertical-align:center;
+	text-align:left;
+	-webkit-transition:background 300ms ease;
+	   -moz-transition:background 300ms ease;
+	    -ms-transition:background 300ms ease;
+	     -o-transition:background 300ms ease;
+	        transition:background 300ms ease;
+}
+td a{
+	//display: block;
+}
+
+td.n a { background: url( /content/dir-images/file.png) no-repeat 10px 50%;
+			 padding-left: 35px;
+			}
+td.n a#img   { background-image: url(/content/dir-images/image.png); }
+td.n a#video { background-image: url(/content/dir-images/video.png); }
+td.n a#audio { background-image: url(/content/dir-images/sound.png); }
+td.n a#archive { background-image: url(/content/dir-images/zip.png); }
+td.n a#doc { background-image: url(/content/dir-images/office.png); }
+td.n a#font { background-image: url(/content/dir-images/file.png); }
+td.n a#file { background-image: url(/content/dir-images/file.png); }
+td.n a#folder { background-image: url(/content/dir-images/folder.png); }
+
+tr.parent a {
+	color:#9099A3;
+}
+	.parent a:hover {
+		color:#2281d0;
+	}
+/*------------------------------------*\
+    Footer
+\*------------------------------------*/
+.footer {
+	text-align:center;
+}
+/*------------------------------------*\
+    Column style
+\*------------------------------------*/
+
+.n {
+	text-align:left;
+	white-space: -moz-pre-wrap; /* Mozilla */
+	white-space: -hp-pre-wrap; /* HP printers */
+	white-space: -o-pre-wrap; /* Opera 7 */
+	white-space: -pre-wrap; /* Opera 4-6 */
+	white-space: pre-wrap; /* CSS 2.1 */
+	white-space: pre-line; /* CSS 3 (and 2.1 as well, actually) */
+	word-wrap: break-word; /* IE */
+	word-break: break-all;
+	}
+
+.s {
+	text-align:left;	
+}
+
+.t {
+	text-align:center;
+}
+		
+.c {
+	text-align:left;
+}

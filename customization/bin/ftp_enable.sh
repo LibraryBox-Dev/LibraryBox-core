@@ -14,6 +14,12 @@ PIRATEBOX_HOOK_CONF=$PIRATEBOX_CONF_FOLDER/hook_custom.conf  ##Here is the confi
 
 IS_OPENWRT=' -e /etc/openwrt_version '
 
+if [ $IS_OPENWRT ] ; then
+	MY_HOSTNAME=`uci get system.@system[0].hostname`
+else
+	MY_HOSTNAME=`hostname`
+fi
+
 FTP_CONF_FOLDER=$PIRATEBOX_CONF_FOLDER/ftp
 BASIC_FTP_CONFIG=$FTP_CONF_FOLDER/ftp.conf
 FTP_SYNC_CLIENT_CONFIG=$FTP_CONF_FOLDER/ftp_sync_client.conf
@@ -81,6 +87,8 @@ print_current_config() {
 	echo "   FTP Sync hostname          : $SYNC_CLIENT_HOST "
 	echo "   FTP Sync password          : $SYNC_CLIENT_STATIC_PASSWORD "
 	echo " "
+	echo " -- "
+	echo "   The hostname this box is   :" $MY_HOSTNAME 
 	print_line
 }
 
