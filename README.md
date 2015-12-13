@@ -1,9 +1,10 @@
 # PirateBoxScripts with Modifications for running in a Webserver     
-&copy; 2013 [Matthias Strubel](mailto:matthias.strubel@aod-rpg.de) licenced under GPL-3
+
+[![Join the chat at https://gitter.im/PirateBox-Dev/PirateBoxScripts_Webserver](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/PirateBox-Dev/PirateBoxScripts_Webserver?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+&copy; 2012-2014 [Matthias Strubel](mailto:matthias.strubel@aod-rpg.de) licenced under GPL-3
 
 ## Maintainers
 * [Matthias Strubel](matthias.strubel@aod-rpg.de)     
-* [Cale Black](cablack@rams.colostate.edu)
 
 Sources for Running PirateBox with Webserver lighttpd     
 Contains: Shoutbox, Forum
