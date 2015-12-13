@@ -1,6 +1,6 @@
 <?php
 
-$VERSION = '1.1';
+$VERSION = '1.2';
 
 /*  Lighttpd Enhanced Directory Listing Script
  *  ------------------------------------------
@@ -11,6 +11,8 @@ $VERSION = '1.1';
  *          Modifications for including a download-count.
  *  Since 1.1 ; Jason Griffey
  *			Modifications for responsive design
+ *  Since 1.2 ; Matthias Strubel
+ *          Modifications for multi character type support.
  *
  *  GNU License Agreement
  *  ---------------------
@@ -224,13 +226,13 @@ function get_folder_statistics ($my_path, &$folder_statistics) {
 }
 
 function get_utf8_encoded($string) {
-	$encoding = mb_detect_encoding($string, "auto" ) ;
+	$encoding = mb_detect_encoding($string, "UTF-8, ISO-8859-1" ) ;
+	$return_string =  $string;
 	if ( $encoding  == "UTF-8" ||   $encoding  == "ASCII" ) {
-		return $string ;
 	} else {
 		$return_string = mb_convert_encoding($string, "UTF-8");
-		return  $return_string;
 	}
+	return  $return_string
 }
 
 // Print the heading stuff
@@ -450,7 +452,7 @@ if ($display_readme)
 	}
 }
 
-print "<div class='foot'>LibraryBox v2.1</div>
+print "<div class='foot'>LibraryBox v2.1 </div>
 	</body>
 	</html>";
 

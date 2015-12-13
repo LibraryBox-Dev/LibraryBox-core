@@ -56,7 +56,8 @@ function dump_dir_r($folder) {
 			if ( is_dir( $file ) ) {
 				dump_dir_r($file);
 			} else {
-				$found_encoding=mb_detect_encoding($file, "auto");
+				# Other option would be "auto" to freely discover
+				$found_encoding=mb_detect_encoding($file, "UTF-8, ISO-8859-1");
 				echo "$file\n";
 				echo "Encoding detected:  $found_encoding  \n";
 
