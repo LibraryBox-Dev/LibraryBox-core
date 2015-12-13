@@ -232,7 +232,7 @@ function get_utf8_encoded($string) {
 	} else {
 		$return_string = mb_convert_encoding($string, "UTF-8");
 	}
-	return  $return_string
+	return  $return_string;
 }
 
 // Print the heading stuff
