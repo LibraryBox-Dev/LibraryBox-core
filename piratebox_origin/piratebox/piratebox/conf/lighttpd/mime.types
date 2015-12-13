@@ -4,7 +4,7 @@
 ## Use the "Content-Type" extended attribute to obtain mime type if
 ## possible
 ##
-mimetype.use-xattr        = "disable"
+mimetype.use-xattr        = "disable" 
 
 ##
 ## mimetype mapping
@@ -63,14 +63,14 @@ mimetype.assign             = (
   ".bz2"          =>      "application/x-bzip",
   ".tbz"          =>      "application/x-bzip-compressed-tar",
   ".tar.bz2"      =>      "application/x-bzip-compressed-tar",
-  ".odt"          =>      "application/vnd.oasis.opendocument.text",
-  ".ods"          =>      "application/vnd.oasis.opendocument.spreadsheet",
-  ".odp"          =>      "application/vnd.oasis.opendocument.presentation",
-  ".odg"          =>      "application/vnd.oasis.opendocument.graphics",
-  ".odc"          =>      "application/vnd.oasis.opendocument.chart",
-  ".odf"          =>      "application/vnd.oasis.opendocument.formula",
-  ".odi"          =>      "application/vnd.oasis.opendocument.image",
-  ".odm"          =>      "application/vnd.oasis.opendocument.text-master",
+  ".odt"          =>      "application/vnd.oasis.opendocument.text", 
+  ".ods"          =>      "application/vnd.oasis.opendocument.spreadsheet", 
+  ".odp"          =>      "application/vnd.oasis.opendocument.presentation", 
+  ".odg"          =>      "application/vnd.oasis.opendocument.graphics", 
+  ".odc"          =>      "application/vnd.oasis.opendocument.chart", 
+  ".odf"          =>      "application/vnd.oasis.opendocument.formula", 
+  ".odi"          =>      "application/vnd.oasis.opendocument.image", 
+  ".odm"          =>      "application/vnd.oasis.opendocument.text-master", 
   ".ott"          =>      "application/vnd.oasis.opendocument.text-template",
   ".ots"          =>      "application/vnd.oasis.opendocument.spreadsheet-template",
   ".otp"          =>      "application/vnd.oasis.opendocument.presentation-template",
@@ -83,7 +83,6 @@ mimetype.assign             = (
   ".json"	 =>     "application/json",
   ".epub"	 => 	"application/epub+zip",
   ".fb2"         =>      "text/xml",
-  ".svg"          =>      "image/svg+xml"
 
 # make the default mime type application/octet-stream.
   ""              =>      "application/octet-stream",
