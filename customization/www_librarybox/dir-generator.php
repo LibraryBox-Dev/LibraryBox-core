@@ -95,6 +95,9 @@ if(!is_dir($path)) {
 	die("<b>" . $path . "</b> is not a valid path.");
 }
 
+//Load UTF8 Helper stuff
+require_once "uft8-help.func.php";
+
 
 //
 // Get the size in bytes of a folder
@@ -223,16 +226,6 @@ function get_folder_statistics ($my_path, &$folder_statistics) {
 			'counter' 	=>  $line [ 'counter' ] ,
 			);
 	}
-}
-
-function get_utf8_encoded($string) {
-	$encoding = mb_detect_encoding($string, "UTF-8, ISO-8859-1" ) ;
-	$return_string =  $string;
-	if ( $encoding  == "UTF-8" ||   $encoding  == "ASCII" ) {
-	} else {
-		$return_string = mb_convert_encoding($string, "UTF-8");
-	}
-	return  $return_string;
 }
 
 // Print the heading stuff

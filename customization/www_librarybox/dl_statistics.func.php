@@ -1,7 +1,7 @@
-<?php 
+<?php
 
 require_once  "dl_statistics.conf.php";
-
+require_once "uft8-help.func.php";
 
 function __do_db_connect() {
 	$config = dl_get_config();
@@ -32,7 +32,7 @@ function dl_read_stat_per_path ($path="%"  , $sortBy , $sort, $listType , $limit
 
 	if ( ! isset ( $sort ) )
 		$sort=$config["sortOrder"];
-	
+
 	if ( ! isset ( $limit ))
 		 $limit=$config["top_max"];
 
@@ -59,11 +59,13 @@ function dl_read_stat_per_path ($path="%"  , $sortBy , $sort, $listType , $limit
     $full_result = array();
     foreach ( $result as $elem => &$line ) {
     	if (file_exists('/mnt/usb/LibraryBox' . $line['url'])) {
-    		unset ( $line[0] );
-        unset ( $line[1] );
-        $url_expl = explode('/', $line['url']);
-        $line['filename'] = end($url_expl);
-        $full_result[] = $line;
+	  unset ( $line[0] );
+          unset ( $line[1] );
+          $url_expl = explode('/', $line['url']);
+          $line['filename'] = end($url_expl);
+ 	  $line['url_encoded'] = rawurlencode( $line['url'] ) ;
+	  $line['filename_encoded'] = rawurlencode ( get_utf8_encoded (  $line['filename'] ))  ;
+          $full_result[] = $line;
     	}
     }
     if ($listType == "top") {
