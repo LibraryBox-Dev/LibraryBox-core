@@ -37,12 +37,10 @@ PIRATEBOX_CONFIG=$1
 if [ $2 = 'pyForum' ] ; then
     cp -v $PIRATEBOX_FOLDER/src/forest.py  $WWW_FOLDER/cgi-bin
     cp -v $PIRATEBOX_FOLDER/src/forest.css $WWW_FOLDER/
-    cp -v $PIRATEBOX_FOLDER/src/forum_forest.html  $WWW_FOLDER/forum.html
     mkdir -p $PIRATEBOX_FOLDER/forumspace
     chmod a+rw -R  $PIRATEBOX_FOLDER/forumspace
     chown $LIGHTTPD_USER:$LIGHTTPD_GROUP  $WWW_FOLDER/cgi-bin/forest.py
     chown $LIGHTTPD_USER:$LIGHTTPD_GROUP  $WWW_FOLDER/forest.css
-    chown $LIGHTTPD_USER:$LIGHTTPD_GROUP  $WWW_FOLDER/forum.html
     echo "Copied the files. Recheck your PirateBox now. "
 fi
 
@@ -56,9 +54,6 @@ if [ $2 = 'part2' ] ; then
    mkdir -p $PIRATEBOX_FOLDER/share/board
    mkdir -p $PIRATEBOX_FOLDER/share/tmp
    mkdir -p $PIRATEBOX_FOLDER/tmp
-
-#Copy Forban-Link spacer
-   cp $PIRATEBOX_FOLDER/src/no_link.html $PIRATEBOX_FOLDER/www/forban_link.html
 
    #Set permissions
    chown $LIGHTTPD_USER:$LIGHTTPD_GROUP  $PIRATEBOX_FOLDER/share -R
@@ -74,21 +69,15 @@ if [ $2 = 'part2' ] ; then
       cp $PIRATEBOX_FOLDER/src/kareha.pl $PIRATEBOX_FOLDER/share/board
    fi
   
-   [[ ! -L $PIRATEBOX_FOLDER/www/board  ]] &&   ln -s $PIRATEBOX_FOLDER/share/board $PIRATEBOX_FOLDER/www/board
-   [[ ! -L $PIRATEBOX_FOLDER/www/Shared ]] &&   ln -s $UPLOADFOLDER  $PIRATEBOX_FOLDER/www/Shared
-
-
    # Generate Redirect.html once
-    sed  "s|#####HOST#####|$HOST|g"  $PIRATEBOX_FOLDER/src/redirect.html.schema >  $WWW_FOLDER/redirect.html
+   sed  "s|#####HOST#####|$HOST|g"  $PIRATEBOX_FOLDER/src/redirect.html.schema >  $WWW_FOLDER/redirect.html
+   [ ! -L $PIRATEBOX_FOLDER/www/board  ] && ln -s $PIRATEBOX_FOLDER/share/board $PIRATEBOX_FOLDER/www/board
+   [ ! -L $PIRATEBOX_FOLDER/www/Shared ] && ln -s $UPLOADFOLDER  $PIRATEBOX_FOLDER/www/Shared
 fi 
 
 #Install the image-board
 if [ $2 = 'imageboard' ] ; then
    
-    #Activate on mainpage
-    cp $PIRATEBOX_FOLDER/src/forum_kareha.html  $WWW_FOLDER/forum.html
-
-
     if [ -e  $PIRATEBOX_FOLDER/share/board/init_done ] ; then
        echo "$PIRATEBOX_FOLDER/share/board/init_done file Found in Kareha folder. Won't reinstall board."
        exit 0;
@@ -119,12 +108,10 @@ if [ $2 = 'imageboard' ] ; then
     cd  $PIRATEBOX_FOLDER/share/board  
     cp -R  mode_image/* ./   
     cp  $PIRATEBOX_FOLDER/src/kareha_img_config.pl $PIRATEBOX_FOLDER/share/board/config.pl 
+    cp  $PIRATEBOX_FOLDER/src/no_forum.html  $PIRATEBOX_FOLDER/share/board/index.htm
     chown -R $LIGHTTPD_USER:$LIGHTTPD_GROUP  $PIRATEBOX_FOLDER/share/board   
     #Install filetype thumbnails
     mv $PIRATEBOX_FOLDER/share/board/extras/icons  $PIRATEBOX_FOLDER/share/board/ 
-
-    #Activate on mainpage
-    cp $PIRATEBOX_FOLDER/src/forum_kareha.html  $WWW_FOLDER/forum.html
 
     echo "Errors in chown occurs if you are using vfat on the USB stick"
     echo "   . don't Panic!"

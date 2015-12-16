@@ -1,6 +1,6 @@
 <?php
 
-$VERSION = '1.1';
+$VERSION = '1.2';
 
 /*  Lighttpd Enhanced Directory Listing Script
  *  ------------------------------------------
@@ -11,6 +11,8 @@ $VERSION = '1.1';
  *          Modifications for including a download-count.
  *  Since 1.1 ; Jason Griffey
  *			Modifications for responsive design
+ *  Since 1.2 ; Matthias Strubel
+ *          Modifications for multi character type support.
  *
  *  GNU License Agreement
  *  ---------------------
@@ -92,6 +94,9 @@ if($_SERVER['PHP_SELF'] == '/'.$path) {
 if(!is_dir($path)) {
 	die("<b>" . $path . "</b> is not a valid path.");
 }
+
+//Load UTF8 Helper stuff
+require_once "uft8-help.func.php";
 
 
 //
@@ -220,16 +225,6 @@ function get_folder_statistics ($my_path, &$folder_statistics) {
 			'url' 		=>  $line [ 'url' ] ,
 			'counter' 	=>  $line [ 'counter' ] ,
 			);
-	}
-}
-
-function get_utf8_encoded($string) {
-	$encoding = mb_detect_encoding($string, "auto" ) ;
-	if ( $encoding  == "UTF-8" ||   $encoding  == "ASCII" ) {
-		return $string ;
-	} else {
-		$return_string = mb_convert_encoding($string, "UTF-8");
-		return  $return_string;
 	}
 }
 
@@ -394,7 +389,7 @@ if($path != "./") {
 
 // Print folder information
 foreach($folderlist as $folder) {
-	print "<tr><td class='n'><a id='folder' href='" . urlencode( $folder['name'] ) . "'>" .get_utf8_encoded($folder['name']). "</a>/</td>";
+	print "<tr><td class='n'><a id='folder' href='" . rawurlencode( $folder['name'] ) . "'>" .get_utf8_encoded($folder['name']). "</a>/</td>";
 	//print "<td class='m'>" . date('Y-M-d H:i:s', $folder['modtime']) . "</td>";
 	print "<td class='s hidden-sm hidden-xs'>" . (($calculate_folder_size)?format_bytes($folder['size'], 2):'--') . " </td>";
 	print "<td class='t hidden-sm hidden-xs'>" . $folder['file_type']                    . "</td></tr>\n";
@@ -415,10 +410,10 @@ foreach($filelist as $file) {
 	$file_link_prefix="";
 
 	if ( $collect_dl_count ) {
-		$file_link_prefix="/dl_statistics_counter.php?DL_URL=/" . urlencode($path);
+		$file_link_prefix="/dl_statistics_counter.php?DL_URL=/" . rawurlencode($path);
 	}
 
-	print "<tr><td class='n'><a id='".$file['img_id']."' href='$file_link_prefix" . urlencode($file['name']). "'>" .get_utf8_encoded($file['name']). "</a></td>";
+	print "<tr><td class='n'><a id='".$file['img_id']."' href='$file_link_prefix" . rawurlencode($file['name']). "'>" .get_utf8_encoded($file['name']). "</a></td>";
 	// print "<td class='m'>" . date('Y-M-d H:i:s', $file['modtime'])   . "</td>";
 	print "<td class='s hidden-sm hidden-xs'>" . format_bytes($file['size'],2)           . " </td>";
 	print "<td class='t hidden-sm hidden-xs'>" . $file['file_type']                      . "</td>";
@@ -450,7 +445,7 @@ if ($display_readme)
 	}
 }
 
-print "<div class='foot'>LibraryBox v2.1</div>
+print "<div class='foot'>LibraryBox v2.1 </div>
 	</body>
 	</html>";
 

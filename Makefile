@@ -1,5 +1,5 @@
 NAME = librarybox
-VERSION = 2.1.0
+VERSION = 2.1.1
 ARCH = all
 
 #PIRATEBOX_IMG_URL = "http://piratebox.aod-rpg.de/piratebox_ws_0.6_img.gz"
@@ -70,6 +70,7 @@ define ReconfigureConfig
 	echo 'include "/opt/piratebox/conf/lighttpd/fastcgi.conf"' >> $(1)/lighttpd/lighttpd.conf
 	echo 'include "/opt/piratebox/conf/lighttpd/custom_index.conf"' >> $(1)/lighttpd/lighttpd.conf
 	sed 's|IPV6_ENABLE="no"|IPV6_ENABLE="yes"|' -i  $(1)/ipv6.conf
+        grep -q "svg" $(1)/lighttpd/mime.types || sed -i 's|".fb2"         =>      "text/xml",|".fb2"         =>      "text/xml",\n".svg"          =>      "image/svg+xml",|' $(1)/lighttpd/mime.types
 endef
 
 building: $(BUILD_SCRIPT_LOCATION) 
