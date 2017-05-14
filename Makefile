@@ -75,9 +75,14 @@ define ReconfigureConfig
 	sed 's|IPV6_ENABLE="no"|IPV6_ENABLE="yes"|' -i  $(1)/ipv6.conf
 endef
 
+# Adjust src files
+define ReconfigureSRC
+	grep -q "vc_counter" $(1)/redirect.html.schema || sed -e 's:Redirect:<img src="/vc_counter.php" />Redirect...:' -i $(1)/redirect.html.schema
+endef
+
 building: $(BUILD_SCRIPT_LOCATION) 
 	 $(call ReconfigureConfig,$(BUILD_SCRIPT_LOCATION)/conf)	
-
+	 $(call ReconfigureSRC,$(BUILD_SCRIPT_LOCATION)/src)
 
 #--------------------------------------------
 # Preparing image
