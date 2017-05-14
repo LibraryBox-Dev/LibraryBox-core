@@ -70,6 +70,7 @@ define ReconfigureConfig
 	sed 's:ssid=PirateBox - Share Freely:ssid=LibraryBox - Free Content!:' -i $(1)/hostapd.conf
 	sed -i $(1)/lighttpd/lighttpd.conf -e 's|#include "/opt/piratebox/conf/lighttpd/fastcgi-php.conf"|include "/opt/piratebox/conf/lighttpd/fastcgi-php.conf"|' 
 	echo 'include "/opt/piratebox/conf/lighttpd/custom_index.conf"' >> $(1)/lighttpd/lighttpd.conf
+	echo 'include "/opt/piratebox/conf/lighttpd/librarybox_tools.conf"' >> $(1)/lighttpd/lighttpd.conf
 	sed 's|IPV6_ENABLE="no"|IPV6_ENABLE="yes"|' -i  $(1)/ipv6.conf
 endef
 
@@ -100,6 +101,7 @@ prepare_image_config: $(IMAGE_BUILD_SRC)  $(IMAGE_BUILD_TGT)
 apply_custom_config:
 	cp -v $(BUILD_SCRIPT_LOCATION)/conf/hook_custom.conf $(IMAGE_BUILD_SRC)/conf
 	$(call ReconfigureConfig,$(IMAGE_BUILD_SRC)/conf)
+	$(call ReconfigureSRC,$(BUILD_SCRIPT_LOCATION)/src)
 
 $(MOD_IMAGE):
 	gunzip -dc  $(SRC_FOLDER)/image_stuff/OpenWRT_ext4_50MB.img.gz > $@
@@ -116,7 +118,7 @@ $(MOD_IMAGE_TGZ): $(IMAGE_BUILD_TGT) $(MOD_IMAGE) $(MOD_VERSION_TAG)
 	sudo umount  $(IMAGE_BUILD_TGT)
 	tar czf  $(MOD_IMAGE_TGZ)  $(MOD_IMAGE)
 
-image: clean_image building prepare_image_config apply_custom_config $(MOD_IMAGE_TGZ) 
+image: clean_image $(SRC_VERSION_TAG) building prepare_image_config apply_custom_config $(MOD_IMAGE_TGZ) 
 
 #---------------------------------------------
 # Package creation
