@@ -6,11 +6,6 @@ $j(document).ready(function() {
 		console.log('clicked menu icon');
 	});
 
-	// get forban
-	$j.get('/forban_link.html', function(data) {
-		$j('div#forban_link').html(data);
-	});
-	
 	// get station counter
 	$j.get('/station_cnt.txt', function(data) {
 		$j('div#station').html(data);
