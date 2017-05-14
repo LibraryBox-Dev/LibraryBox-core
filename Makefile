@@ -58,6 +58,8 @@ $(BUILD_SCRIPT_LOCATION):
 	mkdir -p $@
 	cp -vr $(SRC_SCRIPT_LOCATION)/*  $(BUILD_SCRIPT_LOCATION)
 	cp -vr $(MOD_SRC_FOLDER)/*  $(BUILD_SCRIPT_LOCATION)
+# Remove PirateBox' content folder
+	rm -v $(BUILD_SCRIPT_LOCATION)/www_content
 	cp -vr $(UI_SRC_FOLDER)/conf/*   $(BUILD_SCRIPT_LOCATION)/conf/
 	cp -vr $(UI_SRC_FOLDER)/python_lib $(BUILD_SCRIPT_LOCATION)
 	cp -vr $(UI_SRC_FOLDER)/www_content $(BUILD_SCRIPT_LOCATION)
@@ -66,11 +68,11 @@ $(BUILD_SCRIPT_LOCATION):
 define ReconfigureConfig
 	sed 's:HOST="piratebox.lan":HOST="librarybox.lan":'  -i  $(1)/piratebox.conf
 	sed 's:DROOPY_ENABLED="yes":DROOPY_ENABLED="no":'  -i  $(1)/piratebox.conf
+	sed 's:CUSTOM_DIRLIST_COPY="yes":CUSTOM_DIRLIST_COPY="no":' -i $(1)/piratebox.conf
 	sed 's:ssid=PirateBox - Share Freely:ssid=LibraryBox - Free Content!:' -i $(1)/hostapd.conf
-	echo 'include "/opt/piratebox/conf/lighttpd/fastcgi.conf"' >> $(1)/lighttpd/lighttpd.conf
+	sed -i $(1)/lighttpd/lighttpd.conf -e 's|#include "/opt/piratebox/conf/lighttpd/fastcgi-php.conf"|include "/opt/piratebox/conf/lighttpd/fastcgi-php.conf"|' 
 	echo 'include "/opt/piratebox/conf/lighttpd/custom_index.conf"' >> $(1)/lighttpd/lighttpd.conf
 	sed 's|IPV6_ENABLE="no"|IPV6_ENABLE="yes"|' -i  $(1)/ipv6.conf
-        grep -q "svg" $(1)/lighttpd/mime.types || sed -i 's|".fb2"         =>      "text/xml",|".fb2"         =>      "text/xml",\n".svg"          =>      "image/svg+xml",|' $(1)/lighttpd/mime.types
 endef
 
 building: $(BUILD_SCRIPT_LOCATION) 
