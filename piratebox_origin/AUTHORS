@@ -1,0 +1,38 @@
+Based on idea of David Darts:  http://daviddarts.com
+
+Script collection by:
+   Matthias Strubel  http://piratebox.aod-rpg.de
+
+Live CD & Installer by:
+   TerrorByte ~ Cale Blac k
+
+Contributors for modifications:
+       # stylesuxx   - Makefile and development support
+       # FriedZombie - OpenWRT and scripting support
+       # someguy   - Droopy Directory support
+       # Reventlov - Modification for better iOS Support
+       # someguy  - Modifications for running on OpenWRT
+       # ToM'aSs  - Languag-Support
+       # Liblor   - Fixes	
+       # Loris Reiff
+       # iamarf
+       # denis-d
+       # taffy-nay
+       # risca
+       # herr-gabriel
+       # Jess Stubenbord
+       # Mike Weaver
+       # bartschat  - RTC RPi feature
+       # casdr
+       # jdieg0
+       # a-ira 
+       # ... and all others I might have forgotten.
+
+
+Design:
+   * David Brooks
+
+Based on Software:
+   * Droopy     - http://stackp.online.fr/?p=28
+   * forest.py  - http://www.triv.org.uk/~nelis/forest/
+   * kareha     - http://wakaba.c3.cx/s/web/wakaba_kareha
