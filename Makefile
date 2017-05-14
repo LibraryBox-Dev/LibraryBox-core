@@ -60,8 +60,6 @@ $(BUILD_SCRIPT_LOCATION):
 	cp -vr $(MOD_SRC_FOLDER)/*  $(BUILD_SCRIPT_LOCATION)
 # Remove PirateBox' content folder
 	rm -vr $(BUILD_SCRIPT_LOCATION)/www_content
-	cp -vr $(UI_SRC_FOLDER)/conf/*   $(BUILD_SCRIPT_LOCATION)/conf/
-	cp -vr $(UI_SRC_FOLDER)/python_lib $(BUILD_SCRIPT_LOCATION)
 	cp -vr $(UI_SRC_FOLDER)/www_content $(BUILD_SCRIPT_LOCATION)
 
 # Changing of configuration files only via differences
