@@ -23,8 +23,8 @@ $j(document).ready(function() {
 		post_shoutbox();
 	});
 
-	$j.getJSON("/config.json" , function(data) {
-		var showbox = data.librarybox.module.shoutbox.status;
+	$j.getJSON("/piratebox_config.json" , function(data) {
+		var showbox = data.piratebox.module.shoutbox.status;
 		if (showbox) {
 			display_shoutbox();
 		} else {
