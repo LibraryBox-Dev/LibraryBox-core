@@ -100,6 +100,7 @@ prepare_image_config: $(IMAGE_BUILD_SRC)  $(IMAGE_BUILD_TGT)
 #   I'm doin it this way, because the origin image knows what to change.
 apply_custom_config:
 	cp -v $(BUILD_SCRIPT_LOCATION)/conf/hook_custom.conf $(IMAGE_BUILD_SRC)/conf
+	cp -v $(BUILD_SCRIPT_LOCATION)/conf/chat_init.txt $(IMAGE_BUILD_SRC)/conf
 	$(call ReconfigureConfig,$(IMAGE_BUILD_SRC)/conf)
 	$(call ReconfigureSRC,$(BUILD_SCRIPT_LOCATION)/src)
 
