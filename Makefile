@@ -1,5 +1,5 @@
 NAME = librarybox
-VERSION = 2.1.1
+VERSION = 2.2.0-dev1
 ARCH = all
 
 #PIRATEBOX_IMG_URL = "http://piratebox.aod-rpg.de/piratebox_ws_0.6_img.gz"
@@ -24,7 +24,7 @@ MOD_VERSION_TAG=$(BUILD_SCRIPT_LOCATION)/version_tag_mod
 
 # Filename requested by 
 MOD_IMAGE=$(IMAGE_BUILD)/OpenWRT_image
-MOD_IMAGE_TGZ=$(NAME)_2.1_img.tar.gz
+MOD_IMAGE_TGZ=$(NAME)_2.2_img.tar.gz
 
 
 #------------
