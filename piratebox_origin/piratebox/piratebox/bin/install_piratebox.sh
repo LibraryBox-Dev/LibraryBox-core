@@ -1,13 +1,23 @@
 #!/bin/sh
-## PirateBox installer script  v.01
-##  created by Matthias Strubel   2011-08-04
+## PirateBox installer script  
+##  created by Matthias Strubel   (c)2011-2014 GPL-3
 ##
 
-## ASH does not support arrays, so no nice foreach 
-# All Perl packages for kareha
-##OPENWRT_PACKAGES_IMAGEBOARD=(  perl perlbase-base perlbase-cgi perlbase-essential perlbase-file perlbase-bytes perlbase-config perlbase-data perlbase-db-file perlbase-digest perlbase-encode perlbase-encoding perlbase-fcntl perlbase-gdbm-file perlbase-integer perlbase-socket perlbase-unicode perlbase-utf8 perlbase-xsloader  )
+create_content_folder(){
 
+   echo "Creating 'content' folder on USB stick and move over stuff"
+   mkdir -p $WWW_CONTENT
+   cp -r     $PIRATEBOX_FOLDER/www_content/*   $WWW_CONTENT
 
+   [ ! -L $PIRATEBOX_FOLDER/www/content  ] && \
+		ln -s $WWW_CONTENT  $WWW_FOLDER/content
+   [ ! -e $WWW_FOLDER/favicon.ico ] && \
+		ln -s $WWW_CONTENT/favicon.ico $WWW_FOLDER
+
+   chown $LIGHTTPD_USER:$LIGHTTPD_GROUP  $WWW_CONTENT -R
+   chmod  u+rw $WWW_CONTENT
+   return 0
+}
 
 # Load configfile
 
@@ -36,11 +46,11 @@ PIRATEBOX_CONFIG=$1
 
 if [ $2 = 'pyForum' ] ; then
     cp -v $PIRATEBOX_FOLDER/src/forest.py  $WWW_FOLDER/cgi-bin
-    cp -v $PIRATEBOX_FOLDER/src/forest.css $WWW_FOLDER/
+    cp -v $PIRATEBOX_FOLDER/src/forest.css $WWW_FOLDER/content/css
     mkdir -p $PIRATEBOX_FOLDER/forumspace
-    chmod a+rw -R  $PIRATEBOX_FOLDER/forumspace
+    chmod a+rw -R  $PIRATEBOX_FOLDER/forumspace 2> /dev/null
     chown $LIGHTTPD_USER:$LIGHTTPD_GROUP  $WWW_FOLDER/cgi-bin/forest.py
-    chown $LIGHTTPD_USER:$LIGHTTPD_GROUP  $WWW_FOLDER/forest.css
+    chown $LIGHTTPD_USER:$LIGHTTPD_GROUP  $WWW_FOLDER/content/forest.css  2> /dev/null
     echo "Copied the files. Recheck your PirateBox now. "
 fi
 
@@ -55,6 +65,10 @@ if [ $2 = 'part2' ] ; then
    mkdir -p $PIRATEBOX_FOLDER/share/tmp
    mkdir -p $PIRATEBOX_FOLDER/tmp
 
+   #Distribute the Directory Listing files
+   if [ "$CUSTOM_DIRLIST_COPY" = "yes" ] ; then
+       $PIRATEBOX_FOLDER/bin/distribute_files.sh $SHARE_FOLDER/Shared true
+   fi
    #Set permissions
    chown $LIGHTTPD_USER:$LIGHTTPD_GROUP  $PIRATEBOX_FOLDER/share -R
    chmod  u+rw $PIRATEBOX_FOLDER/share
@@ -69,10 +83,11 @@ if [ $2 = 'part2' ] ; then
       cp $PIRATEBOX_FOLDER/src/kareha.pl $PIRATEBOX_FOLDER/share/board
    fi
   
-   # Generate Redirect.html once
-   sed  "s|#####HOST#####|$HOST|g"  $PIRATEBOX_FOLDER/src/redirect.html.schema >  $WWW_FOLDER/redirect.html
    [ ! -L $PIRATEBOX_FOLDER/www/board  ] && ln -s $PIRATEBOX_FOLDER/share/board $PIRATEBOX_FOLDER/www/board
    [ ! -L $PIRATEBOX_FOLDER/www/Shared ] && ln -s $UPLOADFOLDER  $PIRATEBOX_FOLDER/www/Shared
+   [ ! -L $PIRATEBOX_FOLDER/www/content  ] && \
+       ln -s $WWW_CONTENT  $WWW_FOLDER/content
+
 fi 
 
 #Install the image-board
@@ -158,3 +173,6 @@ if [ $2 = "hostname" ] ; then
 	echo "..done"
 fi
 
+if [ $2 = "content" ] ; then
+	create_content_folder
+fi

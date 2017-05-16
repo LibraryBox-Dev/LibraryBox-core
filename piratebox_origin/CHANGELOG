@@ -1,5 +1,73 @@
 CHANGELOG
 
+=== 1.1.3 ===
+* [New] Translation bt-pr
+* [New] [RPi] Helper scripts to jump to wifi client mode
+* [New] [RPi] Helper script to use SDCard without reboot
+* [New] [RPi] Image adjustments to save SDCard for to many writes
+* [Fix] Some shell incompatibilities
+* [Fix] forest.py : Cleanup used folders
+* [Fix] Fixed localization ID for placeholder message
+* [Fix] Correct/translate German localisation strings
+* [Fix] Adjust hostapd.conf with comments & addtional parameter for n-mode wifi
+* [Fix] Some help about setting up WPA2 mode for AP in hostapd.conf
+* [Fix] Reduce browser cache to a minimum, which solves issues with shoutbox and diskusage
+* [Fix] Trigger async disk usage refresh during page load
+
+=== 1.1.2 ===
+* [Fix] Upgrade 1.1.x - 1.1.x does not create content symlink
+
+=== 1.1.1 ===
+* [Fix] Translation en,fr LibraryBox -> PirateBox
+* [Fix] Spellings in translation
+* [Fix] IRC startup command failed.
+* [Removed] exchange_www.sh 
+
+=== 1.1.0 ===
+* [New] Enable / Disable file provisioning for custom lighttpd directory listing
+* [New] ChatBox message is now in conf/chat_init.txt 
+* [New] Disable the Shoutbox to prevent writing into it
+* [New] PHP configuration shipped, to enable easily for modifications
+* [New] Mesh implementation, technical preview
+* [New] JSON config file to direct client side applications, like "share apps"
+* [New] Simply python IRC Server installed and prepareable for automatic start
+* [New] Shoutbox-Time via Client-Date possible
+* [New] Website is now available under /content and /opt/piratebox/share
+* [New] [RPi] Service files for using a RTC at PiratBox
+* [New] Redirect all DNS requests to local box via firewall (custom script)
+* [New] Redirect all web request option via firewall (disabled) (custom script)
+* [New] [OpenWrt] Redirect all DNS requests to local box via firewall
+* [New] [OpenWrt] Redirect all web request option via firewall (disabled)
+* [New] [OpenWrt] Enable all wifi devices with the PirateBox SSID
+* [New] [OpenWrt] AP Client isolation activated per default
+* [Changed] Send HTTP-Code 204 via PHP, much cleaner
+* [Changed] Update jQuery to 2.2.3, removes IE <=8 support 
+* [Changed] Redirect happens now always to wished domain name
+* [Changed] Droopy, make chmod operation optional (prevent errors on OpenWRT)
+* [Fix] License Adjustments
+* [Fix] Prevent JS Injection in Shoutbox
+* [Fix] Shoutbox: Missing blank between author and content
+* [Fix] Fix problem when running in small display mode at direcotry listing.
+* [Fix] Add xhtml mime type in lighttpd configuration
+
+=== 1.0.7 ===
+* [New] Lock shoutbox when you send a message.
+* [New] Display disk space usage on front page.
+* [New] Add webm mime-type to lighttpd
+* [RPi] [New] RPi2 and Zero support
+* [RPi] [New] USB activation scripts.
+* [RPi] [New] udev rules for piratebox activation
+* [RPi] [New] Script for activating the correct hostap for Realtek chipsets
+* [RPI] [New] wpa_supplicant fallback if no AP enabled WiFi device was found
+* [Fix] Send a proper HTTP Reason code back
+* [Fix] Fix version number in RPi MOTD.
+* [Fix] Insert mime-type for .svg
+* [Fix] Improve Shoutbox update speed after sending a message.
+* [Fix] Do not cleanup the rootfs if Shared folder does not exist.
+* [Fix] Improved comparison of timestamps on RPi.
+* [Fix] Improved MOTD for RPi.
+* [Fix] Improved initialization of the board.
+
 === 1.0.6 ===
 * [Fix] Styling of the upload box iframe was quite ugly.
 
@@ -83,6 +151,8 @@ NOTE: This may only be a partial changelog, check github / your package manager 
 * [New] install method
 	* [New] install dependencies
 	* [Fixed] General cleaning
+	* [Removed] [Testing] Executable, we will stick to service based
+* [Fixed] Overwritten saved timestamp with 1970 one
 * [New] possibility in install_piratebox.sh to exchange the hostname easily
 * [New] Moved DHCP leasefile into memory on OpenWRT system (/tmp is memory)  
 * [Fix] Timesave script does not contain parts for OpenWRT anymore
@@ -93,8 +163,8 @@ NOTE: This may only be a partial changelog, check github / your package manager 
 * [Fix] Enable unescaped blanks in Upload-Folder
 * [Fix] iOS 7 captive Portal fix
 * [New] Sample configuration for UPnP Server
-* [New] Image file is ext4 and 50MB
 
 === v0.6G ===
-* [Fix] Hide dot files in directory-listing which are usually hidden files
+* [Fixed] Hide dot files in directory-listing which are usually hidden files
+* [New] Image file is ext4 and 50MB
 * [Fix] Fixed captive Portal detection for iOS7

@@ -58,24 +58,30 @@ $(BUILD_SCRIPT_LOCATION):
 	mkdir -p $@
 	cp -vr $(SRC_SCRIPT_LOCATION)/*  $(BUILD_SCRIPT_LOCATION)
 	cp -vr $(MOD_SRC_FOLDER)/*  $(BUILD_SCRIPT_LOCATION)
-	cp -vr $(UI_SRC_FOLDER)/conf/*   $(BUILD_SCRIPT_LOCATION)/conf/
-	cp -vr $(UI_SRC_FOLDER)/python_lib $(BUILD_SCRIPT_LOCATION)
+# Remove PirateBox' content folder
+	rm -vr $(BUILD_SCRIPT_LOCATION)/www_content
 	cp -vr $(UI_SRC_FOLDER)/www_content $(BUILD_SCRIPT_LOCATION)
 
 # Changing of configuration files only via differences
 define ReconfigureConfig
 	sed 's:HOST="piratebox.lan":HOST="librarybox.lan":'  -i  $(1)/piratebox.conf
 	sed 's:DROOPY_ENABLED="yes":DROOPY_ENABLED="no":'  -i  $(1)/piratebox.conf
+	sed 's:CUSTOM_DIRLIST_COPY="yes":CUSTOM_DIRLIST_COPY="no":' -i $(1)/piratebox.conf
 	sed 's:ssid=PirateBox - Share Freely:ssid=LibraryBox - Free Content!:' -i $(1)/hostapd.conf
-	echo 'include "/opt/piratebox/conf/lighttpd/fastcgi.conf"' >> $(1)/lighttpd/lighttpd.conf
+	sed -i $(1)/lighttpd/lighttpd.conf -e 's|#include "/opt/piratebox/conf/lighttpd/fastcgi-php.conf"|include "/opt/piratebox/conf/lighttpd/fastcgi-php.conf"|' 
 	echo 'include "/opt/piratebox/conf/lighttpd/custom_index.conf"' >> $(1)/lighttpd/lighttpd.conf
+	echo 'include "/opt/piratebox/conf/lighttpd/librarybox_tools.conf"' >> $(1)/lighttpd/lighttpd.conf
 	sed 's|IPV6_ENABLE="no"|IPV6_ENABLE="yes"|' -i  $(1)/ipv6.conf
-        grep -q "svg" $(1)/lighttpd/mime.types || sed -i 's|".fb2"         =>      "text/xml",|".fb2"         =>      "text/xml",\n".svg"          =>      "image/svg+xml",|' $(1)/lighttpd/mime.types
+endef
+
+# Adjust src files
+define ReconfigureSRC
+	grep -q "vc_counter" $(1)/redirect.html.schema || sed -e 's:Redirect:<img src="/vc_counter.php" />Redirect...:' -i $(1)/redirect.html.schema
 endef
 
 building: $(BUILD_SCRIPT_LOCATION) 
 	 $(call ReconfigureConfig,$(BUILD_SCRIPT_LOCATION)/conf)	
-
+	 $(call ReconfigureSRC,$(BUILD_SCRIPT_LOCATION)/src)
 
 #--------------------------------------------
 # Preparing image
@@ -94,7 +100,9 @@ prepare_image_config: $(IMAGE_BUILD_SRC)  $(IMAGE_BUILD_TGT)
 #   I'm doin it this way, because the origin image knows what to change.
 apply_custom_config:
 	cp -v $(BUILD_SCRIPT_LOCATION)/conf/hook_custom.conf $(IMAGE_BUILD_SRC)/conf
+	cp -v $(BUILD_SCRIPT_LOCATION)/conf/chat_init.txt $(IMAGE_BUILD_SRC)/conf
 	$(call ReconfigureConfig,$(IMAGE_BUILD_SRC)/conf)
+	$(call ReconfigureSRC,$(BUILD_SCRIPT_LOCATION)/src)
 
 $(MOD_IMAGE):
 	gunzip -dc  $(SRC_FOLDER)/image_stuff/OpenWRT_ext4_50MB.img.gz > $@
@@ -111,7 +119,7 @@ $(MOD_IMAGE_TGZ): $(IMAGE_BUILD_TGT) $(MOD_IMAGE) $(MOD_VERSION_TAG)
 	sudo umount  $(IMAGE_BUILD_TGT)
 	tar czf  $(MOD_IMAGE_TGZ)  $(MOD_IMAGE)
 
-image: clean_image building prepare_image_config apply_custom_config $(MOD_IMAGE_TGZ) 
+image: clean_image $(SRC_VERSION_TAG) building prepare_image_config apply_custom_config $(MOD_IMAGE_TGZ) 
 
 #---------------------------------------------
 # Package creation

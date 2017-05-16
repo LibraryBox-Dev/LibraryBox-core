@@ -72,11 +72,11 @@
 					<div id="chat" class="card last">
 						<h2 data-l10n-id="indexChatChat">Chat</h2>
 						<div id="shoutbox" class="shoutbox_content"></div>
-						<form method="POST" name="psowrte" id="sb_form" >
+						<form method="POST" name="psowrte" id="sb_form" onsubmit='getTime();'  >
 							<div id="shoutbox-input">
 								<input data-l10n-id="indexChatName" class="nickname" type="text" 	name="name">
 								<input data-l10n-id="indexChatMessage" class="message" 	type="text" 	name="data" 	placeholder="Message...">
-								<button class="btn-default" type="submit" name="submit" data-l10n-id="indexchatSend">Send</button>
+								<button class="btn-default" type="submit" name="submit" id="send-button" data-l10n-id="indexchatSend">Send</button>
 							</div>
 							<div id="shoutbox-options">
 								<h3>Text Color:</h3>
@@ -86,6 +86,15 @@
 								<label for="orange" class="bg-orange" data-l10n-id="indexShoutboxOrange">	<input name="color" type="radio" value="orange" id="orange"		>Orange</label>
 								<label for="red" 	class="bg-red" data-l10n-id="indexShoutboxRed">		<input name="color" type="radio" value="red" 	id="red"		>Red</label>
 							</div>
+
+                            <input type="hidden" name="timestamp" id="timestamp">
+                            <script language='JavaScript'>
+                        function getTime(){
+                        var date = new Date();
+                        var timestamp = Math.round(date.getTime() / 1000);
+                        document.getElementById('timestamp').value = timestamp;
+                        }
+                            </script>
 						</form>
 					</div>
 				</div>

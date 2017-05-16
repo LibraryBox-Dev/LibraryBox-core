@@ -1,10 +1,14 @@
 #!/bin/sh
 
+#  Matthias Strubel    (c) 2013-2014
+#    licenced with GPL-3
+#
 # Generate severall configuration files out of piratebox.conf
 #     conf/hosts_generated
 #     conf/dnsmasq_generated.conf
 #     conf/radvd_generated.conf
 #     conf/lighttpd/env
+#     conf/hosts_mesh
 #
 # There are files for default configuration or adding custom stuff:
 #     conf/hosts
@@ -24,6 +28,7 @@
 #    GEN_CHATFILE      = generated html chatfile
 #    PIRATEBOX         = PirateBox Folder
 #    CHATFILE          = data store for Shoutbox-content
+#    
 #    NODE_CONFIG       = Config file for Mesh-Node parameters
 #  -
 #  ipv6.conf (loaded within piratebox.conf)
@@ -140,6 +145,9 @@ generate_lighttpd_env() {
 	local SHOUTBOX_GEN_HTMLFILE=$4
 	local PIRATEBOX=$5
 	local SHOUTBOX_CHATFILE=$6
+	local SHOUTBOX_CLIENT_TIMESTAMP=$7
+	local IN_UPLOAD_PATH=$8
+  	local DISK_GEN_HTMLFILE=$9
 
         echo "Generating Environment-config for lighttpd ....."
 
@@ -152,6 +160,9 @@ generate_lighttpd_env() {
 	   \"PYTHONPATH\"             => \"$PYTHONPATH:$PIRATEBOX/python_lib\", 
 	   \"SHOUTBOX_GEN_HTMLFILE\"  => \"$SHOUTBOX_GEN_HTMLFILE\" , 
 	   \"SHOUTBOX_CHATFILE\"      => \"$SHOUTBOX_CHATFILE\" , 
+	   \"SHOUTBOX_CLIENT_TIMESTAMP\" => \"$SHOUTBOX_CLIENT_TIMESTAMP\" , 
+	   \"UPLOAD_PATH\" => \"$IN_UPLOAD_PATH\" , 
+     	   \"DISK_GEN_HTMLFILE\"      => \"$DISK_GEN_HTMLFILE\" , 
 	   $LIGHTTPD_ENV_BR_LINE 
 
         )"
@@ -192,7 +203,7 @@ if [ "$IPV6_ENABLE" = "yes" ] ; then
 fi
 generate_hosts $HOST  $IP  $IPV6
 generate_dnsmasq  $NET $IP_SHORT  $START_LEASE  $END_LEASE $LEASE_DURATION $DNSMASQ_INTERFACE
-generate_lighttpd_env $GLOBAL_CHAT "$GLOBAL_DEST" $PIRATEBOX_PYTHONPATH $GEN_CHATFILE $PIRATEBOX_FOLDER  $CHATFILE
+generate_lighttpd_env $GLOBAL_CHAT "$GLOBAL_DEST" $PIRATEBOX_PYTHONPATH $GEN_CHATFILE $PIRATEBOX_FOLDER  $CHATFILE $SHOUTBOX_CLIENT_TIMESTAMP $UPLOADFOLDER $GEN_DISKFILE 
 
 COMPLETE_HOST=$HOST
 

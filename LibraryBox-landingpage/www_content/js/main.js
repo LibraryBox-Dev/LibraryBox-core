@@ -6,11 +6,6 @@ $j(document).ready(function() {
 		console.log('clicked menu icon');
 	});
 
-	// get forban
-	$j.get('/forban_link.html', function(data) {
-		$j('div#forban_link').html(data);
-	});
-	
 	// get station counter
 	$j.get('/station_cnt.txt', function(data) {
 		$j('div#station').html(data);
@@ -28,8 +23,8 @@ $j(document).ready(function() {
 		post_shoutbox();
 	});
 
-	$j.getJSON("/config.json" , function(data) {
-		var showbox = data.librarybox.module.shoutbox.status;
+	$j.getJSON("/piratebox_config.json" , function(data) {
+		var showbox = data.piratebox.module.shoutbox.status;
 		if (showbox) {
 			display_shoutbox();
 		} else {
@@ -51,11 +46,16 @@ function refresh_time_sb () {
   }
 
   function post_shoutbox () {
-  	$j.post("/cgi-bin/psowrte.py" , $j("#sb_form").serialize())
-  	.success(function() { 
-  		refresh_shoutbox(); 
-  	});
-  	$j('#shoutbox-input .message').val('');
+        $j("#send-button").prop('value', 'Sending...');
+        $j("#send-button").prop('disabled', true);
+
+        $j.post("/cgi-bin/psowrte.py" , $j("#sb_form").serialize())
+        .success(function() {
+                refresh_shoutbox();
+                $j("#send-button").prop('value', 'Send')
+                $j("#send-button").prop('disabled', false);
+        });
+        $j('#shoutbox-input .message').val('');
   }
 
   function display_shoutbox() {

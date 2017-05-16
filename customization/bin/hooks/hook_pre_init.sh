@@ -20,20 +20,19 @@ fi
 # You can uncommend this line to see when hook is starting:
  echo "------------------ Running $0 ------------------"
 
-
 ## Exchange WWWW
 echo "Doing www folder exchange..."
 mv    $WWW_FOLDER $PIRATEBOX_FOLDER/www_old
 mv    $PIRATEBOX_FOLDER/www_librarybox $WWW_FOLDER
 cp -rv  $PIRATEBOX_FOLDER/www_old/cgi-bin $WWW_FOLDER/cgi-bin
+cp -v  $PIRATEBOX_FOLDER/www_old/generate_204 $WWW_FOLDER
 
-# Link to the USB-Stick
-ln -s $WWW_CONTENT  $WWW_FOLDER/content
+$PIRATEBOX_FOLDER/bin/install_piratebox.sh \
+    $1 \
+    hostname librarybox.lan
+test ! -e $WWW_FOLDER/index.html && \
+    ln -f $WWW_FOLDER/redirect.html $WWW_FOLDER/index.html 
 
-# link index.html with redirect.html
-if [ ! -e  $WWW_FOLDER/index.html ] ; then
-	ln -s $WWW_FOLDER/redirect.html  $WWW_FOLDER/index.html
-fi
 
 $PIRATEBOX_FOLDER/bin/ftp_enable.sh generate
 
