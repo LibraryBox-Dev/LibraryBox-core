@@ -69,8 +69,9 @@ define ReconfigureConfig
 	sed 's:CUSTOM_DIRLIST_COPY="yes":CUSTOM_DIRLIST_COPY="no":' -i $(1)/piratebox.conf
 	sed 's:ssid=PirateBox - Share Freely:ssid=LibraryBox - Free Content!:' -i $(1)/hostapd.conf
 	sed -i $(1)/lighttpd/lighttpd.conf -e 's|#include "/opt/piratebox/conf/lighttpd/fastcgi-php.conf"|include "/opt/piratebox/conf/lighttpd/fastcgi-php.conf"|' 
-	echo 'include "/opt/piratebox/conf/lighttpd/custom_index.conf"' >> $(1)/lighttpd/lighttpd.conf
-	echo 'include "/opt/piratebox/conf/lighttpd/librarybox_tools.conf"' >> $(1)/lighttpd/lighttpd.conf
+	echo 'include "/opt/piratebox/conf/lighttpd/custom_index.conf"'       >> $(1)/lighttpd/lighttpd.conf
+	echo '#include "/opt/piratebox/conf/lighttpd/custom_index_h5ai.conf"' >> $(1)/lighttpd/lighttpd.conf
+	echo 'include "/opt/piratebox/conf/lighttpd/librarybox_tools.conf"'   >> $(1)/lighttpd/lighttpd.conf
 	sed 's|IPV6_ENABLE="no"|IPV6_ENABLE="yes"|' -i  $(1)/ipv6.conf
 endef
 
